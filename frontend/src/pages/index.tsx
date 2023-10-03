@@ -2,48 +2,31 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 
 import type { NextPage } from "next";
-import { MarketingSection } from "~/components/landing-page/MarketingSection";
-import { TitleAndDropdown } from "~/components/landing-page/TitleAndDropdown";
-import axios from "axios";
+import DragAndDrop from "~/components/basics/DragAndDrop";
 import { backendUrl } from "~/config";
 import { backendClient } from "~/api/backend";
 
 const LandingPage: NextPage = () => {
 
-  const [file, setFile] = useState();
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
+
   const router = useRouter();
-  const handleUpload = (event: any) => {
-    setFile(event.target.files[0]);
-    event.preventDefault();
-    const url = backendUrl + 'api/upload'; //non funziona ma il concetto è questo
-    const formData = new FormData();
-    formData.append('file', file);
 
-    const config = {
-      headers: {
-        'content-type': 'multipart/form-data',
-      },
-      onUploadProgress: function (progressEvent: any) {
-        console.log('progress', progressEvent);
-        const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
-        setUploadProgress(percentCompleted);
-      }
-    };
+  const handleUpload = (files: File[]) => {
+    try {
+      setIsUploading(true);
+      setUploadedFiles(uploadedFiles.concat(files));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-    axios.post(url, formData, config)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.error("Error uploading file: ", error);
-      });
-
-    console.log('procedo');
-
+  const startConversation = () => {
     setIsLoadingConversation(true);
-    event.preventDefault();
     const selectedDocumentIds = [];
     backendClient
       .createConversation(selectedDocumentIds)
@@ -54,25 +37,100 @@ const LandingPage: NextPage = () => {
           .catch(() => console.log("error navigating to conversation"));
       })
       .catch(() => console.log("error creating conversation "));
-
   }
 
   return (
     <>
-      {/* <TitleAndDropdown /> */}
-      <div className="mb-3 w-96">
-        <label
-          htmlFor="formFile"
-          className="mb-2 inline-block text-neutral-700 dark:text-neutral-200"
-        >
-          Upload
-        </label>
-        <input
-          className="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
-          type="file"
-          id="formFile"
-          onChange={handleUpload}
-        />
+      <div className="w-screen h-screen flex flex-col justify-center items-center">
+        <DragAndDrop onUpload={handleUpload} />
+        {uploadedFiles.length > 0 && (
+          <>
+          <ul className="w-2/3  my-5">
+            {uploadedFiles.map((file, index) => (
+              <li
+                className="bg-sky-100 px-5 py-3 w-full my-2 rounded-lg"
+                key={index}
+              >
+                <div className="flex justify-between items-center w-full">
+                  {file.type.startsWith("image/") ? (
+                    <div className="flex gap-5 items-center">
+                      <img
+                        src={URL.createObjectURL(file)}
+                        alt="avatar"
+                        className="image-input-wrapper w-12 h-12 rounded-full cursor-pointer opacity-75-hover"
+                      />
+                      <span>{file.name}</span>
+                    </div>
+                  ) : (
+                    <div className="flex gap-5 items-center">
+                      <div className=" bg-gray-200  w-12 h-12 rounded-full cursor-pointer"></div>
+                      <span>{file.name}</span>
+                    </div>
+                  )}
+                  <span
+                    onClick={() => removeItem(file.lastModified)}
+                    className=" cursor-pointer"
+                  >
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <rect
+                        opacity="1"
+                        x="6"
+                        y="17.3137"
+                        width="16"
+                        height="2"
+                        rx="1"
+                        transform="rotate(-45 6 17.3137)"
+                        fill="currentColor"
+                      />
+                      <rect
+                        x="7.41422"
+                        y="6"
+                        width="16"
+                        height="2"
+                        rx="1"
+                        transform="rotate(45 7.41422 6)"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ul>
+          <button
+          onClick={startConversation}
+          className="
+          block 
+          w-full 
+          rounded-sm 
+          bg-primary-ex 
+          px-3.5 
+          py-2.5 
+          mb-3
+          text-center 
+          text-sm 
+          text-white 
+          shadow-md 
+          hover:bg-primary-ex 
+          focus-visible:outline 
+          focus-visible:outline-2 
+          focus-visible:outline-offset-2 
+          focus-visible:outline-indigo-600">
+          Let's go
+        </button>
+        </>
+        )}
+        {isUploading && (
+          <div className="flex justify-center items-center w-1/3 h-48 border-2 border-dashed rounded-lg p-4">
+            <p>Loading...</p>
+          </div>
+        )}
         <button
           onClick={() => router.push(`/chooseFromFolder/`)}
           className="
@@ -93,10 +151,7 @@ const LandingPage: NextPage = () => {
           focus-visible:outline-indigo-600">
           Choose from folder
         </button>
-      </div>
-      <progress value={uploadProgress} max="100"></progress>
-
-      {/* <MarketingSection /> */}
+    </div>
     </>
   );
 };
