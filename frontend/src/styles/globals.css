@@ -26,6 +26,10 @@
   background-color: #1bbc9b;
 }
 
+.color-primary-ex {
+  color: #1bbc9b;
+}
+
 @layer components {
   .landing-page-gradient-1 {
     background-color: hsla(0,0%,100%,1);
