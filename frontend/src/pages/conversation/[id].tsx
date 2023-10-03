@@ -31,11 +31,13 @@ export default function Conversation() {
     useModal();
 
   const { isMobile } = useIsMobile();
+  const [isPdfViewerOpen, setPdfViewer] = useState(false);
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
   const [userMessage, setUserMessage] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<SecDocument[]>([]);
+
   const { messages, userSendMessage, systemSendMessage, setMessages } =
     useMessages(conversationId || "");
 
@@ -135,6 +137,10 @@ export default function Conversation() {
     }
   }, []);
 
+  const toggleIsViewer = () => {
+    setPdfViewer(current => !current);
+  };
+
   if (isMobile) {
     return (
       <div className="landing-page-gradient-1 relative flex h-screen w-screen items-center justify-center">
@@ -159,63 +165,75 @@ export default function Conversation() {
   }
 
   return (
-    <PdfFocusProvider>
-      <div className="flex h-[100vh] w-full items-center justify-center">
-        <div className="flex h-[100vh] w-[44vw] flex-col items-center border-r-2 bg-white">
-          <div className="flex h-[44px] w-full items-center justify-between border-b-2 ">
-            <div className="flex w-full items-center justify-between">
-              <button
-                onClick={() => {
-                  router
-                    .push("/")
-                    .catch(() => console.error("error navigating home"));
-                }}
-                className="ml-4 flex items-center justify-center rounded px-2 font-light text-[#9EA2B0] hover:text-gray-90"
-              >
-                <BiArrowBack className="mr-1" /> Back to Document Selection
-              </button>
-              <button
-                onClick={toggleShareModal}
-                className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
-              >
-                <div className="text-xs font-medium">Share</div>
-                <FiShare className="ml-1" size={12} />
-              </button>
+      <div className="w-[80vw]">
+        <PdfFocusProvider> 
+            <div className="flex h-[100vh] items-center w-full">
+              <div className="flex h-[100vh] flex-col items-center border-r-2 bg-white w-full">
+                <div className="flex h-[44px] w-full items-center justify-between border-b-2 ">
+                  <div className="flex w-full items-center justify-between">
+                    <button
+                      onClick={() => {
+                        router
+                          .push("/")
+                          .catch(() => console.error("error navigating home"));
+                      }}
+                      className="ml-4 flex items-center justify-center rounded px-2 font-light text-[#9EA2B0] hover:text-gray-90"
+                    >
+                      <BiArrowBack className="mr-1" /> Back to Document Selection
+                    </button>
+                    <button
+                      onClick={toggleShareModal}
+                      className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
+                    >
+                      <div className="text-xs font-medium">Share</div>
+                      <FiShare className="ml-1" size={12} />
+                    </button>
+                    <button
+                      onClick={toggleIsViewer}
+                      className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
+                    >
+                      <div className="text-xs font-medium">OpenPDF</div>
+                      <FiShare className="ml-1" size={12} />
+                    </button>
+                  </div>
+                </div>
+                {!isPdfViewerOpen ?
+                <>
+                  <div className="flex max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+                    <RenderConversations
+                      messages={messages}
+                      documents={selectedDocuments}
+                      setUserMessage={setSuggestedMessage}
+                    />
+                  </div>
+                  <div className="relative flex h-[70px] w-[44vw] w-full items-center border-b-2 border-t">
+                    <textarea
+                      ref={textFocusRef}
+                      rows={1}
+                      className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
+                      placeholder={"Start typing your question..."}
+                      value={userMessage}
+                      onChange={handleTextChange}
+                    />
+                    <button
+                      disabled={isMessagePending || userMessage.length === 0}
+                      onClick={submit}
+                      className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
+                    >
+                      <BsArrowUpCircle size={24} />
+                    </button>
+                  </div>
+                </>
+                : 
+                <DisplayMultiplePdfs pdfs={selectedDocuments} />
+              }
+              </div>
+              <ShareLinkModal
+                isOpen={isShareModalOpen}
+                toggleModal={toggleShareModal}
+              />
             </div>
-          </div>
-          <div className="flex max-h-[calc(100vh-114px)] w-[44vw] flex-grow flex-col overflow-scroll ">
-            <RenderConversations
-              messages={messages}
-              documents={selectedDocuments}
-              setUserMessage={setSuggestedMessage}
-            />
-          </div>
-          <div className="relative flex h-[70px] w-[44vw] w-full items-center border-b-2 border-t">
-            <textarea
-              ref={textFocusRef}
-              rows={1}
-              className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
-              placeholder={"Start typing your question..."}
-              value={userMessage}
-              onChange={handleTextChange}
-            />
-            <button
-              disabled={isMessagePending || userMessage.length === 0}
-              onClick={submit}
-              className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
-            >
-              <BsArrowUpCircle size={24} />
-            </button>
-          </div>
-        </div>
-        <div className="h-[100vh] w-max">
-          <DisplayMultiplePdfs pdfs={selectedDocuments} />
-        </div>
-        <ShareLinkModal
-          isOpen={isShareModalOpen}
-          toggleModal={toggleShareModal}
-        />
+        </PdfFocusProvider>
       </div>
-    </PdfFocusProvider>
   );
 }

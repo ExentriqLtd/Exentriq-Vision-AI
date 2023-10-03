@@ -15,12 +15,12 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
 
   return (
     <>
-      <div className="flex h-full items-start justify-center ">
+      <div className="flex h-full items-start w-full">
         {pdfs.map((file) => {
           return (
             <div
               key={`viewing-${file.url}`}
-              className={cx({ hidden: !isActivePdf(file) })}
+              className={cx('w-full', { hidden: !isActivePdf(file) })}
             >
               <ViewPdf file={file} />
             </div>
@@ -28,7 +28,9 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
         })}
 
         <div className="flex h-full w-[80px] flex-col">
-          <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 "></div>
+          <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 ">
+            {/* TODO: SetClose qui? */}
+          </div>
           {pdfs.map((file, index) => (
             <div key={index}>
               <button

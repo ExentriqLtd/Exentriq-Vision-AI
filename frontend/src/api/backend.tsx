@@ -1,6 +1,7 @@
 import { backendUrl } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
+import type { BackendCollections } from "~/types/backend/collections";
 import { SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
@@ -17,6 +18,13 @@ interface GetConversationPayload {
 interface GetConversationReturnType {
   messages: Message[];
   documents: SecDocument[];
+}
+
+interface GetCollectionsReturnType {
+  id: string;
+  created_at: string,
+  name: string,
+  updated_at: string,
 }
 
 class BackendClient {
@@ -72,6 +80,13 @@ class BackendClient {
     const data = (await res.json()) as BackendDocument[];
     const docs = fromBackendDocumentToFrontend(data);
     return docs;
+  }
+
+  public async fetchCollections(): Promise<GetCollectionsReturnType[]> {
+    const endpoint = `api/collections/`;
+    const res = await this.get(endpoint);
+    const data = (await res.json()) as BackendCollections[];
+    return data;
   }
 }
 
