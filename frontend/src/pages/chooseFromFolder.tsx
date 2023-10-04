@@ -34,7 +34,7 @@ const ChooseFromFolder: NextPage = () => {
   return (
     <>
       <div className="mt-3 mx-6 w-full">
-        <Header title={'Choose from folder'} subtitle={'Data Sources'} />
+        <Header title={'Choose from folder'} subtitle={'Data Sources'} paragraph={false}/>
         <div
           className="
           block
