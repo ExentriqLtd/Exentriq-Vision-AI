@@ -111,7 +111,9 @@ const LandingPage: NextPage = () => {
               </li>
             ))}
           </ul>
-          <button
+        </>
+        )}
+                  <button
           onClick={() => router.push(`/chooseFromFolder/`)}
           className="
           block 
@@ -152,8 +154,6 @@ const LandingPage: NextPage = () => {
           focus-visible:outline-indigo-600">
           Let's go
         </button>
-        </>
-        )}
         {isUploading && (
           <progress value={uploadProgress} max="100"></progress> //TODO: so che Axios ha il progress ma non sono sicura che altri metodi lo abbiano. Vediamo come ci muoveremo per l'upload a sto punto e decidiamo se mettere questa o togliere il concetto di progress e lasciare solo la barra di loading alla exentriq (... che andrà fatta, per altro)
         )}
