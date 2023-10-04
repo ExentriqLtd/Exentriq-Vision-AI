@@ -49,7 +49,7 @@ const LandingPage: NextPage = () => {
 
   return (
     <>
-      <div className="mt-3 mx-6 w-2/3">
+      <div className="mt-3 mx-6 w-2/3 flex flex-col">
         {isLoadingConversation && (
           <ProgressBar />
         )}
@@ -71,22 +71,22 @@ const LandingPage: NextPage = () => {
           <button
             onClick={() => router.push(`/chooseFromFolder/`)}
             className="
-          w-2/3
-          block 
-          rounded-sm 
-          bg-primary-ex 
-          px-3.5 
-          py-2.5 
-          text-center 
-          text-sm 
-          text-white 
-          shadow-md 
-          mb-3
-          hover:bg-primary-ex 
-          focus-visible:outline 
-          focus-visible:outline-2 
-          focus-visible:outline-offset-2 
-          focus-visible:outline-indigo-600">
+            w-2/3
+            block 
+            rounded-sm 
+            bg-primary-ex 
+            px-3.5 
+            py-2.5 
+            text-center 
+            text-sm 
+            text-white 
+            shadow-md 
+            mb-3
+            hover:bg-primary-ex 
+            focus-visible:outline 
+            focus-visible:outline-2 
+            focus-visible:outline-offset-2 
+            focus-visible:outline-indigo-600">
             Choose from folder
           </button>
         </>
@@ -95,21 +95,21 @@ const LandingPage: NextPage = () => {
           <button
             onClick={startConversation}
             className="
-          block 
-          w-2/3
-          rounded-sm 
-          bg-primary-ex 
-          px-3.5 
-          py-2.5 
-          text-center 
-          text-sm 
-          text-white 
-          shadow-md 
-          hover:bg-primary-ex 
-          focus-visible:outline 
-          focus-visible:outline-2 
-          focus-visible:outline-offset-2 
-          focus-visible:outline-indigo-600">
+            block 
+            w-2/3
+            rounded-sm 
+            bg-primary-ex 
+            px-3.5 
+            py-2.5 
+            text-center 
+            text-sm 
+            text-white 
+            shadow-md 
+            hover:bg-primary-ex 
+            focus-visible:outline 
+            focus-visible:outline-2 
+            focus-visible:outline-offset-2 
+            focus-visible:outline-indigo-600">
             Let's go
           </button>
         )}

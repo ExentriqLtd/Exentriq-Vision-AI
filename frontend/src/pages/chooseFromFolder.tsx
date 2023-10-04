@@ -58,7 +58,7 @@ const ChooseFromFolder: NextPage = () => {
     <>
       {!isEmpty(fileDrive) ? (
         <>
-          <div className="mt-3 mx-6 w-2/3">
+          <div className="mt-3 mx-6 w-2/3 flex flex-col">
             {isLoadingConversation && (
               <ProgressBar />
             )}

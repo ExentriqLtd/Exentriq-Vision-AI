@@ -34,7 +34,6 @@ const CollectionList: React.FC = () => {
       <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline">here</span> </p>
       <ul className="w-full my-5">
         {availableCollections.map((collection, index) => {
-          console.log('collection...',collection)
           return (
             <Collection index={index} name={collection?.name} created_at={collection?.created_at}/>
           );
