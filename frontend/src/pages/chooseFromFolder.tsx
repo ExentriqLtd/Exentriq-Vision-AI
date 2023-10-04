@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import type { NextPage } from "next";
 import useDrivePicker from 'react-google-drive-picker'
-import Header from "./header";
+import Header from "./section/header";
 
 const ChooseFromFolder: NextPage = () => {
   const [fileDrive, setFileDrive] = useState({});
