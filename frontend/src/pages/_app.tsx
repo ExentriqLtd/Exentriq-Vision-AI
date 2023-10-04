@@ -5,7 +5,7 @@ import ReactGA from "react-ga4";
 
 import { IntercomProvider } from "react-use-intercom";
 import { GOOGLE_ANALYTICS_ID, INTERCOM_ID } from "~/constants";
-import CollectionList from "~/components/leftSidebar/CollectionsList";
+import CollectionList from "./leftSidebar/CollectionsList";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
@@ -13,9 +13,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <IntercomProvider appId={INTERCOM_ID}>
-        <div className="flex flex-row h-[100vh]">
-          <CollectionList />
+        <div className="flex flex-row h-[100vh] m-4 shadow-lg">
           <Layout>
+            <CollectionList />
             <Component {...pageProps} />
           </Layout>
         </div>

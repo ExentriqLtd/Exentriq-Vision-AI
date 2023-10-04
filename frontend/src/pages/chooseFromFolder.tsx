@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import type { NextPage } from "next";
 import useDrivePicker from 'react-google-drive-picker'
+import Header from "./header";
 
 const ChooseFromFolder: NextPage = () => {
   const [fileDrive, setFileDrive] = useState({});
@@ -32,11 +33,8 @@ const ChooseFromFolder: NextPage = () => {
 
   return (
     <>
-      <div className="mb-3 flex-1">
-        <div className="max-w-2xl text-left">
-          <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Choose from folder</h2>
-          <p className="mt-2 text-3xl leading-8 text-gray-600">Data Sources</p>
-        </div>
+      <div className="mt-3 mx-6 w-full">
+        <Header title={'Choose from folder'} subtitle={'Data Sources'} />
         <div
           className="
           block
@@ -89,7 +87,7 @@ const ChooseFromFolder: NextPage = () => {
             <img src={'./exentriq-folder.png'} className="w-10" alt="Google Drive Folder" />
             <p className="px-2">Exentriq Document Manager Folder</p>
           </div>
-          <button className="underline" onClick={() => {}}>Open folder</button>
+          <button className="underline" onClick={() => { }}>Open folder</button>
         </div>
       </div>
       {uploadProgress > 0 ?? (

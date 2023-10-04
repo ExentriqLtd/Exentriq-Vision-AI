@@ -165,11 +165,11 @@ export default function Conversation() {
   }
 
   return (
-      <div className="w-[80vw]">
+      <div className="mx-6 w-full">
         <PdfFocusProvider> 
             <div className="flex h-[100vh] items-center w-full">
-              <div className="flex h-[100vh] flex-col items-center border-r-2 bg-white w-full">
-                <div className="flex h-[44px] w-full items-center justify-between border-b-2 ">
+              <div className="flex h-[100vh] flex-col items-center bg-white w-full">
+                <div className="flex h-[44px] w-full items-center justify-between border-b ">
                   <div className="flex w-full items-center justify-between">
                     <button
                       onClick={() => {
@@ -199,14 +199,14 @@ export default function Conversation() {
                 </div>
                 {!isPdfViewerOpen ?
                 <>
-                  <div className="flex max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+                  <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
                     <RenderConversations
                       messages={messages}
                       documents={selectedDocuments}
                       setUserMessage={setSuggestedMessage}
                     />
                   </div>
-                  <div className="relative flex h-[70px] w-[44vw] w-full items-center border-b-2 border-t">
+                  <div className="relative flex h-[70px] w-[44vw] w-full items-center">
                     <textarea
                       ref={textFocusRef}
                       rows={1}

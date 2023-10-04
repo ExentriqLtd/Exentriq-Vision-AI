@@ -15,7 +15,7 @@ const CollectionList: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-[20vw] bg-gray-100 relative p-4 rounded-l-lg">
+    <div className="w-96 bg-gray-100 relative p-4 rounded-l-lg">
       <input type="text" name="search" id="pricsearche"
         className="
            block 
