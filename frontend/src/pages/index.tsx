@@ -48,10 +48,10 @@ const LandingPage: NextPage = () => {
 
   return (
     <>
-      {isLoadingConversation ?? (
-        <div className="loading">LOADER</div>
-      )}
       <div className="mt-3 mx-6 w-2/3">
+        {isLoadingConversation && (
+          <div className="loading">LOADER</div>
+        )}
         <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
         <DragAndDrop onUpload={handleUpload} />
         {uploadedFiles.length > 0 && (
@@ -63,14 +63,13 @@ const LandingPage: NextPage = () => {
             </ul>
           </>
         )}
-
-          <>
-            <div className="mt-3 w-2/3 flex flex-col items-center">
-              <p className="my-10">or</p>
-            </div>
-            <button
-              onClick={() => router.push(`/chooseFromFolder/`)}
-              className="
+        <>
+          <div className="mt-3 w-2/3 flex flex-col items-center">
+            <p className="my-10">or</p>
+          </div>
+          <button
+            onClick={() => router.push(`/chooseFromFolder/`)}
+            className="
           w-2/3
           block 
           rounded-sm 
@@ -87,11 +86,11 @@ const LandingPage: NextPage = () => {
           focus-visible:outline-2 
           focus-visible:outline-offset-2 
           focus-visible:outline-indigo-600">
-              Choose from folder
-            </button>
-          </>
+            Choose from folder
+          </button>
+        </>
 
-        {uploadedFiles.length > 0 ?? (
+        {uploadedFiles.length > 0 && (
           <button
             onClick={startConversation}
             className="
