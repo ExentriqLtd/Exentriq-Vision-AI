@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import type { NextPage } from "next";
 import DragAndDrop from "~/components/basics/DragAndDrop";
-import { backendUrl } from "~/config";
 import { backendClient } from "~/api/backend";
 
 const LandingPage: NextPage = () => {
@@ -11,8 +10,14 @@ const LandingPage: NextPage = () => {
   const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
 
   const router = useRouter();
+
+  const removeItem = (id: number) => {
+    const filterd = uploadedFiles.filter((f) => f.lastModified !== id);
+    setUploadedFiles(filterd);
+  };
 
   const handleUpload = (files: File[]) => {
     try {
@@ -27,7 +32,7 @@ const LandingPage: NextPage = () => {
 
   const startConversation = () => {
     setIsLoadingConversation(true);
-    const selectedDocumentIds = [];
+    const selectedDocumentIds = []; //TODO: passare gli uploaded files come se li aspetterà il servizio.
     backendClient
       .createConversation(selectedDocumentIds)
       .then((newConversationId) => {
@@ -41,7 +46,10 @@ const LandingPage: NextPage = () => {
 
   return (
     <>
-      <div className="w-screen h-screen flex flex-col justify-center items-center">
+      {isLoadingConversation ?? (
+          <div className="loading">LOADER</div>
+      )}
+      <div className="mt-3 w-screen h-screen flex flex-col items-center">
         <DragAndDrop onUpload={handleUpload} />
         {uploadedFiles.length > 0 && (
           <>
@@ -104,6 +112,27 @@ const LandingPage: NextPage = () => {
             ))}
           </ul>
           <button
+          onClick={() => router.push(`/chooseFromFolder/`)}
+          className="
+          block 
+          w-full 
+          rounded-sm 
+          bg-primary-ex 
+          px-3.5 
+          py-2.5 
+          text-center 
+          text-sm 
+          text-white 
+          shadow-md 
+          mb-3
+          hover:bg-primary-ex 
+          focus-visible:outline 
+          focus-visible:outline-2 
+          focus-visible:outline-offset-2 
+          focus-visible:outline-indigo-600">
+          Choose from folder
+          </button>
+          <button
           onClick={startConversation}
           className="
           block 
@@ -112,7 +141,6 @@ const LandingPage: NextPage = () => {
           bg-primary-ex 
           px-3.5 
           py-2.5 
-          mb-3
           text-center 
           text-sm 
           text-white 
@@ -127,30 +155,8 @@ const LandingPage: NextPage = () => {
         </>
         )}
         {isUploading && (
-          <div className="flex justify-center items-center w-1/3 h-48 border-2 border-dashed rounded-lg p-4">
-            <p>Loading...</p>
-          </div>
+          <progress value={uploadProgress} max="100"></progress> //TODO: so che Axios ha il progress ma non sono sicura che altri metodi lo abbiano. Vediamo come ci muoveremo per l'upload a sto punto e decidiamo se mettere questa o togliere il concetto di progress e lasciare solo la barra di loading alla exentriq (... che andrà fatta, per altro)
         )}
-        <button
-          onClick={() => router.push(`/chooseFromFolder/`)}
-          className="
-          block 
-          w-full 
-          rounded-sm 
-          bg-primary-ex 
-          px-3.5 
-          py-2.5 
-          text-center 
-          text-sm 
-          text-white 
-          shadow-md 
-          hover:bg-primary-ex 
-          focus-visible:outline 
-          focus-visible:outline-2 
-          focus-visible:outline-offset-2 
-          focus-visible:outline-indigo-600">
-          Choose from folder
-        </button>
     </div>
     </>
   );

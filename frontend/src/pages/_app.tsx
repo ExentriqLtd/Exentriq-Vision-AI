@@ -13,7 +13,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <IntercomProvider appId={INTERCOM_ID}>
-        <div className="flex flex-row h-[100vh] m-4">
+        <div className="flex flex-row h-[100vh]">
           <CollectionList />
           <Layout>
             <Component {...pageProps} />

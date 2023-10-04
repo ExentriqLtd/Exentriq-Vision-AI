@@ -92,7 +92,9 @@ const ChooseFromFolder: NextPage = () => {
           <button className="underline" onClick={() => {}}>Open folder</button>
         </div>
       </div>
-      <progress value={uploadProgress} max="100"></progress>
+      {uploadProgress > 0 ?? (
+        <progress value={uploadProgress} max="100"></progress>
+      )}
     </>
   );
 };
