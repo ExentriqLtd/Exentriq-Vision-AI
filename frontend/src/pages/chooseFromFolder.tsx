@@ -7,6 +7,7 @@ import FileUploaded from "./section/fileUploaded";
 import { isEmpty } from "lodash";
 import { backendClient } from "~/api/backend";
 import { useRouter } from "next/router";
+import ProgressBar from "./section/progressBar";
 
 const ChooseFromFolder: NextPage = () => {
   const [fileDrive, setFileDrive] = useState([]);
@@ -59,7 +60,7 @@ const ChooseFromFolder: NextPage = () => {
         <>
           <div className="mt-3 mx-6 w-2/3">
             {isLoadingConversation && (
-              <div className="loading">LOADER</div>
+              <ProgressBar />
             )}
             <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
             <ul className="w-2/3 my-5">

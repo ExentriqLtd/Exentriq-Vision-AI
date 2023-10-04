@@ -6,6 +6,7 @@ import DragAndDrop from "~/components/basics/DragAndDrop";
 import { backendClient } from "~/api/backend";
 import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
+import ProgressBar from "./section/progressBar";
 
 const LandingPage: NextPage = () => {
 
@@ -50,7 +51,7 @@ const LandingPage: NextPage = () => {
     <>
       <div className="mt-3 mx-6 w-2/3">
         {isLoadingConversation && (
-          <div className="loading">LOADER</div>
+          <ProgressBar />
         )}
         <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
         <DragAndDrop onUpload={handleUpload} />
