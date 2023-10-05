@@ -6,6 +6,7 @@ import ReactGA from "react-ga4";
 import { IntercomProvider } from "react-use-intercom";
 import { GOOGLE_ANALYTICS_ID, INTERCOM_ID } from "~/constants";
 import CollectionList from "./section/leftSidebar/CollectionsList";
+import { UploadedFileProvider } from "~/hooks/uploadedFile/UploadedFileProvider";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
@@ -13,12 +14,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
   return (
     <>
       <IntercomProvider appId={INTERCOM_ID}>
-        <div className="flex flex-row h-[100vh] shadow-lg">
-          <Layout>
-            <CollectionList />
-            <Component {...pageProps} />
-          </Layout>
-        </div>
+        <UploadedFileProvider>
+          <div className="flex flex-row h-[100vh] shadow-lg">
+            <Layout>
+              <CollectionList />
+              <Component {...pageProps} />
+            </Layout>
+          </div>
+        </UploadedFileProvider>
       </IntercomProvider>
     </>
   );

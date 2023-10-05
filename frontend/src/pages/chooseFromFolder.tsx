@@ -4,13 +4,15 @@ import type { NextPage } from "next";
 import useDrivePicker from 'react-google-drive-picker'
 import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
-import { isEmpty } from "lodash";
 import { backendClient } from "~/api/backend";
 import { useRouter } from "next/router";
 import ProgressBar from "./section/progressBar";
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 const ChooseFromFolder: NextPage = () => {
-  const [fileDrive, setFileDrive] = useState([]);
+  //@ts-ignore
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const { arrayFileUploaded } = stateUploadedFile;
   const [uploadProgress, setUploadProgress] = useState(0);
   const [openPicker, authResponse] = useDrivePicker();
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
@@ -31,13 +33,15 @@ const ChooseFromFolder: NextPage = () => {
         if (data.action === 'cancel') {
           console.log('User clicked cancel/close button')
         }
-        setFileDrive(data?.docs)
+        if (data?.docs) {
+          const newData = data?.docs?.map((doc: any) => ({ ...doc, lastModified: doc?.lastEditedUtc }))
+          dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newData } })
+        }
       },
     })
   }
   const removeItem = (id: number) => {
-    const filterd = fileDrive.filter((f) => f.lastEditedUtc !== id);
-    setFileDrive(filterd);
+    dispatchUploadedFile({ type: 'SET_REMOVE_FILES', payload: { lastModified: id } })
   };
 
   const startConversation = () => {
@@ -56,7 +60,7 @@ const ChooseFromFolder: NextPage = () => {
 
   return (
     <>
-      {!isEmpty(fileDrive) ? (
+      {arrayFileUploaded && arrayFileUploaded.length > 0 ? (
         <>
           <div className="mt-3 mx-6 w-2/3 flex flex-col">
             {isLoadingConversation && (
@@ -64,7 +68,7 @@ const ChooseFromFolder: NextPage = () => {
             )}
             <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
             <ul className="w-2/3 my-5">
-              {fileDrive.map((file, index) => (
+              {arrayFileUploaded.map((file, index) => (
                 <FileUploaded index={index} file={file} removeItem={removeItem} />
               ))}
             </ul>
