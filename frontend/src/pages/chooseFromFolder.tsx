@@ -3,19 +3,14 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import useDrivePicker from 'react-google-drive-picker'
 import Header from "./section/header";
-import FileUploaded from "./section/fileUploaded";
-import { backendClient } from "~/api/backend";
 import { useRouter } from "next/router";
-import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 const ChooseFromFolder: NextPage = () => {
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const { arrayFileUploaded } = stateUploadedFile;
   const [uploadProgress, setUploadProgress] = useState(0);
   const [openPicker, authResponse] = useDrivePicker();
-  const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const router = useRouter();
 
   const handleOpenPicker = () => {
@@ -36,47 +31,80 @@ const ChooseFromFolder: NextPage = () => {
         if (data?.docs) {
           const newData = data?.docs?.map((doc: any) => ({ ...doc, lastModified: doc?.lastEditedUtc }))
           dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newData } })
+          router
+          .push(`/`)
+          .catch(() => console.log("error navigating to conversation"))
         }
       },
     })
   }
-  const removeItem = (id: number) => {
-    dispatchUploadedFile({ type: 'SET_REMOVE_FILES', payload: { lastModified: id } })
-  };
-
-  const startConversation = () => {
-    setIsLoadingConversation(true);
-    const selectedDocumentIds: any = []; //TODO: passare gli uploaded files come se li aspetterà il servizio.
-    backendClient
-      .createConversation(selectedDocumentIds)
-      .then((newConversationId) => {
-        setIsLoadingConversation(false);
-        router
-          .push(`/conversation/${newConversationId}`)
-          .catch(() => console.log("error navigating to conversation"));
-      })
-      .catch(() => console.log("error creating conversation "));
-  }
 
   return (
     <>
-      {arrayFileUploaded && arrayFileUploaded.length > 0 ? (
-        <>
-          <div className="mt-3 mx-6 w-2/3 flex flex-col">
-            {isLoadingConversation && (
-              <ProgressBar />
-            )}
-            <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
-            <ul className="w-2/3 my-5">
-              {arrayFileUploaded.map((file, index) => (
-                <FileUploaded index={index} file={file} removeItem={removeItem} />
-              ))}
-            </ul>
-            <button
-              onClick={startConversation}
-              className="
+
+      <div className="mt-3 mx-6 w-full">
+        <Header title={'Choose from folder'} subtitle={'Data Sources'} paragraph={false} />
+        <div
+          className="
+            block
+            w-full
+            rounded-md
+            bg-white
+            px-3.5
+            py-2.5
+            my-4
+            text-left
+            text-sm
+            text-dark
+            shadow-md
+            flex
+            items-center
+            justify-between
+            hover:bg-white
+            focus-visible:outline
+            focus-visible:outline-2
+            focus-visible:outline-offset-2 
+            focus-visible:outline-indigo-600">
+          <div className="flex items-center">
+            <img src={'./drive-folder.png'} className="w-10" alt="Google Drive Folder" />
+            <p className="px-2">Google Drive</p>
+          </div>
+          <button className="underline" onClick={() => handleOpenPicker()}>Open folder</button>
+        </div>
+        <div
+          className="
+            block
+            w-full
+            rounded-md
+            bg-white
+            px-3.5
+            py-2.5
+            my-4
+            text-left
+            text-sm
+            text-dark
+            shadow-md
+            flex
+            items-center
+            justify-between
+            hover:bg-white
+            focus-visible:outline
+            focus-visible:outline-2
+            focus-visible:outline-offset-2 
+            focus-visible:outline-indigo-600">
+          <div className="flex items-center">
+            <img src={'./exentriq-folder.png'} className="w-10" alt="Google Drive Folder" />
+            <p className="px-2">Exentriq Document Manager Folder</p>
+          </div>
+          <button className="underline" onClick={() => { }}>Open folder</button>
+        </div>
+        <button
+          onClick={() => router
+            .push(`/`)
+            .catch(() => console.log("error navigating to conversation"))}
+          className="
               block 
-              w-2/3
+              w-full
               rounded-sm 
               bg-primary-ex 
               px-3.5 
@@ -90,72 +118,9 @@ const ChooseFromFolder: NextPage = () => {
               focus-visible:outline-2 
               focus-visible:outline-offset-2 
               focus-visible:outline-indigo-600">
-              Let's go
-            </button>
-          </div>
-          <div className="mt-3 w-1/3 flex flex-col items-end">
-            <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />
-          </div>
-        </>
-      ) : (
-        <div className="mt-3 mx-6 w-full">
-          <Header title={'Choose from folder'} subtitle={'Data Sources'} paragraph={false} />
-          <div
-            className="
-            block
-            w-full
-            rounded-md
-            bg-white
-            px-3.5
-            py-2.5
-            my-4
-            text-left
-            text-sm
-            text-dark
-            shadow-md
-            flex
-            items-center
-            justify-between
-            hover:bg-white
-            focus-visible:outline
-            focus-visible:outline-2
-            focus-visible:outline-offset-2 
-            focus-visible:outline-indigo-600">
-            <div className="flex items-center">
-              <img src={'./drive-folder.png'} className="w-10" alt="Google Drive Folder" />
-              <p className="px-2">Google Drive</p>
-            </div>
-            <button className="underline" onClick={() => handleOpenPicker()}>Open folder</button>
-          </div>
-          <div
-            className="
-            block
-            w-full
-            rounded-md
-            bg-white
-            px-3.5
-            py-2.5
-            my-4
-            text-left
-            text-sm
-            text-dark
-            shadow-md
-            flex
-            items-center
-            justify-between
-            hover:bg-white
-            focus-visible:outline
-            focus-visible:outline-2
-            focus-visible:outline-offset-2 
-            focus-visible:outline-indigo-600">
-            <div className="flex items-center">
-              <img src={'./exentriq-folder.png'} className="w-10" alt="Google Drive Folder" />
-              <p className="px-2">Exentriq Document Manager Folder</p>
-            </div>
-            <button className="underline" onClick={() => { }}>Open folder</button>
-          </div>
-        </div>
-      )}
+          Go to upload
+        </button>
+      </div>
       {uploadProgress > 0 ?? (
         <progress value={uploadProgress} max="100"></progress>
       )}
