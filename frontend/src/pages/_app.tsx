@@ -5,7 +5,7 @@ import ReactGA from "react-ga4";
 
 import { IntercomProvider } from "react-use-intercom";
 import { GOOGLE_ANALYTICS_ID, INTERCOM_ID } from "~/constants";
-import CollectionList from "./section/leftSidebar/CollectionsList";
+import CollectionList from "./section/leftSidebar";
 import { UploadedFileProvider } from "~/hooks/uploadedFile/UploadedFileProvider";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);

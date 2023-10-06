@@ -55,22 +55,12 @@ const LandingPage: NextPage = () => {
         )}
         <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
         <DragAndDrop onUpload={handleUpload} />
-        {arrayFileUploaded && arrayFileUploaded.length > 0 && (
-          <>
-            <ul className="w-2/3 my-5">
-              {arrayFileUploaded.map((file, index) => (
-                  <FileUploaded index={index} file={file} removeItem={removeItem} />
-                ))}
-            </ul>
-          </>
-        )}
-        <>
-          <div className="mt-3 w-2/3 flex flex-col items-center">
-            <p className="my-10">or</p>
-          </div>
-          <button
-            onClick={() => router.push(`/chooseFromFolder/`)}
-            className="
+        <div className="my-6 w-2/3 flex flex-col items-center">
+          <p>or</p>
+        </div>
+        <button
+          onClick={() => router.push(`/chooseFromFolder/`)}
+          className="
             w-2/3
             block 
             rounded-sm 
@@ -87,32 +77,58 @@ const LandingPage: NextPage = () => {
             focus-visible:outline-2 
             focus-visible:outline-offset-2 
             focus-visible:outline-indigo-600">
-            Choose from folder
-          </button>
-        </>
-
+          Choose from folder
+        </button>
         {arrayFileUploaded && arrayFileUploaded.length > 0 && (
-          <button
-            onClick={startConversation}
-            className="
-            block 
-            w-2/3
-            rounded-sm 
-            bg-primary-ex 
-            px-3.5 
-            py-2.5 
-            text-center 
-            text-sm 
-            text-white 
-            shadow-md 
-            hover:bg-primary-ex 
-            focus-visible:outline 
-            focus-visible:outline-2 
-            focus-visible:outline-offset-2 
-            focus-visible:outline-indigo-600">
-            Let's go
-          </button>
+          <>
+           <div className="not-prose relative mt-3 my-6 shadow-md w-2/3 bg-slate-50 rounded-md">
+              <div className="absolute inset-0 bg-grid-slate-100" />
+              <div className="relative rounded-md overflow-auto">
+                <div className="shadow-sm mt-8">
+                  <table className="border-collapse table-auto w-full text-sm">
+                    <thead>
+                      <tr>
+                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8">Name</th>
+                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8"> </th>
+                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                      <>
+                        {arrayFileUploaded.map((file: any, index: any) => (
+                          <FileUploaded index={index} file={file} removeItem={removeItem} />
+                        ))}
+                      </>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div className="absolute inset-0 pointer-events-none border border-black/5 rounded-md dark:border-white/5" />
+            </div>
+
+            <button
+              onClick={startConversation}
+              className="
+              block 
+              w-2/3
+              rounded-sm 
+              bg-primary-ex 
+              px-3.5 
+              py-2.5 
+              text-center 
+              text-sm 
+              text-white 
+              shadow-md 
+              hover:bg-primary-ex 
+              focus-visible:outline 
+              focus-visible:outline-2 
+              focus-visible:outline-offset-2 
+              focus-visible:outline-indigo-600">
+              Let's go
+            </button>
+          </>
         )}
+
         {isUploading && (
           <progress value={uploadProgress} max="100"></progress> //TODO: so che Axios ha il progress ma non sono sicura che altri metodi lo abbiano. Vediamo come ci muoveremo per l'upload a sto punto e decidiamo se mettere questa o togliere il concetto di progress e lasciare solo la barra di loading alla exentriq (... che andrà fatta, per altro)
         )}

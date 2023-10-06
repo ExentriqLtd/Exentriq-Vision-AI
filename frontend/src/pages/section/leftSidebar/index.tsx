@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { backendClient } from "~/api/backend";
 import { SecCollections } from "~/types/collections";
-import Collection from "./collection";
+import CollectionItem from "./collectionItem";
 
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
@@ -9,7 +9,6 @@ const CollectionList: React.FC = () => {
   useEffect(() => {
     async function getCollections() {
       const collections = await backendClient.fetchCollections();
-      console.log(collections);
       setAvailableCollections(collections);
     }
     getCollections().catch(() => console.error("could not fetch documents"));
@@ -35,7 +34,11 @@ const CollectionList: React.FC = () => {
       <ul className="w-full my-5">
         {availableCollections.map((collection, index) => {
           return (
-            <Collection index={index} name={collection?.name} created_at={collection?.created_at}/>
+            <CollectionItem
+              index={index}
+              name={collection?.name}
+              created_at={collection?.created_at}
+              id={collection?.id} />
           );
         })}
       </ul>
