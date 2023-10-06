@@ -23,6 +23,8 @@ const ChooseFromFolder: NextPage = () => {
       showUploadFolders: true,
       supportDrives: true,
       multiselect: true,
+      setIncludeFolders: true,
+      setSelectFolderEnabled: true,
       // customViews: customViewsArray, // custom view
       callbackFunction: (data) => {
         if (data.action === 'cancel') {
