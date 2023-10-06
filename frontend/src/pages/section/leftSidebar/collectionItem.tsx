@@ -2,14 +2,20 @@ import React, { useState } from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 
 const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
+    //@ts-ignore
+    const [stateUploadedFile] = useUploadedFile()
+    const { idCollection } = stateUploadedFile;
+
     return (
         <>
-            <li className="bg-white shadow-md px-5 relative py-3 w-full my-2 rounded-md" key={index}>
+
+            <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 rounded-md ${(idCollection && idCollection == id) ? "border-2 border-primary-ex" : ""}`} key={index}>
                 <p className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
                 <div className="flex pt-1 justify-between items-center w-full">
                     <div className="flex gap-5 items-center">
@@ -26,11 +32,14 @@ const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
                     {isMenuVisible && (
                         <div className="bg-white absolute right-0 top-16 text-right py-2 px-3 shadow-md text-sm" style={{ zIndex: 99 }}>
                             <p className="cursor-pointer"
-                                onClick={() => router.push({
-                                    pathname: `/collection/${id}`,
-                                    query: { pippo: 'franco' },
-                                  })
-                                .catch(() => console.log("error navigating to conversation"))}>
+                                onClick={() => {
+                                    setIsMenuVisible(false)
+                                    router.push({
+                                        pathname: `/collection/${id}`,
+                                        query: { name },
+                                    })
+                                        .catch(() => console.log("error navigating to conversation"))
+                                }}>
                                 Collection
                             </p>
                             <p className="cursor-pointer">Rename</p>

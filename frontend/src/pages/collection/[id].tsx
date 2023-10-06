@@ -1,18 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
+import Header from "../section/header";
+import { collectionFile } from "./test";
+import FileUploaded from "./fileUploaded";
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 
 const Collection: NextPage = () => {
     const router = useRouter();
-    const { id, pippo } = router.query;
+    const { id, name } = router.query;
+    //@ts-ignore
+    const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+
+    useEffect(() => {
+        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: id } })
+        return () => {
+            dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: '' } })
+        }
+    }, [id])
+
     return (
         <>
-        <div>
-            <p>{id}</p>
-            <p>{pippo}</p>
+            <div className="mt-3 mx-6 w-full">
+                <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
+                <div className="flex flex-col h-[80vh] mt-3 my-6 shadow-md w-full bg-slate-50 rounded-md">
+                    <div className="rounded-md overflow-auto">
+                        <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
+                            <thead>
+                                <tr>
+                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
+                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Date</th>
+                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y bg-white">
+                                {collectionFile.map((file, index) => (
+                                    <FileUploaded index={index} file={file} />
+                                ))}
 
-        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <button
+                    onClick={() => {
+                        console.log('goback');
+                        router.push(`/`)
+                            .catch(() => console.log("error navigating to conversation"))
+                    }}
+                    className="
+                    block 
+                    w-full
+                    rounded-sm 
+                    bg-primary-ex 
+                    px-3.5 
+                    py-2.5 
+                    text-center 
+                    text-sm 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600">
+                    Go to upload
+                </button>
+            </div>
         </>
     );
 };

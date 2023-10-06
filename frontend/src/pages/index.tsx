@@ -81,31 +81,28 @@ const LandingPage: NextPage = () => {
         </button>
         {arrayFileUploaded && arrayFileUploaded.length > 0 && (
           <>
-           <div className="not-prose relative mt-3 my-6 shadow-md w-2/3 bg-slate-50 rounded-md">
-              <div className="absolute inset-0 bg-grid-slate-100" />
-              <div className="relative rounded-md overflow-auto">
-                <div className="shadow-sm mt-8">
-                  <table className="border-collapse table-auto w-full text-sm">
+            <div className="flex flex-col h-[80vh] mt-3 my-6 shadow-md w-full bg-slate-50 rounded-md">
+              <div className="absolute inset-0 flex-grow overflow-auto bg-grid-slate-100" />
+              <div className="rounded-md overflow-auto">
+                <div className="shadow-sm">
+                  <table className="relative border-collapse table-auto w-full text-sm">
                     <thead>
                       <tr>
-                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8">Name</th>
-                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8"> </th>
-                        <th className="border-b font-medium pt-0 pb-3 text-slate-400 text-left pl-8">Delete</th>
+                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
+                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Date</th>
+                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Delete</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white">
-                      <>
-                        {arrayFileUploaded.map((file: any, index: any) => (
-                          <FileUploaded index={index} file={file} removeItem={removeItem} />
-                        ))}
-                      </>
+                    <tbody className="divide-y bg-white">
+                      {arrayFileUploaded.map((file: any, index: any) => (
+                        <FileUploaded index={index} file={file} removeItem={removeItem} />
+                      ))}
                     </tbody>
                   </table>
                 </div>
               </div>
               <div className="absolute inset-0 pointer-events-none border border-black/5 rounded-md dark:border-white/5" />
             </div>
-
             <button
               onClick={startConversation}
               className="
