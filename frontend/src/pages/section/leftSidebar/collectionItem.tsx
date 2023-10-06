@@ -26,9 +26,11 @@ const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
                     {isMenuVisible && (
                         <div className="bg-white absolute right-0 top-16 text-right py-2 px-3 shadow-md text-sm" style={{ zIndex: 99 }}>
                             <p className="cursor-pointer"
-                                onClick={() => router
-                                    .push(`/collection/${id}`)
-                                    .catch(() => console.log("error navigating to conversation"))}>
+                                onClick={() => router.push({
+                                    pathname: `/collection/${id}`,
+                                    query: { pippo: 'franco' },
+                                  })
+                                .catch(() => console.log("error navigating to conversation"))}>
                                 Collection
                             </p>
                             <p className="cursor-pointer">Rename</p>
