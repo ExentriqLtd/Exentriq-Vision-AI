@@ -24,7 +24,7 @@ const Collection: NextPage = () => {
         <>
             <div className="mt-3 mx-6 w-full">
                 <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
-                <div className="flex flex-col h-[80vh] mt-3 my-6 shadow-md w-full bg-slate-50 rounded-md">
+                <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
                     <div className="rounded-md overflow-auto">
                         <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                             <thead>

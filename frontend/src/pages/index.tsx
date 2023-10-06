@@ -81,7 +81,7 @@ const LandingPage: NextPage = () => {
         </button>
         {arrayFileUploaded && arrayFileUploaded.length > 0 && (
           <>
-            <div className="flex flex-col h-[30vh] mt-3 my-6 shadow-md w-2/3 bg-slate-50 rounded-md">
+            <div className="flex flex-col h-[30vh] mt-3 my-6 relative shadow-md w-2/3 bg-slate-50 rounded-md">
               <div className="absolute inset-0 flex-grow overflow-auto bg-grid-slate-100" />
               <div className="rounded-md overflow-auto">
                 <div className="shadow-sm">
