@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Header from "../section/header";
 import { collectionFile } from "./test";
 import FileUploaded from "./fileUploaded";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
-
+import { Waypoint } from 'react-waypoint';
 
 const Collection: NextPage = () => {
     const router = useRouter();
     const { id, name } = router.query;
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+    const [limit, setLimit] = useState(50)
 
     useEffect(() => {
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: id } })
@@ -19,7 +20,10 @@ const Collection: NextPage = () => {
             dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: '' } })
         }
     }, [id])
-
+    const handleWaypointEnter = () => {
+        setLimit(limit + 50)
+      };
+    
     return (
         <>
             <div className="mt-3 mx-6 w-full">
@@ -35,10 +39,10 @@ const Collection: NextPage = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y bg-white">
-                                {collectionFile.map((file, index) => (
+                                {collectionFile.slice(0,limit + 1).map((file, index) => (
                                     <FileUploaded index={index} file={file} />
                                 ))}
-
+                                <Waypoint onEnter={handleWaypointEnter} />
                             </tbody>
                         </table>
                     </div>
