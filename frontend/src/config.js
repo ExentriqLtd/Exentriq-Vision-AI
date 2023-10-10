@@ -7,5 +7,5 @@ if (env.NEXT_PUBLIC_CODESPACES === 'true' && env.NEXT_PUBLIC_CODESPACE_NAME) {
     }
 }
 
-export const backendUrl = 'https://art001exe.exentriq.com/95576/';
+export const backendUrl = 'https://art001ai.exentriq.com/';
 
