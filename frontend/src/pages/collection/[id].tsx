@@ -6,6 +6,7 @@ import { collectionFile } from "./test";
 import FileUploaded from "./fileUploaded";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { Waypoint } from 'react-waypoint';
+import { backendClient } from "~/api/backend";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -15,14 +16,20 @@ const Collection: NextPage = () => {
     const [limit, setLimit] = useState(50)
 
     useEffect(() => {
-        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: id } })
+        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
         return () => {
-            dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { idCollection: '' } })
+            dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } })
         }
     }, [id])
+
+    useEffect(() => {
+        backendClient.getCollectionDetails('21393c08-684a-11ee-8145-e2a70e41aa24').then(() => {
+            console.log('qui');
+        });
+    }, [id]);
     const handleWaypointEnter = () => {
         setLimit(limit + 50)
-      };
+    };
     
     return (
         <>

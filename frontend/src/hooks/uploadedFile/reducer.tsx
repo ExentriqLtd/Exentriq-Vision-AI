@@ -6,7 +6,7 @@ interface action {
 interface stateReducer {
     filesUploaded: [];
     arrayFileUploaded: [];
-    idCollection: string;
+    collectionId: string;
 }
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
@@ -29,7 +29,7 @@ export const reducer = (state: stateReducer, action: action) => {
         case 'SET_COLLECTION_ACTIVE':
             return {
                 ...state,
-                idCollection: action?.payload?.idCollection
+                collectionId: action?.payload?.collectionId
             };
         case 'UPLOADEDFILE_RESET':
             return {
@@ -43,5 +43,5 @@ export const reducer = (state: stateReducer, action: action) => {
 export const initialState = {
     filesUploaded: null,
     arrayFileUploaded: [],
-    idCollection: '',
+    collectionId: '',
 };

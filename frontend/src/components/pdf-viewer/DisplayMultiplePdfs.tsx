@@ -4,6 +4,8 @@ import { SecDocument } from "~/types/document";
 import cx from "classnames";
 import { borderColors } from "~/utils/colors";
 
+// TODO: Sistemare la visualizzazione dei documenti per come sono mappati adesso.
+
 interface DisplayMultiplePdfsProps {
   pdfs: SecDocument[];
 }

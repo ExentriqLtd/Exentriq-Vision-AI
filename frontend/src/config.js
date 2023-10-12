@@ -8,4 +8,9 @@ if (env.NEXT_PUBLIC_CODESPACES === 'true' && env.NEXT_PUBLIC_CODESPACE_NAME) {
 }
 
 export const backendUrl = 'https://art001ai.exentriq.com/';
+export const session = {
+    username: 'federica',
+    spaceId: '3',
+    sessionToken: 'xxx1234'
+}
 

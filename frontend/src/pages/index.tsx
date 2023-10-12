@@ -7,6 +7,8 @@ import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
+import { useModal } from "~/hooks/utils/useModal";
 
 const LandingPage: NextPage = () => {
   //@ts-ignore
@@ -15,8 +17,9 @@ const LandingPage: NextPage = () => {
   const [isUploading, setIsUploading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
-
+  const { isOpen: isCollectionModalOpen, toggleModal: toggleCollectionModal } = useModal();
   const router = useRouter();
+  const { collectionId } = stateUploadedFile;
 
   const removeItem = (id: number) => {
     dispatchUploadedFile({ type: 'SET_REMOVE_FILES', payload: { lastModified: id } })
@@ -25,7 +28,12 @@ const LandingPage: NextPage = () => {
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
-      dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: files } })
+      dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: files } });
+      //TODO: sistemare collectionId per ora è statico
+      const payload = {collectionId: '21393c08-684a-11ee-8145-e2a70e41aa24'};
+      backendClient.uploadFile(files, payload).then(() => {
+        console.log('uploaded');
+      });
     } catch (error) {
       console.log(error);
     } finally {
@@ -37,7 +45,7 @@ const LandingPage: NextPage = () => {
     setIsLoadingConversation(true);
     const selectedDocumentIds: any = []; //TODO: passare gli uploaded files come se li aspetterà il servizio.
     backendClient
-      .createConversation(selectedDocumentIds)
+      .createConversation('21393c08-684a-11ee-8145-e2a70e41aa24')
       .then((newConversationId) => {
         setIsLoadingConversation(false);
         router
@@ -47,6 +55,15 @@ const LandingPage: NextPage = () => {
       .catch(() => console.log("error creating conversation "));
   }
 
+  const createCollection = (nome: string) => {
+    console.log('CREA COLLECTION', nome);
+    backendClient.createCollection(nome).then((newCollectionID) => {
+      console.log('CREATA');
+      //TODO: chiusura modale + richiamare la lista delle collections aggiornata e impostare, come attiva, l'ultima in ordine cronologico 
+      dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: newCollectionID } })
+    })
+  }
+
   return (
     <>
       <div className="mt-3 mx-6 w-2/3 flex flex-col">
@@ -54,31 +71,58 @@ const LandingPage: NextPage = () => {
           <ProgressBar />
         )}
         <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
-        <DragAndDrop onUpload={handleUpload} />
-        <div className="my-6 w-2/3 flex flex-col items-center">
-          <p>or</p>
-        </div>
-        <button
-          onClick={() => router.push(`/chooseFromFolder/`)}
-          className="
-            w-2/3
-            block 
-            rounded-sm 
-            bg-primary-ex 
-            px-3.5 
-            py-2.5 
-            text-center 
-            text-sm 
-            text-white 
-            shadow-md 
-            mb-3
-            hover:bg-primary-ex 
-            focus-visible:outline 
-            focus-visible:outline-2 
-            focus-visible:outline-offset-2 
-            focus-visible:outline-indigo-600">
-          Choose from folder
-        </button>
+        {/* TODO: SE NON HO ALCUNA COLLECTION SELEZIONATA MOSTRO IL CREA COLLECTION  */}
+        <>
+          <button
+              onClick={toggleCollectionModal}
+              className="
+              block 
+              w-2/3
+              rounded-sm 
+              bg-primary-ex 
+              px-3.5 
+              py-2.5 
+              mb-3
+              text-center 
+              text-sm 
+              text-white 
+              shadow-md 
+              hover:bg-primary-ex 
+              focus-visible:outline 
+              focus-visible:outline-2 
+              focus-visible:outline-offset-2 
+              focus-visible:outline-indigo-600">
+              Crea Collection (per ora è qui poi cambio)
+            </button>
+        </>
+        <>
+          <DragAndDrop onUpload={handleUpload} />
+          <div className="my-6 w-2/3 flex flex-col items-center">
+            <p>or</p>
+          </div>
+          <button
+            onClick={() => router.push(`/chooseFromFolder/`)}
+            className="
+              w-2/3
+              block 
+              rounded-sm 
+              bg-primary-ex 
+              px-3.5 
+              py-2.5 
+              text-center 
+              text-sm 
+              text-white 
+              shadow-md 
+              mb-3
+              hover:bg-primary-ex 
+              focus-visible:outline 
+              focus-visible:outline-2 
+              focus-visible:outline-offset-2 
+              focus-visible:outline-indigo-600">
+            Choose from folder
+          </button>
+        </>
+        
         {arrayFileUploaded && arrayFileUploaded.length > 0 && (
           <>
             <div className="flex flex-col h-[30vh] mt-3 my-6 relative shadow-md w-2/3 bg-slate-50 rounded-md">
@@ -128,6 +172,12 @@ const LandingPage: NextPage = () => {
         {isUploading && (
           <progress value={uploadProgress} max="100"></progress> //TODO: so che Axios ha il progress ma non sono sicura che altri metodi lo abbiano. Vediamo come ci muoveremo per l'upload a sto punto e decidiamo se mettere questa o togliere il concetto di progress e lasciare solo la barra di loading alla exentriq (... che andrà fatta, per altro)
         )}
+
+        <CreateCollectionModal
+          isOpen={isCollectionModalOpen}
+          toggleModal={toggleCollectionModal}
+          onClick={createCollection}
+        />
       </div>
       <div className="mt-3 w-1/3 flex flex-col items-end">
         <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />

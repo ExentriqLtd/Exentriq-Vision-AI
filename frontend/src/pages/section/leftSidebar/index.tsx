@@ -9,7 +9,8 @@ const CollectionList: React.FC = () => {
   useEffect(() => {
     async function getCollections() {
       const collections = await backendClient.fetchCollections();
-      setAvailableCollections(collections);
+      console.log('COLLECTIONS', collections);
+      setAvailableCollections(collections.result);
     }
     getCollections().catch(() => console.error("could not fetch documents"));
   }, []);
@@ -38,7 +39,7 @@ const CollectionList: React.FC = () => {
               index={index}
               name={collection?.name}
               created_at={collection?.created_at}
-              id={collection?.id} />
+              id={collection?.udid} />
           );
         })}
       </ul>

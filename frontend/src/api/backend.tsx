@@ -1,4 +1,4 @@
-import { backendUrl } from "~/config";
+import { backendUrl, session } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { BackendCollections } from "~/types/backend/collections";
@@ -52,9 +52,9 @@ class BackendClient {
     return res;
   }
 
-  public async createConversation(documentIds: string[]): Promise<string> {
+  public async createConversation(collectionId: any): Promise<string> {
     const endpoint = "api/conversation/";
-    const payload = { document_ids: documentIds };
+    const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as CreateConversationPayload;
 
@@ -83,9 +83,51 @@ class BackendClient {
   }
 
   public async fetchCollections(): Promise<GetCollectionsReturnType[]> {
-    const endpoint = `api/collections/`;
-    const res = await this.get(endpoint);
+    const endpoint = `api/collections/list`;
+    const payload = { session };
+    const res = await this.post(endpoint, payload);
     const data = (await res.json()) as BackendCollections[];
+    return data;
+  }
+
+  public async uploadFile(files: any, payload: any): Promise<any> {
+    const endpoint = `api/collections/upload`;
+    console.log('PAYLOAD', payload);
+    payload.session = session;
+
+    var data = new FormData();
+    data.append('file', files[0], files[0].name);
+
+    data.append('data', JSON.stringify(payload));
+    const url = backendUrl + endpoint;
+    const res = await fetch(url, {
+      method: "POST",
+      body: data,
+    });
+
+
+    const dataResult = (await res.json());
+    console.log('DATA', dataResult);
+    return dataResult;
+  }
+
+  public async createCollection(name: string): Promise<string> {
+    const endpoint = "api/collections/create";
+    const payload = { session, name };
+    const res = await this.post(endpoint, payload);
+    
+    const data = (await res.json());
+    console.log('DATA', data);
+    return data;
+  }
+
+  public async getCollectionDetails(collectionId: string): Promise<string> {
+    const endpoint = "api/collections/details";
+    const payload = { session, collectionId };
+    const res = await this.post(endpoint, payload);
+    
+    const data = (await res.json());
+    console.log('DATA', data);
     return data;
   }
 }
