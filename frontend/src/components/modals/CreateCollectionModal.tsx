@@ -22,9 +22,9 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Share Conversation">
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Create new collection">
       <p className="mb-6 mt-2 text-sm text-gray-500">
-       Testo
+        Enter the collection's name
       </p>
 
       <div className="flex items-center space-x-2">
@@ -36,8 +36,11 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
           onChange={e => setValue(e.target.value)}
         />
         <button
-          onClick={() => onClick(value)}
-          className="rounded bg-llama-indigo px-4 py-2 font-bold text-white opacity-90 hover:opacity-100"
+          onClick={() => {
+            onClick(value)
+            setValue('')
+          }}
+          className="rounded bg-primary-ex px-4 py-2 font-bold text-white opacity-90 hover:opacity-100"
         >
           Create
         </button>

@@ -34,7 +34,14 @@
 .color-primary-ex {
   color: #1bbc9b;
 }
-
+.containerScroll{
+  /* hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.containerScroll::-webkit-scrollbar {
+  display: none;
+}
 .eq-ui-loader-line:before {
   display: block;
   position: absolute;

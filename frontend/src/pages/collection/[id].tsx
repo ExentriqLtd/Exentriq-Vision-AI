@@ -14,23 +14,22 @@ const Collection: NextPage = () => {
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
     const [limit, setLimit] = useState(50)
+    const [documents, setDocuments] = useState<Array | null>(null)
 
     useEffect(() => {
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
-        return () => {
-            dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } })
-        }
     }, [id])
 
     useEffect(() => {
-        backendClient.getCollectionDetails('21393c08-684a-11ee-8145-e2a70e41aa24').then(() => {
-            console.log('qui');
+        if (!id) return;
+        backendClient.getCollectionDetails(id).then(({ result }: any) => {
+            setDocuments(result?.documents)
         });
     }, [id]);
     const handleWaypointEnter = () => {
         setLimit(limit + 50)
     };
-    
+
     return (
         <>
             <div className="mt-3 mx-6 w-full">
@@ -46,7 +45,7 @@ const Collection: NextPage = () => {
                                 </tr>
                             </thead>
                             <tbody className="divide-y bg-white">
-                                {collectionFile.slice(0,limit + 1).map((file, index) => (
+                                {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file, index) => (
                                     <FileUploaded index={index} file={file} />
                                 ))}
                                 <Waypoint onEnter={handleWaypointEnter} />

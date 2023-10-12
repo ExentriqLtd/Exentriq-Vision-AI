@@ -3,22 +3,35 @@ import type { NextPage } from "next";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { backendClient } from "~/api/backend";
 
 
 const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
     //@ts-ignore
-    const [stateUploadedFile] = useUploadedFile()
+    const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
     const { collectionId } = stateUploadedFile;
+
+    const openCollection = () => {
+        setIsMenuVisible(false)
+        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+        backendClient
+            .createConversation(id)
+            .then((newConversationId) => {
+                router
+                    .push(`/conversation/${newConversationId}`)
+                    .catch(() => console.log("error navigating to conversation"));
+            })
+            .catch(() => console.log("error creating conversation "));
+    }
 
     return (
         <>
-
-            <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 rounded-md ${(collectionId && collectionId == id) ? "border-2 border-primary-ex" : ""}`} key={index}>
-                <p className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
+            <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md ${(collectionId && collectionId == id) ? "border-2 border-primary-ex" : ""}`} key={index}>
+                <p onClick={openCollection} className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
                 <div className="flex pt-1 justify-between items-center w-full">
-                    <div className="flex gap-5 items-center">
+                    <div onClick={openCollection} className="flex gap-5 items-center">
                         <span>{name}</span>
                     </div>
                     <span

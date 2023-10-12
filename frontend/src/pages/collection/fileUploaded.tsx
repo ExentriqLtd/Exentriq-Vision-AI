@@ -7,8 +7,8 @@ const FileUploaded: NextPage = ({ index, file }: any) => {
     return (
         <>
             <tr key={index}>
-                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file.name}</td>
-                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.lastModified).format('MMMM Do YYYY, h:mm a')}</td>
+                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename}</td>
+                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                     <div className="flex flex-row items-center">
                         {file.status ? (

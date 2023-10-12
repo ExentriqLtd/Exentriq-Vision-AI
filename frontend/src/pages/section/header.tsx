@@ -2,7 +2,7 @@ import React from "react";
 
 import type { NextPage } from "next";
 
-const Header: NextPage = ({ title, subtitle, colorSubtitlePrimary, paragraph = true }: any) => {
+const Header: NextPage = ({ title, subtitle, colorSubtitlePrimary, collectionId, paragraph = true }: any) => {
   return (
     <>
       <div className="max-w-2xl text-left">
@@ -13,7 +13,7 @@ const Header: NextPage = ({ title, subtitle, colorSubtitlePrimary, paragraph = t
           <p className="mt-2 text-3xl leading-8 text-gray-600">{subtitle}</p>
         )}
         {paragraph && (
-          <p className="my-10 text-md leading-8 text-gray-600">To start a new conversation with <b>Q</b> please upload a document you want him to study.</p>
+          <p className="my-10 text-md leading-8 text-gray-600">To start a new conversation with <b>Q</b> please {collectionId ? 'upload a document you want him to study.' : 'select a collection or create one'} </p>
         )}
       </div>
     </>
