@@ -29,7 +29,7 @@ const LandingPage: NextPage = () => {
     try {
       setIsUploading(true);
       dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: files } });
-      //TODO: sistemare collectionId per ora è statico
+      //TODO: sistemare collectionId per ora è statico, deve prendere quello selezionato nella colonna di sinistra e, se nessuna collection è selezionata, l'upload non deve vedersi ma solo il tasto di creazione della collection obbligata (al posto dell'upload). Modale di creazione da collegare anche al + in sidebar. L'ID della collection va reso dinamico ovunque ci sia questo id statico: 21393c08-684a-11ee-8145-e2a70e41aa24
       const payload = {collectionId: '21393c08-684a-11ee-8145-e2a70e41aa24'};
       backendClient.uploadFile(files, payload).then(() => {
         console.log('uploaded');
@@ -43,7 +43,6 @@ const LandingPage: NextPage = () => {
 
   const startConversation = () => {
     setIsLoadingConversation(true);
-    const selectedDocumentIds: any = []; //TODO: passare gli uploaded files come se li aspetterà il servizio.
     backendClient
       .createConversation('21393c08-684a-11ee-8145-e2a70e41aa24')
       .then((newConversationId) => {
@@ -56,9 +55,7 @@ const LandingPage: NextPage = () => {
   }
 
   const createCollection = (nome: string) => {
-    console.log('CREA COLLECTION', nome);
     backendClient.createCollection(nome).then((newCollectionID) => {
-      console.log('CREATA');
       //TODO: chiusura modale + richiamare la lista delle collections aggiornata e impostare, come attiva, l'ultima in ordine cronologico 
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: newCollectionID } })
     })
@@ -71,7 +68,7 @@ const LandingPage: NextPage = () => {
           <ProgressBar />
         )}
         <Header title={'Welcome to the Exentriq'} subtitle={'Vision AI'} colorSubtitlePrimary={true} />
-        {/* TODO: SE NON HO ALCUNA COLLECTION SELEZIONATA MOSTRO IL CREA COLLECTION  */}
+        {/* TODO: SE NON HO ALCUNA COLLECTION SELEZIONATA MOSTRO IL CREA COLLECTION e nascondo tutto il resto  */}
         <>
           <button
               onClick={toggleCollectionModal}
@@ -170,12 +167,13 @@ const LandingPage: NextPage = () => {
         )}
 
         {isUploading && (
-          <progress value={uploadProgress} max="100"></progress> //TODO: so che Axios ha il progress ma non sono sicura che altri metodi lo abbiano. Vediamo come ci muoveremo per l'upload a sto punto e decidiamo se mettere questa o togliere il concetto di progress e lasciare solo la barra di loading alla exentriq (... che andrà fatta, per altro)
+          <progress value={uploadProgress} max="100"></progress> //TODO: Vediamo dove riusciamo a mettere la progress di upload. Magari sotto il form? In un posto che abbia senso. La chiamata però è da controllare se sia istantanea o meno provando magari a caricare files più pesanti?
         )}
 
         <CreateCollectionModal
           isOpen={isCollectionModalOpen}
           toggleModal={toggleCollectionModal}
+          //TODO: TS rompe le scatole come al solito -.-''
           onClick={createCollection}
         />
       </div>

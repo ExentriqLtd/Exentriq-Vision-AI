@@ -10,6 +10,7 @@ const CollectionList: React.FC = () => {
     async function getCollections() {
       const collections = await backendClient.fetchCollections();
       console.log('COLLECTIONS', collections);
+      //TODO: perché result qui non gli piace a TS maledetto? L'ho cambiato il type!! -.-''
       setAvailableCollections(collections.result);
     }
     getCollections().catch(() => console.error("could not fetch documents"));
