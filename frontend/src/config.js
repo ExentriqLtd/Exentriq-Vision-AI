@@ -6,11 +6,23 @@ if (env.NEXT_PUBLIC_CODESPACES === 'true' && env.NEXT_PUBLIC_CODESPACE_NAME) {
         console.warn(`It looks like you're running on a Github codespace. You may want to set the NEXT_PUBLIC_BACKEND_URL environment variable to ${suggestedUrl}`);
     }
 }
+let spaceId;
+let username;
+let sessionToken;
+
+if (typeof window !== "undefined") {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    
+    spaceId = urlParams.get('spaceId');
+    username = urlParams.get('spaceId');
+    sessionToken = urlParams.get('spaceId');
+}
 
 export const backendUrl = 'https://art001ai.exentriq.com/';
 export const session = {
-    username: 'federica',
-    spaceId: '3',
-    sessionToken: 'xxx1234'
+    username: username,
+    spaceId: spaceId,
+    sessionToken: sessionToken
 }
 
