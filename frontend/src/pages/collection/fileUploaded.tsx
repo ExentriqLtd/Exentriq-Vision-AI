@@ -8,12 +8,13 @@ interface FileInt {
         created_at?: string;
         status?: boolean;
     };
+    key?: number;
 }
 
-const FileUploaded: NextPage<FileInt> = ({ file }: FileInt) => {
+const FileUploaded: NextPage<FileInt> = ({ file, key }: FileInt) => {
     return (
         <>
-            <tr>
+            <tr key={key}>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">

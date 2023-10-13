@@ -46,9 +46,7 @@ const Collection: NextPage = () => {
                             </thead>
                             <tbody className="divide-y bg-white">
                                 {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file, index) => (
-                                    <div key={index}>
-                                        <FileUploaded file={file} />
-                                    </div>
+                                    <FileUploaded key={index} file={file} />
                                 ))}
                                 <Waypoint onEnter={handleWaypointEnter} />
                             </tbody>

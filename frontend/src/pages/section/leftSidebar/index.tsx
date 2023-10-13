@@ -6,12 +6,14 @@ import { useModal } from "~/hooks/utils/useModal";
 import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { first, isEmpty } from "lodash";
+import { useRouter } from "next/router";
 
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
+  const router = useRouter()
 
   async function getCollections() {
     const collections = await backendClient.fetchCollections();
@@ -27,6 +29,9 @@ const CollectionList: React.FC = () => {
     if (newCollectionActive) {
       const firstEl = first(availableCollections)
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.udid } })
+      router
+        .push(`/`)
+        .catch(() => console.log("error navigating to conversation"))
     }
   }, [availableCollections])
 
@@ -69,13 +74,11 @@ const CollectionList: React.FC = () => {
         <ul className="containerScroll overflow-y-auto w-full my-5 h-3/4">
           {availableCollections.map((collection, index) => {
             return (
-              <div key={index}>
-                <CollectionItem
-                  key={index}
-                  name={collection?.name}
-                  created_at={collection?.created_at}
-                  id={collection?.udid} />
-              </div>
+              <CollectionItem
+                key={index}
+                name={collection?.name}
+                created_at={collection?.created_at}
+                id={collection?.udid} />
             );
           })}
         </ul>
