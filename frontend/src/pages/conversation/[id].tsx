@@ -5,7 +5,8 @@ import { PdfFocusProvider } from "~/context/pdf";
 import type { ChangeEvent } from "react";
 import DisplayMultiplePdfs from "~/components/pdf-viewer/DisplayMultiplePdfs";
 import { backendUrl } from "src/config";
-import { MESSAGE_STATUS, Message } from "~/types/conversation";
+import { MESSAGE_STATUS } from "~/types/conversation";
+import type { Message } from "~/types/conversation";
 import useMessages from "~/hooks/useMessages";
 import { backendClient } from "~/api/backend";
 import { RenderConversations as RenderConversations } from "~/components/conversations/RenderConversations";
@@ -124,12 +125,12 @@ export default function Conversation() {
     };
   }, [submit]);
 
-  const setSuggestedMessage = (text: string) => {
-    setUserMessage(text);
-    if (textFocusRef.current) {
-      textFocusRef.current.focus();
-    }
-  };
+  // const setSuggestedMessage = (text: string) => {
+  //   setUserMessage(text);
+  //   if (textFocusRef.current) {
+  //     textFocusRef.current.focus();
+  //   }
+  // };
 
   useEffect(() => {
     if (textFocusRef.current) {
@@ -203,7 +204,6 @@ export default function Conversation() {
                     <RenderConversations
                       messages={messages}
                       documents={selectedDocuments}
-                      setUserMessage={setSuggestedMessage}
                     />
                   </div>
                   <div className="relative flex h-[70px] w-[44vw] w-full items-center">

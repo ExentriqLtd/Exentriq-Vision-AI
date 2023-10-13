@@ -20,6 +20,7 @@ import { customReactSelectStyles } from "~/styles/react-select";
 import { useIntercom } from "react-use-intercom";
 import { LoadingSpinner } from "~/components/basics/Loading";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import Image from "next/image";
 
 export const TitleAndDropdown = () => {
   const router = useRouter();
@@ -30,9 +31,9 @@ export const TitleAndDropdown = () => {
   const handleSubmit = (event: { preventDefault: () => void }) => {
     setIsLoadingConversation(true);
     event.preventDefault();
-    const selectedDocumentIds = selectedDocuments.map((val) => val.id);
+    // const selectedDocumentIds = selectedDocuments.map((val) => val.id);
     backendClient
-      .createConversation(selectedDocumentIds)
+      .createConversation('')
       .then((newConversationId) => {
         setIsLoadingConversation(false);
         router
@@ -76,7 +77,7 @@ export const TitleAndDropdown = () => {
         <a href="https://www.llamaindex.ai/" target="_blank">
           <button className="flex items-center justify-center font-nunito text-lg font-bold ">
             Built by LlamaIndex
-            <img src="logo-black.svg" className="mx-2 rounded-lg" width={40} />
+            <Image alt="logo-black.svg" src="logo-black.svg" className="mx-2 rounded-lg" width={40} />
           </button>
         </a>
       </div>

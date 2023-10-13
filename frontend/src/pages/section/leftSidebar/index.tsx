@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { backendClient } from "~/api/backend";
-import { SecCollections } from "~/types/collections";
+import type { SecCollections } from "~/types/collections";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
 import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { first, isEmpty } from "lodash";
+import { useRouter } from "next/router";
 
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
   const [newCollectionActive, setNewCollectionActive] = useState(false);
+  //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
+  const router = useRouter()
 
   async function getCollections() {
     const collections = await backendClient.fetchCollections();
@@ -26,6 +29,9 @@ const CollectionList: React.FC = () => {
     if (newCollectionActive) {
       const firstEl = first(availableCollections)
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.udid } })
+      router
+        .push(`/`)
+        .catch(() => console.log("error navigating to conversation"))
     }
   }, [availableCollections])
 
@@ -69,7 +75,7 @@ const CollectionList: React.FC = () => {
           {availableCollections.map((collection, index) => {
             return (
               <CollectionItem
-                index={index}
+                key={index}
                 name={collection?.name}
                 created_at={collection?.created_at}
                 id={collection?.udid} />

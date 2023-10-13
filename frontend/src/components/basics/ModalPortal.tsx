@@ -1,9 +1,5 @@
-import React from "react";
 import ReactDOM from "react-dom";
-
-interface ModalPortalProps {
-  children: React.ReactNode;
-}
+import type { ModalPortalProps } from "~/types/backend/document";
 
 const ModalPortal = ({ children }: ModalPortalProps) => {
   const domNode = document.getElementById("modal-root");
