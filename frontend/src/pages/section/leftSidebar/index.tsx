@@ -69,7 +69,7 @@ const CollectionList: React.FC = () => {
           {availableCollections.map((collection, index) => {
             return (
               <CollectionItem
-                index={index}
+                key={index}
                 name={collection?.name}
                 created_at={collection?.created_at}
                 id={collection?.udid} />
