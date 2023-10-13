@@ -2,7 +2,14 @@ import React from "react";
 
 import type { NextPage } from "next";
 
-const Header: NextPage = ({ title, subtitle, colorSubtitlePrimary, collectionId, paragraph = true }: any) => {
+interface HeaderInt {
+  title: string;
+  subtitle?: string;
+  colorSubtitlePrimary?: boolean;
+  collectionId?: string;
+  paragraph?: boolean;
+}
+const Header: NextPage<HeaderInt> = ({ title, subtitle, colorSubtitlePrimary, collectionId, paragraph = true }: HeaderInt) => {
   return (
     <>
       <div className="max-w-2xl text-left">

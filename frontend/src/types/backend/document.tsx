@@ -11,6 +11,10 @@ export interface BackendDocument {
   url: string;
 }
 
+export interface ModalPortalProps {
+  children: React.ReactNode;
+}
+
 export interface BackendMetadataMap {
   sec_document: BackendSecDocument;
 }

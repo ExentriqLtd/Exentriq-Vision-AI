@@ -1,6 +1,7 @@
-import { MAX_NUMBER_OF_SELECTED_DOCUMENTS } from "~/hooks/useDocumentSelector";
-import { BackendDocument, BackendDocumentType } from "~/types/backend/document";
-import { SecDocument, DocumentType } from "~/types/document";
+import type { BackendDocument } from "~/types/backend/document";
+import { BackendDocumentType } from "~/types/backend/document";
+import type { SecDocument } from "~/types/document";
+import {DocumentType } from "~/types/document";
 import { documentColors } from "~/utils/colors";
 
 export const fromBackendDocumentToFrontend = (

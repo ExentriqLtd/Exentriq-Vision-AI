@@ -1,4 +1,5 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 
 import type { Ticker } from "~/types/document";
 import { useCombobox } from "downshift";

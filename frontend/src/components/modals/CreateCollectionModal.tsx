@@ -4,7 +4,7 @@ import Modal from "../basics/Modal";
 interface CreateCollectionModal {
   isOpen: boolean;
   toggleModal: () => void;
-  onClick: () => void;
+  onClick: (val: string) => void;
 }
 
 const CreateCollectionModal: React.FC<CreateCollectionModal> = ({

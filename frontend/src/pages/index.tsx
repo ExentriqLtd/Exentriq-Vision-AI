@@ -7,8 +7,8 @@ import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
-import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
-import { useModal } from "~/hooks/utils/useModal";
+// import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
+// import { useModal } from "~/hooks/utils/useModal";
 
 const LandingPage: NextPage = () => {
   //@ts-ignore
@@ -19,7 +19,7 @@ const LandingPage: NextPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
 
-  const removeItem = (id: number) => {
+  const removeItem = (id?: number | undefined) => {
     dispatchUploadedFile({ type: 'SET_REMOVE_FILES', payload: { lastModified: id } })
   };
 
@@ -27,10 +27,10 @@ const LandingPage: NextPage = () => {
     try {
       setIsUploading(true);
       dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: files } });
-      const payload = { collectionId };
-      backendClient.uploadFile(files, payload).then(() => {
-        console.log('uploaded');
-      });
+      backendClient.uploadFile(files, collectionId)
+      // .then(() => {
+      //   console.log('uploaded');
+      // });
     } catch (error) {
       console.log(error);
     } finally {
@@ -105,8 +105,10 @@ const LandingPage: NextPage = () => {
                           </tr>
                         </thead>
                         <tbody className="divide-y bg-white">
-                          {arrayFileUploaded.map((file: any, index: any) => (
-                            <FileUploaded index={index} file={file} removeItem={removeItem} />
+                          {arrayFileUploaded.map((file: object, index: number) => (
+                            <div key={index}>
+                              <FileUploaded file={file} removeItem={removeItem} />
+                            </div>
                           ))}
                         </tbody>
                       </table>

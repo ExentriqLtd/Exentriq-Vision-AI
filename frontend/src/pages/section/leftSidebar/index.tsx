@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { backendClient } from "~/api/backend";
-import { SecCollections } from "~/types/collections";
+import type { SecCollections } from "~/types/collections";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
 import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
@@ -10,6 +10,7 @@ import { first, isEmpty } from "lodash";
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
   const [newCollectionActive, setNewCollectionActive] = useState(false);
+  //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
 
   async function getCollections() {
@@ -68,11 +69,13 @@ const CollectionList: React.FC = () => {
         <ul className="containerScroll overflow-y-auto w-full my-5 h-3/4">
           {availableCollections.map((collection, index) => {
             return (
-              <CollectionItem
-                key={index}
-                name={collection?.name}
-                created_at={collection?.created_at}
-                id={collection?.udid} />
+              <div key={index}>
+                <CollectionItem
+                  key={index}
+                  name={collection?.name}
+                  created_at={collection?.created_at}
+                  id={collection?.udid} />
+              </div>
             );
           })}
         </ul>

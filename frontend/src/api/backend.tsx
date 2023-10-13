@@ -2,7 +2,7 @@ import { backendUrl, session } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { BackendCollections } from "~/types/backend/collections";
-import { SecDocument } from "~/types/document";
+import type { SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
@@ -42,7 +42,7 @@ class BackendClient {
     return res;
   }
 
-  private async post(endpoint: string, body?: any) {
+  private async post(endpoint: string, body?: object) {
     const url = backendUrl + endpoint;
     const res = await fetch(url, {
       method: "POST",
@@ -56,7 +56,7 @@ class BackendClient {
     return res;
   }
 
-  public async createConversation(collectionId: any): Promise<string> {
+  public async createConversation(collectionId: string | undefined): Promise<string> {
     const endpoint = "api/conversation/";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
@@ -94,15 +94,24 @@ class BackendClient {
     return data;
   }
 
-  public async uploadFile(files: any, payload: any): Promise<any> {
+  
+  public async uploadFile(files: File[], collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload`;
-    console.log('PAYLOAD', payload);
-    payload.session = session;
+    console.log('collectionId', collectionId);
+    const payload = {
+      collectionId,
+      session
+    }
+    // console.log('payload::::',payload)
 
-    var data = new FormData();
-    data.append('file', files[0], files[0].name);
+    const file: File | undefined = files[0]
+    const fileName: string| undefined = file?.name
+
+    const data = new FormData();
+    data.append('file', file as Blob, fileName);
 
     data.append('data', JSON.stringify(payload));
+    console.log('data:::::',data) //TODO: da verificare se funziona
     const url = backendUrl + endpoint;
     const res = await fetch(url, {
       method: "POST",
@@ -125,7 +134,7 @@ class BackendClient {
     return data;
   }
 
-  public async getCollectionDetails(collectionId: string): Promise<string> {
+  public async getCollectionDetails(collectionId?: string): Promise<string> {
     const endpoint = "api/collections/details";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);

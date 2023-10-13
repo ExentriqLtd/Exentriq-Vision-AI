@@ -2,6 +2,7 @@
 import React from "react";
 import AnimateSvg from "./AnimateSvg";
 import useScrollBreakpoint from "~/hooks/utils/useScrollBreakpoint";
+import Image from "next/image";
 
 export const MarketingSection = () => {
   const scrollToTop = () => {
@@ -37,23 +38,28 @@ export const MarketingSection = () => {
             breakpoint={chatBreakpoint}
             increment={80}
             svgs={[
-              <img
+              <Image
+                alt="chat-1.svg"
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-1.svg"
               />,
-              <img
+              <Image
+                alt="chat-2.svg"
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-2.svg"
               />,
-              <img
+              <Image
+                alt="chat-1.svg"
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-3.svg"
               />,
-              <img
+              <Image
+                alt="chat-4.svg"
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-4.svg"
               />,
-              <img
+              <Image
+                alt="chat-5.svg"
                 className="max-w-[350px] sm:max-w-[400px]"
                 src="chat-5.svg"
               />,

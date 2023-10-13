@@ -5,8 +5,13 @@ import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { backendClient } from "~/api/backend";
 
+interface CollectionItemInt {
+    name?: string;
+    created_at?: string;
+    id?: string;
+}
 
-const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: CollectionItemInt) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
     //@ts-ignore
@@ -28,7 +33,7 @@ const CollectionItem: NextPage = ({ index, name, created_at, id }: any) => {
 
     return (
         <>
-            <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md ${(collectionId && collectionId == id) ? "border-2 border-primary-ex" : ""}`} key={index}>
+            <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md ${(collectionId && collectionId == id) ? "border-2 border-primary-ex" : ""}`}>
                 <p onClick={openCollection} className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
                 <div className="flex pt-1 justify-between items-center w-full">
                     <div onClick={openCollection} className="flex gap-5 items-center">

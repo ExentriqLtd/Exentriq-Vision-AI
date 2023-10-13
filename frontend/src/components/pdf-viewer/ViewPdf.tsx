@@ -3,7 +3,7 @@ import usePDFViewer from "~/hooks/usePdfViewer";
 import { PDFOptionsBar } from "./PdfOptionsBar";
 import React from "react";
 import MemoizedVirtualizedPDF from "./VirtualizedPdf";
-import { SecDocument } from "~/types/document";
+import type { SecDocument } from "~/types/document";
 
 interface ViewPdfProps {
   file: SecDocument;

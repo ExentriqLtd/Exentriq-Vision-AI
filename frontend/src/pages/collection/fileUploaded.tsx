@@ -2,16 +2,23 @@ import React from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 
+interface FileInt {
+    file?: {
+        filename?: string;
+        created_at?: string;
+        status?: boolean;
+    };
+}
 
-const FileUploaded: NextPage = ({ index, file }: any) => {
+const FileUploaded: NextPage<FileInt> = ({ file }: FileInt) => {
     return (
         <>
-            <tr key={index}>
+            <tr>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                     <div className="flex flex-row items-center">
-                        {file.status ? (
+                        {file?.status ? (
                             <>
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
