@@ -10,7 +10,7 @@ import { first, isEmpty } from "lodash";
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
   const [newCollectionActive, setNewCollectionActive] = useState(false);
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
 
   async function getCollections() {
     const collections = await backendClient.fetchCollections();
@@ -47,7 +47,6 @@ const CollectionList: React.FC = () => {
       <CreateCollectionModal
         isOpen={isCollectionModalOpen}
         toggleModal={toggleCollectionModal}
-        //TODO: TS rompe le scatole come al solito -.-''
         onClick={createCollection}
       />
       <div className="w-96 bg-gray-100 relative p-4 rounded-l-lg">

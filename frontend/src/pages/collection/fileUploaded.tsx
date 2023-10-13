@@ -18,9 +18,9 @@ const FileUploaded: NextPage = ({ index, file }: any) => {
                                     fill="currentColor"
                                     className="w-6 color-primary-ex h-6"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round">
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="6" />
                                 </svg>
                                 <p className="px-2">File uploaded</p>
@@ -32,9 +32,9 @@ const FileUploaded: NextPage = ({ index, file }: any) => {
                                     fill="currentColor"
                                     className="w-6 text-amber-400 h-6"
                                     stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round">
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="6" />
                                     <p className="px-2">File uploaded</p>
                                 </svg>

@@ -31,7 +31,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
 
         <div className="flex h-full w-[80px] flex-col">
           <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 ">
-            {/* TODO: SetClose qui? */}
+            {/* TODO: SetClose qui? Da grafiche l'header della chat sparisce. Da fare appena sistemiamo la chat */}
           </div>
           {pdfs.map((file, index) => (
             <div key={index}>

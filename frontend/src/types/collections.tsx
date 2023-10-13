@@ -1,7 +1,8 @@
 export interface SecCollections {
-    id: string;
-    created_at: string,
-    name: string,
-    updated_at: string,
+    udid: string;
+    created_at: string;
+    name: string;
+    spaceId: string;
+    username: string;
 }
   
