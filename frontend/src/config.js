@@ -15,8 +15,8 @@ if (typeof window !== "undefined") {
     const urlParams = new URLSearchParams(queryString);
     
     spaceId = urlParams.get('spaceId');
-    username = urlParams.get('spaceId');
-    sessionToken = urlParams.get('spaceId');
+    username = urlParams.get('username');
+    sessionToken = urlParams.get('sessionToken');
 }
 
 export const backendUrl = 'https://art001ai.exentriq.com/';
