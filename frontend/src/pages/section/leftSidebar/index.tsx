@@ -56,7 +56,7 @@ const CollectionList: React.FC = () => {
         onClick={createCollection}
       />
       <div className="w-96 bg-gray-100 relative p-4 rounded-l-lg">
-        <input type="text" name="search" id="pricsearche"
+        {/* <input type="text" name="search" id="pricsearche"
           className="
            block 
            w-full 
@@ -69,7 +69,7 @@ const CollectionList: React.FC = () => {
            text-gray-900 
            placeholder:text-gray-400 
            sm:text-sm sm:leading-6"
-          placeholder="Search..." />
+          placeholder="Search..." /> */}
         {isEmpty(availableCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import DragAndDrop from "~/components/basics/DragAndDrop";
@@ -19,9 +19,6 @@ const LandingPage: NextPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
 
-  const removeItem = (id?: number | undefined) => {
-    dispatchUploadedFile({ type: 'SET_REMOVE_FILES', payload: { lastModified: id } })
-  };
 
   const handleUpload = (files: File[]) => {
     try {
@@ -50,6 +47,11 @@ const LandingPage: NextPage = () => {
       })
       .catch(() => console.log("error creating conversation "));
   }
+
+  useEffect(() => {
+    dispatchUploadedFile({type: 'SET_EMPTY_ARRAY_FILES'})
+  }, [])
+  
 
 
   return (
@@ -101,13 +103,13 @@ const LandingPage: NextPage = () => {
                         <thead>
                           <tr>
                             <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
-                            <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Delete</th>
+                            <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Status</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y bg-white">
                           {arrayFileUploaded.map((file: object, index: number) => (
                             <tr key={index}>
-                              <FileUploaded key={index} file={file} removeItem={removeItem} />
+                              <FileUploaded key={index} file={file} />
                             </tr>
                           ))}
                         </tbody>

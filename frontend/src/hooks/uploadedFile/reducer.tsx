@@ -31,6 +31,12 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 collectionId: action?.payload?.collectionId
             };
+
+        case 'SET_EMPTY_ARRAY_FILES':
+            return {
+                ...state,
+                arrayFileUploaded: []
+            };
         case 'UPLOADEDFILE_RESET':
             return {
                 ...initialState,

@@ -172,7 +172,7 @@ export default function Conversation() {
               <div className="flex h-[100vh] flex-col items-center bg-white w-full">
                 <div className="flex h-[44px] w-full items-center justify-between border-b ">
                   <div className="flex w-full items-center justify-between">
-                    <button
+                    {/* <button
                       onClick={() => {
                         router
                           .push("/")
@@ -181,14 +181,14 @@ export default function Conversation() {
                       className="ml-4 flex items-center justify-center rounded px-2 font-light text-[#9EA2B0] hover:text-gray-90"
                     >
                       <BiArrowBack className="mr-1" /> Back to Document Selection
-                    </button>
-                    <button
+                    </button> */}
+                    {/* <button
                       onClick={toggleShareModal}
                       className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
                     >
                       <div className="text-xs font-medium">Share</div>
                       <FiShare className="ml-1" size={12} />
-                    </button>
+                    </button> */}
                     <button
                       onClick={toggleIsViewer}
                       className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
