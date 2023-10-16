@@ -4,6 +4,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { backendClient } from "~/api/backend";
+import { useModal } from "~/hooks/utils/useModal";
 
 interface CollectionItemInt {
     name?: string;
@@ -18,6 +19,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: C
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
     const { collectionId } = stateUploadedFile;
+    const { isOpen: isCollectionModalOpen, toggleModal: toggleCollectionModal } = useModal();
 
     const openCollection = () => {
         setIsMenuVisible(false)
@@ -61,7 +63,10 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: C
                             }}>
                             Collection
                         </p>
-                        <p className="cursor-pointer">Rename</p>
+                        <p className="cursor-pointer" onClick={(e) => {
+                                e.stopPropagation();
+                                toggleCollectionModal()
+                            }}>Rename</p>
                         <p className="cursor-pointer">Delete</p>
                     </div>
                 )}
