@@ -72,7 +72,7 @@ class BackendClient {
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {
-      messages: data.messages,
+      messages: data?.result?.messages,
       documents: fromBackendDocumentToFrontend(data?.result?.documents),
     };
   }
@@ -101,8 +101,6 @@ class BackendClient {
       collectionId,
       session
     }
-    // console.log('payload::::',payload)
-
     const file: File | undefined = files[0]
     const fileName: string| undefined = file?.name
 
@@ -110,7 +108,6 @@ class BackendClient {
     data.append('file', file as Blob, fileName);
 
     data.append('data', JSON.stringify(payload));
-    console.log('data:::::',data) //TODO: da verificare se funziona
     const url = backendUrl + endpoint;
     const res = await fetch(url, {
       method: "POST",
