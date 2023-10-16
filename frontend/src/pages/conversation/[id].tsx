@@ -80,7 +80,7 @@ export default function Conversation() {
 
     const messageEndpoint =
       backendUrl + `api/conversation/${conversationId}/message`;
-    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&?spaceId=${session.spaceId}&?username=${session.username}&?sessionToken=${session.sessionToken}`;
+    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
     console.log('URL----', url);
     const events = new EventSource(url);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
