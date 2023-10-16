@@ -16,10 +16,12 @@ export const fromBackendDocumentToFrontend = (
     //     : DocumentType.TenQ;
 
     // we have 10 colors for 10 documents
+    const filename = backendDoc?.filename?.replace('.pdf', '').replace('.PDF', '')
     // const colorIndex = index < 10 ? index : 0;
     const payload = {
       id: backendDoc.id,
       url: backendDoc.url,
+      filename
       // ticker: backendDoc.metadata_map.sec_document.company_ticker,
       // fullName: backendDoc.metadata_map.sec_document.company_name,
       // year: String(backendDoc.metadata_map.sec_document.year),
