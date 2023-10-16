@@ -6,7 +6,8 @@ interface FileInt {
     file?: {
         filename?: string;
         created_at?: string;
-        status?: boolean;
+        status?: string;
+        url?: string;
     };
     key?: number;
 }
@@ -15,11 +16,11 @@ const FileUploaded: NextPage<FileInt> = ({ file, key }: FileInt) => {
     return (
         <>
             <tr key={key}>
-                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename}</td>
+                <td className="border-b border-slate-100 p-4 pl-8 text-slate-500"><a href={file?.url} download target={'_blank'} className="color-primary-ex">{file?.filename}</a></td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
                 <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                     <div className="flex flex-row items-center">
-                        {file?.status ? (
+                        {file?.status == 'processed' ? (
                             <>
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 24 24"
@@ -31,7 +32,7 @@ const FileUploaded: NextPage<FileInt> = ({ file, key }: FileInt) => {
                                     strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="6" />
                                 </svg>
-                                <p className="px-2">File uploaded</p>
+                                <p className="px-2">File processed</p>
                             </>
                         ) : (
                             <>
@@ -44,11 +45,9 @@ const FileUploaded: NextPage<FileInt> = ({ file, key }: FileInt) => {
                                     strokeLinecap="round"
                                     strokeLinejoin="round">
                                     <circle cx="12" cy="12" r="6" />
-                                    <p className="px-2">File uploaded</p>
                                 </svg>
-                                <p className="px-2">Uploading...</p>
+                                <p className="px-2">Processing...</p>
                             </>
-
                         )}
                     </div>
                 </td>

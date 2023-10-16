@@ -11,10 +11,19 @@ export type Ticker = {
 };
 
 export interface SecDocument extends Ticker {
+  // id: string;
+  // url: string;
+  // year: string;
+  // docType: DocumentType;
+  // quarter?: string;
+  // color: DocumentColorEnum;
+  collection_id: string;
+  created_at: string;
+  file_id: string;
+  filename: string;
   id: string;
+  space_id: string;
+  status: string;
   url: string;
-  year: string;
-  docType: DocumentType;
-  quarter?: string;
-  color: DocumentColorEnum;
+  username: string;
 }

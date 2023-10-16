@@ -70,10 +70,13 @@ const CollectionList: React.FC = () => {
            placeholder:text-gray-400 
            sm:text-sm sm:leading-6"
           placeholder="Search..." />
-        <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline">here</span> </p>
+        {isEmpty(availableCollections) &&
+          <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
+        }
         <ul className="containerScroll overflow-y-auto w-full my-5 h-3/4">
           {availableCollections.map((collection, index) => {
             return (
+              /* TODO: Warning: CollectionItem: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props) */
               <CollectionItem
                 key={index}
                 name={collection?.name}
