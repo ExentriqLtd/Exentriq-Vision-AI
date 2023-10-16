@@ -33,9 +33,34 @@ const Collection: NextPage = () => {
     return (
         <>
             <div className="mt-3 mx-6 w-full">
-                <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
+                <div className="flex flex-row items-center justify-between">
+                    <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
+                    <button
+                        onClick={() => {
+                            router
+                            .push(`/conversation/${id}`)
+                            .catch(() => console.log("error navigating to conversation"));
+                        }}
+                        className="
+                        block 
+                        rounded-sm 
+                        bg-primary-ex 
+                        px-3.5 
+                        py-2.5 
+                        text-center 
+                        text-sm 
+                        text-white 
+                        shadow-md 
+                        hover:bg-primary-ex 
+                        focus-visible:outline 
+                        focus-visible:outline-2 
+                        focus-visible:outline-offset-2 
+                        focus-visible:outline-indigo-600">
+                        Go to conversation
+                    </button> 
+                </div>
                 <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
-                    <div className="rounded-md overflow-auto">
+                    <div className="rounded-md">
                         <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                             <thead>
                                 <tr>
