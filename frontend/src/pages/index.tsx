@@ -41,7 +41,7 @@ const LandingPage: NextPage = () => {
   const startConversation = () => {
     setIsLoadingConversation(true);
     backendClient
-      .createConversation('21393c08-684a-11ee-8145-e2a70e41aa24')
+      .createConversation(collectionId)
       .then((newConversationId) => {
         setIsLoadingConversation(false);
         router
