@@ -37,13 +37,12 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
             <div key={index}>
               <button
                 onClick={() => handlePdfFocus(file)}
-                className={`group flex h-[80px] w-[80px] items-end  justify-start border px-2 py-1 font-nunito text-sm font-bold ${
-                  isActivePdf(file)
+                className={`group flex h-[80px] w-[80px] items-end  justify-start border px-2 py-1 font-nunito text-sm font-bold ${isActivePdf(file)
                     ? "border-l-0 bg-gray-pdf"
                     : "bg-white font-light text-gray-60 "
-                }`}
+                  }`}
               >
-                <div
+                {/* <div //TODO: aggiungere questa div quando abbiamo i dati
                   className={`flex flex-col items-start justify-start ${
                     borderColors[file.color]
                   } ${
@@ -51,18 +50,21 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
                       ? "group-hover:border-l-4 group-hover:pl-1 group-hover:font-bold group-hover:text-gray-90"
                       : ""
                   }`}
+                > */}
+                <div
+                  className={`flex flex-col items-start justify-start`}
                 >
-                  <div>{file.ticker}</div>
-                  <div className="text-left">
-                    {file.year} {file.quarter && `Q${file.quarter}`}
-                  </div>
+                <div>{file.ticker}</div>
+                <div className="text-left">
+                  {/* {file.year} {file.quarter && `Q${file.quarter}`} */}
                 </div>
-              </button>
             </div>
-          ))}
-          <div className="h-max w-[80px] flex-grow overflow-hidden border-l"></div>
-        </div>
+              </button>
       </div>
+          ))}
+      <div className="h-max w-[80px] flex-grow overflow-hidden border-l"></div>
+    </div >
+      </div >
     </>
   );
 };
