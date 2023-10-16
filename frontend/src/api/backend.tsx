@@ -68,7 +68,7 @@ class BackendClient {
   public async fetchConversation(
     id: string
   ): Promise<GetConversationReturnType> {
-    const endpoint = `api/conversation/${id}`;
+    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {
