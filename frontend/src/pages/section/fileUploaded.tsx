@@ -8,14 +8,13 @@ interface FileUploadInt {
         name?: string;
     },
     removeItem?: (val: number | undefined) => void;
-    key?: number;
 }
 
-const FileUploaded: NextPage<FileUploadInt> = ({ file, key, removeItem }: FileUploadInt) => {
+const FileUploaded: NextPage<FileUploadInt> = ({ file, removeItem }: FileUploadInt) => {
     const lastModified = (file?.lastModified || file?.lastEditedUtc)
 
     return (
-        <tr key={key}>
+        <>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.name}</td>
             <td className="border-b border-slate-100 p-4 pl-10 text-slate-500">
                 <span
@@ -26,7 +25,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, key, removeItem }: FileUp
                     </svg>
                 </span>
             </td>
-        </tr>
+        </>
     );
 };
 export default FileUploaded;

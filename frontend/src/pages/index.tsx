@@ -106,7 +106,9 @@ const LandingPage: NextPage = () => {
                         </thead>
                         <tbody className="divide-y bg-white">
                           {arrayFileUploaded.map((file: object, index: number) => (
+                            <tr key={index}>
                               <FileUploaded key={index} file={file} removeItem={removeItem} />
+                            </tr>
                           ))}
                         </tbody>
                       </table>
