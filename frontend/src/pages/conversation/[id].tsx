@@ -4,7 +4,7 @@ import { PdfFocusProvider } from "~/context/pdf";
 
 import type { ChangeEvent } from "react";
 import DisplayMultiplePdfs from "~/components/pdf-viewer/DisplayMultiplePdfs";
-import { backendUrl } from "src/config";
+import { backendUrl, session } from "src/config";
 import { MESSAGE_STATUS } from "~/types/conversation";
 import type { Message } from "~/types/conversation";
 import useMessages from "~/hooks/useMessages";
@@ -80,8 +80,8 @@ export default function Conversation() {
 
     const messageEndpoint =
       backendUrl + `api/conversation/${conversationId}/message`;
-    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}`;
-
+    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&?spaceId=${session.spaceId}&?username=${session.username}&?sessionToken=${session.sessionToken}`;
+    console.log('URL----', url);
     const events = new EventSource(url);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
     events.onmessage = (event: MessageEvent) => {
