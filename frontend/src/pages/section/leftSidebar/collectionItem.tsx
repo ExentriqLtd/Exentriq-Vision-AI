@@ -61,8 +61,8 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: C
                             }}>
                             Collection
                         </p>
-                        <p className="cursor-pointer">Rename</p>
-                        <p className="cursor-pointer">Delete</p>
+                        {/* <p className="cursor-pointer">Rename</p>
+                        <p className="cursor-pointer">Delete</p> */}
                     </div>
                 )}
             </div>
