@@ -166,7 +166,7 @@ export default function Conversation() {
   }
 
   return (
-      <div className="mx-6 w-full">
+      <div className="mx-6 w-4/5">
         <PdfFocusProvider> 
             <div className="flex h-[100vh] items-center w-full">
               <div className="flex h-[100vh] flex-col items-center bg-white w-full">

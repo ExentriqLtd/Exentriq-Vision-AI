@@ -31,6 +31,10 @@
   border-color: #1bbc9b;
 }
 
+.border-transparent {
+  border-color: transparent;
+}
+
 .color-primary-ex {
   color: #1bbc9b;
 }
