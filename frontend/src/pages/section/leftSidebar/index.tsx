@@ -55,7 +55,7 @@ const CollectionList: React.FC = () => {
         toggleModal={toggleCollectionModal}
         onClick={createCollection}
       />
-      <div className="w-96 bg-gray-100 relative p-4 rounded-l-lg">
+      <div className="w-1/5 bg-gray-100 relative p-4 rounded-l-lg flex flex-col">
         {/* <input type="text" name="search" id="pricsearche"
           className="
            block 
@@ -73,12 +73,11 @@ const CollectionList: React.FC = () => {
         {isEmpty(availableCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
-        <ul className="containerScroll overflow-y-auto w-full my-5 h-3/4">
-          {availableCollections.map((collection, index) => {
+        <ul className="containerScroll overflow-y-auto w-full mt-5 h-full pb-5">
+          {availableCollections.map((collection) => {
             return (
               /* TODO: Warning: CollectionItem: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props) */
               <CollectionItem
-                key={index}
                 name={collection?.name}
                 created_at={collection?.created_at}
                 id={collection?.udid} />

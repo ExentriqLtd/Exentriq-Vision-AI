@@ -32,7 +32,7 @@ const Collection: NextPage = () => {
 
     return (
         <>
-            <div className="mt-3 mx-6 w-full">
+            <div className="mt-3 mx-6 w-4/5 flex flex-col">
                 <div className="flex flex-row items-center justify-between">
                     <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
                     <button
@@ -60,7 +60,7 @@ const Collection: NextPage = () => {
                     </button> 
                 </div>
                 <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
-                    <div className="rounded-md">
+                    <div className="rounded-md overflow-auto">
                         <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                             <thead>
                                 <tr>

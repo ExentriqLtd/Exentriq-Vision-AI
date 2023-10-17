@@ -55,8 +55,7 @@ const LandingPage: NextPage = () => {
 
 
   return (
-    <>
-
+    <div className="w-4/5 flex flex-row">
       <div className="mt-3 mx-6 w-2/3 flex flex-col">
         {isLoadingConversation && (
           <ProgressBar />
@@ -149,7 +148,7 @@ const LandingPage: NextPage = () => {
       <div className="mt-3 w-1/3 flex flex-col items-end">
         <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />
       </div>
-    </>
+    </div>
   );
 };
 export default LandingPage;
