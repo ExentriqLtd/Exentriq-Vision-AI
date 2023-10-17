@@ -1,7 +1,7 @@
 export interface BackendCollections {
     status: string;
   result: {
-    udid: string;
+    uuid: string;
     created_at: string;
     name: string;
     spaceId: string;

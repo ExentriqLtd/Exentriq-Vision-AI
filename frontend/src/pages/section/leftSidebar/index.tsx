@@ -27,8 +27,9 @@ const CollectionList: React.FC = () => {
   useEffect(() => {
     if (isEmpty(availableCollections)) return;
     if (newCollectionActive) {
-      const firstEl = first(availableCollections)
-      dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.udid } })
+      console.log('prova', first(availableCollections));
+      const firstEl = first(availableCollections);
+      dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
       router
         .push(`/`)
         .catch(() => console.log("error navigating to conversation"))
@@ -80,7 +81,7 @@ const CollectionList: React.FC = () => {
               <CollectionItem
                 name={collection?.name}
                 created_at={collection?.created_at}
-                id={collection?.udid} />
+                id={collection?.uuid} />
             );
           })}
         </ul>

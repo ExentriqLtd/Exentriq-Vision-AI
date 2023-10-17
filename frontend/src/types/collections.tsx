@@ -1,5 +1,5 @@
 export interface SecCollections {
-    udid: string;
+    uuid: string;
     created_at: string;
     name: string;
     spaceId: string;
