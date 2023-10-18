@@ -85,9 +85,9 @@ class BackendClient {
     return docs;
   }
 
-  public async fetchCollections(): Promise<GetCollectionsReturnType[]> {
+  public async fetchCollections(value: string): Promise<GetCollectionsReturnType[]> {
     const endpoint = `api/collections/list`;
-    const payload = { session };
+    const payload = { session, query: value };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as BackendCollections[];
     return data;

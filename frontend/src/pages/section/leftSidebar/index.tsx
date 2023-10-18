@@ -8,6 +8,7 @@ import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import { session } from "~/config";
+import _ from 'lodash';
 
 const CollectionList: React.FC = () => {
   const [newCollectionActive, setNewCollectionActive] = useState(false);
@@ -15,17 +16,19 @@ const CollectionList: React.FC = () => {
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
   const { collectionId, arrayCollections } = stateUploadedFile;
+  const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
-  async function getCollections() {
-    const collections = await backendClient.fetchCollections();
+  async function getCollections(value: string) {
+    const collections = await backendClient.fetchCollections(value);
     //@ts-ignore
     if (collections && collections?.result) {
       dispatchUploadedFile({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
     }
   }
+
   useEffect(() => {
-    getCollections().catch(() => console.error("could not fetch documents"));
+    getCollections('').catch(() => console.error("could not fetch documents"));
   }, []);
 
   useEffect(() => {
@@ -52,7 +55,7 @@ const CollectionList: React.FC = () => {
     backendClient.createCollection(name)
       .then(() => {
         toggleCollectionModal()
-        getCollections()
+        getCollections('')
       })
   }
 
@@ -68,6 +71,22 @@ const CollectionList: React.FC = () => {
   const onRename = (val: string) => {
     setIsRename(val)
   }
+
+  const handleSearchDebounced = _.debounce((value) => {
+    if (value.length >= 3) {
+      console.log('Eseguire la ricerca per:', value);
+      getCollections(value);
+    }
+  }, 1000); 
+
+
+  const handleInputChange = (event: any) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+
+    // Avvia la ricerca con il debounce dopo almeno 3 caratteri
+    handleSearchDebounced(value);
+  };
 
   return (
     <>
@@ -92,7 +111,10 @@ const CollectionList: React.FC = () => {
            text-gray-900 
            placeholder:text-gray-400 
            sm:text-sm sm:leading-6"
-          placeholder="Search..." /> 
+          placeholder="Search..."
+          value={searchTerm}
+          onChange={handleInputChange}
+        /> 
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
