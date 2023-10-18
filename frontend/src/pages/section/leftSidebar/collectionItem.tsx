@@ -35,7 +35,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
     }
 
     return (
-        <li key={collectionId} className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
+        <li className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
             <p className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
             <div className="flex pt-1 justify-between items-center w-full">
                 <div className="flex gap-5 items-center">

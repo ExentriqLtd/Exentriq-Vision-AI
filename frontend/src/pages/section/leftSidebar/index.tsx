@@ -75,15 +75,16 @@ const CollectionList: React.FC = () => {
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
         <ul className="containerScroll overflow-y-auto w-full mt-5 h-full pb-5">
-          {availableCollections.map((collection) => {
+          {availableCollections.map((collection, index) => {
             return (
-              /* TODO: Warning: CollectionItem: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props) */
-              <CollectionItem
-                name={collection?.name}
-                created_at={collection?.created_at}
-                id={collection?.uuid}
-                toggleModal={toggleCollectionModal}
-                getCollections={getCollections} />
+              <div key={index}>
+                <CollectionItem
+                  name={collection?.name}
+                  created_at={collection?.created_at}
+                  id={collection?.uuid}
+                  toggleModal={toggleCollectionModal}
+                  getCollections={getCollections} />
+              </div>
             );
           })}
         </ul>
