@@ -60,7 +60,7 @@ const LandingPage: NextPage = () => {
   useEffect(() => {
     dispatchUploadedFile({ type: 'SET_EMPTY_ARRAY_FILES' })
     return () => {
-     dispatchUploadedFile({type: 'SET_GO_TO_UPLOAD', payload: {goToUpload: false}})
+      dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: false } })
     }
   }, [])
 
@@ -80,11 +80,18 @@ const LandingPage: NextPage = () => {
         {(collectionId && goToUpload) && (
           <>
             <DragAndDrop onUpload={handleUpload} />
-            {/* <div className="my-6 w-2/3 flex flex-col items-center">
+            <div className="my-6 w-2/3 flex flex-col items-center">
               <p>or</p>
             </div>
             <button
-              onClick={() => router.push(`/chooseFromFolder/`)}
+              onClick={() =>
+                router
+                  .push({
+                    pathname: `/chooseFromFolder`,
+                    query: session,
+                  })
+                  .catch(() => console.log("error navigating to conversation"))
+              }
               className="
               w-2/3
               block 
@@ -103,7 +110,7 @@ const LandingPage: NextPage = () => {
               focus-visible:outline-offset-2 
               focus-visible:outline-indigo-600">
               Choose from folder
-            </button> */}
+            </button>
             {arrayFileUploaded && arrayFileUploaded.length > 0 && (
               <>
                 <div className="flex flex-col h-[30vh] mt-3 my-6 relative shadow-md w-2/3 bg-slate-50 rounded-md">

@@ -38,6 +38,10 @@
   border-color: transparent;
 }
 
+.bottom-4 {
+  bottom: 1rem;
+}
+
 .color-primary-ex {
   color: #1bbc9b;
 }
