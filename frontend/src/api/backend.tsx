@@ -94,16 +94,14 @@ class BackendClient {
   }
 
   
-  public async uploadFile(files: File[], collectionId: string): Promise<object> {
+  public async uploadFile(file: any, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload`;
     console.log('collectionId', collectionId);
     const payload = {
       collectionId,
       session
     }
-    const file: File | undefined = files[0]
     const fileName: string| undefined = file?.name
-
     const data = new FormData();
     data.append('file', file as Blob, fileName);
 

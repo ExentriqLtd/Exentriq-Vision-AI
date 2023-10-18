@@ -7,6 +7,7 @@ import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { generateUniqueId } from "~/utils/utility";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -19,15 +20,19 @@ const LandingPage: NextPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
 
-
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
-      dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: files } });
-      backendClient.uploadFile(files, collectionId)
-      // .then(() => {
-      //   console.log('uploaded');
-      // });
+      files?.map((file) => {
+        file.status = 'in progess'
+        const uuId = generateUniqueId();
+        file.id = uuId;
+        dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
+        backendClient.uploadFile(file, collectionId)
+          .then((res) => {
+            dispatchUploadedFile({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
+          });
+      })
     } catch (error) {
       console.log(error);
     } finally {
@@ -49,9 +54,9 @@ const LandingPage: NextPage = () => {
   }
 
   useEffect(() => {
-    dispatchUploadedFile({type: 'SET_EMPTY_ARRAY_FILES'})
+    dispatchUploadedFile({ type: 'SET_EMPTY_ARRAY_FILES' })
   }, [])
-  
+
 
 
   return (
