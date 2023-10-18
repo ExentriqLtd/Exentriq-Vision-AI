@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
   const [newCollectionActive, setNewCollectionActive] = useState(false);
+  const [isRename, setIsRename] = useState<String | undefined>(undefined);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
   const router = useRouter()
@@ -48,11 +49,17 @@ const CollectionList: React.FC = () => {
         getCollections()
       })
   }
+
+
+  const onRename = (val: string) => {
+    setIsRename(val)
+  }
   return (
     <>
 
       <CreateCollectionModal
         isOpen={isCollectionModalOpen}
+        isRename={isRename}
         toggleModal={toggleCollectionModal}
         onClick={createCollection}
       />
@@ -83,6 +90,7 @@ const CollectionList: React.FC = () => {
                   created_at={collection?.created_at}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
+                  onRename={onRename}
                   getCollections={getCollections} />
               </div>
             );

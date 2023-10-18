@@ -1,14 +1,17 @@
 import React, { useRef, useEffect, useState } from "react";
 import Modal from "../basics/Modal";
+import { isString } from "lodash";
 
 interface CreateCollectionModal {
   isOpen: boolean;
+  isRename?: string;
   toggleModal: () => void;
   onClick: (val: string) => void;
 }
 
 const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   isOpen,
+  isRename,
   toggleModal,
   onClick,
 }) => {
@@ -20,6 +23,13 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
       inputRef.current?.select();
     }
   }, [isOpen]);
+
+  useEffect(() => {
+    if (isString(isRename) && isRename !== '') {
+      setValue(isRename)
+    }
+  }, [isRename])
+
 
   return (
     <Modal isOpen={isOpen} toggleModal={toggleModal} title="Create new collection">

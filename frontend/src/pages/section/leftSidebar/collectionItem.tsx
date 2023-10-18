@@ -12,9 +12,10 @@ interface CollectionItemInt {
     key?: string;
     toggleModal?: any;
     getCollections?: any;
+    onRename?: (string: boolean) => {}
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections}: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections, onRename}: CollectionItemInt) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
     //@ts-ignore
@@ -66,6 +67,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                         <p onClick={(e) => {
                             e.stopPropagation();
                             toggleModal();
+                            onRename(name)
                         }} className="cursor-pointer">Rename</p>
                         <p onClick={(e) => {
                             e.stopPropagation();
