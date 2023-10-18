@@ -5,6 +5,7 @@ import useDrivePicker from 'react-google-drive-picker'
 import Header from "./section/header";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { session } from "~/config";
 
 const ChooseFromFolder: NextPage = () => {
   //@ts-ignore
@@ -34,8 +35,11 @@ const ChooseFromFolder: NextPage = () => {
           const newData = data?.docs?.map((doc: any) => ({ ...doc, lastModified: doc?.lastEditedUtc }))
           dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newData } })
           router
-          .push(`/`)
-          .catch(() => console.log("error navigating to conversation"))
+            .push({
+              pathname: `/`,
+              query: session,
+            })
+            .catch(() => console.log("error navigating to conversation"))
         }
       },
     })

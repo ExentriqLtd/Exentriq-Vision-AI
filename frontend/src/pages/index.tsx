@@ -8,6 +8,7 @@ import FileUploaded from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { generateUniqueId } from "~/utils/utility";
+import { session } from "~/config";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -47,7 +48,10 @@ const LandingPage: NextPage = () => {
       .then((newConversationId) => {
         setIsLoadingConversation(false);
         router
-          .push(`/conversation/${newConversationId}`)
+          .push({
+            pathname: `/conversation/${newConversationId}`,
+            query: session,
+          })
           .catch(() => console.log("error navigating to conversation"));
       })
       .catch(() => console.log("error creating conversation "));

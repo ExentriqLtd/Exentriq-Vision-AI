@@ -6,6 +6,7 @@ import FileUploaded from "./fileUploaded";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
+import { session } from "~/config";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -38,8 +39,11 @@ const Collection: NextPage = () => {
                     <button
                         onClick={() => {
                             router
-                            .push(`/conversation/${id}`)
-                            .catch(() => console.log("error navigating to conversation"));
+                                .push({
+                                    pathname: `/conversation/${id}`,
+                                    query: session,
+                                })
+                                .catch(() => console.log("error navigating to conversation"));
                         }}
                         className="
                         block 
@@ -57,7 +61,7 @@ const Collection: NextPage = () => {
                         focus-visible:outline-offset-2 
                         focus-visible:outline-indigo-600">
                         Go to conversation
-                    </button> 
+                    </button>
                 </div>
                 <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
                     <div className="rounded-md overflow-auto">
@@ -83,7 +87,11 @@ const Collection: NextPage = () => {
                 <button
                     onClick={() => {
                         console.log('goback');
-                        router.push(`/`)
+                        router
+                            .push({
+                                pathname: `/`,
+                                query: session,
+                            })
                             .catch(() => console.log("error navigating to conversation"))
                     }}
                     className="

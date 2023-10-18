@@ -4,6 +4,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { backendClient } from "~/api/backend";
+import { session } from "~/config";
 
 interface CollectionItemInt {
     name?: string;
@@ -15,7 +16,7 @@ interface CollectionItemInt {
     onRename?: (string: boolean) => {}
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections, onRename}: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections, onRename }: CollectionItemInt) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
     //@ts-ignore
@@ -29,7 +30,10 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
             .createConversation(id)
             .then((newConversationId) => {
                 router
-                    .push(`/conversation/${newConversationId}`)
+                    .push({
+                        pathname: `/conversation/${newConversationId}`,
+                        query: session,
+                    })
                     .catch(() => console.log("error navigating to conversation"));
             })
             .catch(() => console.log("error creating conversation "));
@@ -43,7 +47,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                     <span>{name}</span>
                 </div>
                 <span
-                    onClick={(e) => {e.stopPropagation(); setIsMenuVisible(!isMenuVisible)}}
+                    onClick={(e) => { e.stopPropagation(); setIsMenuVisible(!isMenuVisible) }}
                     className=" cursor-pointer  bg-gray-100 rounded-full p-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                         <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
@@ -58,7 +62,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                 setIsMenuVisible(false)
                                 router.push({
                                     pathname: `/collection/${id}`,
-                                    query: { name },
+                                    query: { name, ...session },
                                 })
                                     .catch(() => console.log("error navigating to conversation"))
                             }}>
@@ -73,11 +77,11 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                             e.stopPropagation();
                             console.log(collectionId);
                             backendClient.deleteCollection(collectionId)
-                            .then(() => {
-                                console.log('cancellata, gestire refresh');
-                                getCollections();
-                            })
-                            }} className="cursor-pointer">Delete</p>
+                                .then(() => {
+                                    console.log('cancellata, gestire refresh');
+                                    getCollections();
+                                })
+                        }} className="cursor-pointer">Delete</p>
                     </div>
                 )}
             </div>

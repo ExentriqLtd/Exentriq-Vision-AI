@@ -21,6 +21,7 @@ import { useIntercom } from "react-use-intercom";
 import { LoadingSpinner } from "~/components/basics/Loading";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import Image from "next/image";
+import { session } from "~/config";
 
 export const TitleAndDropdown = () => {
   const router = useRouter();
@@ -37,7 +38,10 @@ export const TitleAndDropdown = () => {
       .then((newConversationId) => {
         setIsLoadingConversation(false);
         router
-          .push(`/conversation/${newConversationId}`)
+          .push({
+            pathname: `/conversation/${newConversationId}`,
+            query: session,
+          })
           .catch(() => console.log("error navigating to conversation"));
       })
       .catch(() => console.log("error creating conversation "));
@@ -249,7 +253,7 @@ export const TitleAndDropdown = () => {
                   className={cx(
                     "m-4 rounded border bg-llama-indigo px-6 py-2 font-nunito text-white hover:bg-[#3B3775] disabled:bg-gray-30 ",
                     !isStartConversationButtonEnabled &&
-                      "border-gray-300 bg-gray-300"
+                    "border-gray-300 bg-gray-300"
                   )}
                 >
                   <div className="flex items-center justify-center">

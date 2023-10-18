@@ -7,6 +7,7 @@ import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
+import { session } from "~/config";
 
 const CollectionList: React.FC = () => {
   const [availableCollections, setAvailableCollections] = useState<SecCollections[]>([]);
@@ -32,7 +33,10 @@ const CollectionList: React.FC = () => {
       const firstEl = first(availableCollections);
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
       router
-        .push(`/`)
+        .push({
+          pathname: `/`,
+          query: session,
+        })
         .catch(() => console.log("error navigating to conversation"))
     }
   }, [availableCollections])
