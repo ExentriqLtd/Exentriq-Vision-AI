@@ -7,9 +7,32 @@ interface stateReducer {
     filesUploaded: [];
     arrayFileUploaded: [];
     collectionId: string;
+    arrayCollections: [];
 }
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
+        case 'SET_ARRAY_COLLECTION':
+            return {
+                ...state,
+                arrayCollections: action.payload?.arrayCollections
+            };
+        case 'SET_RENAME_COLLECTION':
+            const updatedArrayColl = state.arrayCollections.map((item) => {
+                if (item.uuid === action?.payload?.collectionId) {
+                    item.name = action?.payload?.name;
+                }
+                return item;
+            });
+            return {
+                ...state,
+                arrayCollections: updatedArrayColl
+            };
+        case 'SET_DELETE_COLLECTION':
+            const filterTempColl = state?.arrayCollections?.filter((i: any) => i?.uuid !== action.payload.uuid)
+            return {
+                ...state,
+                arrayCollections: filterTempColl
+            };
         case 'SET_ARRAY_FILES':
             const file = action.payload?.filesUploaded
             const arrayUploaded = [
@@ -69,6 +92,7 @@ export const reducer = (state: stateReducer, action: action) => {
 export const initialState = {
     filesUploaded: null,
     arrayFileUploaded: [],
+    arrayCollections: [],
     collectionId: '',
     goToUpload: false,
 };

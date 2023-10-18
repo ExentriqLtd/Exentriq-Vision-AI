@@ -66,7 +66,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                 setIsMenuVisible(false)
                                 router.push({
                                     pathname: `/collection/${id}`,
-                                    query: { name, ...session },
+                                    query: session,
                                 })
                                     .catch(() => console.log("error navigating to conversation"))
                             }}>
@@ -76,14 +76,21 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                             e.stopPropagation();
                             toggleModal();
                             onRename(name)
+                            setIsMenuVisible(false)
                         }} className="cursor-pointer">Rename</p>
                         <p onClick={(e) => {
                             e.stopPropagation();
                             console.log(collectionId);
                             backendClient.deleteCollection(collectionId)
                                 .then(() => {
-                                    console.log('cancellata, gestire refresh');
-                                    getCollections();
+                                    router
+                                        .push({
+                                            pathname: `/`,
+                                            query: session,
+                                        })
+                                        .catch(() => console.log("error navigating to conversation"))
+                                    dispatchUploadedFile({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
+                                    setIsMenuVisible(false)
                                 })
                         }} className="cursor-pointer">Delete</p>
                     </div>

@@ -10,9 +10,11 @@ import { session } from "~/config";
 
 const Collection: NextPage = () => {
     const router = useRouter();
-    const { id, name } = router.query;
+    const { id } = router.query;
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+    const { arrayCollections } = stateUploadedFile;
+    const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
     const [limit, setLimit] = useState(50)
     const [documents, setDocuments] = useState<[] | null>(null)
 
@@ -35,7 +37,7 @@ const Collection: NextPage = () => {
         <>
             <div className="mt-3 mx-6 w-4/5 flex flex-col">
                 <div className="flex flex-row items-center justify-between">
-                    <Header title={'Collection'} subtitle={`${name}`} paragraph={false} />
+                    <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
                     <button
                         onClick={() => {
                             router

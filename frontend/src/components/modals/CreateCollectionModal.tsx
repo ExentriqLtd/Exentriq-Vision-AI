@@ -27,12 +27,14 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   useEffect(() => {
     if (isString(isRename) && isRename !== '') {
       setValue(isRename)
+    } else {
+      setValue('')
     }
   }, [isRename])
 
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Create new collection">
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Rename collection" : "Create new collection"}>
       <p className="mb-6 mt-2 text-sm text-gray-500">
         Enter the collection's name
       </p>
@@ -52,7 +54,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
           }}
           className="rounded bg-primary-ex px-4 py-2 font-bold text-white opacity-90 hover:opacity-100"
         >
-          Create
+          {isRename ? 'Save' : 'Create'}
         </button>
       </div>
     </Modal>
