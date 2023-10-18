@@ -30,7 +30,10 @@
 .border-primary-ex {
   border-color: #1bbc9b;
 }
-
+.ring-primary-ex {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(27 188 155 / var(--tw-ring-opacity));
+}
 .border-transparent {
   border-color: transparent;
 }

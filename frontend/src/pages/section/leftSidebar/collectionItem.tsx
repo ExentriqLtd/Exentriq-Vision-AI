@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { backendClient } from "~/api/backend";
 import { session } from "~/config";
+import { Menu, Transition } from "@headlessui/react";
+import classNames from "classnames";
 
 interface CollectionItemInt {
     name?: string;
@@ -12,19 +14,17 @@ interface CollectionItemInt {
     id?: string;
     key?: string;
     toggleModal?: any;
-    getCollections?: any;
     onRename?: (string: string) => {}
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections, onRename }: CollectionItemInt) => {
-    const [isMenuVisible, setIsMenuVisible] = useState(false)
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, onRename }: CollectionItemInt) => {
     const router = useRouter()
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
     const { collectionId } = stateUploadedFile;
+    const [confirmDelete, setConfirmDelete] = useState(false)
 
     const openCollection = () => {
-        setIsMenuVisible(false)
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
         backendClient
             .createConversation(id)
@@ -46,55 +46,133 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                 <div className="flex gap-5 items-center">
                     <span>{name}</span>
                 </div>
-                <span
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        setIsMenuVisible(!isMenuVisible);
-                        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
-                    }}
-                    className=" cursor-pointer  bg-gray-100 rounded-full p-0.5">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                        <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
-                    </svg>
-                </span>
-
-                {isMenuVisible && (
-                    <div className="bg-white absolute right-0 top-16 text-right py-2 px-3 shadow-md text-sm" style={{ zIndex: 99 }}>
-                        <p className="cursor-pointer"
+                <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                        <Menu.Button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setIsMenuVisible(false)
-                                router.push({
-                                    pathname: `/collection/${id}`,
-                                    query: session,
-                                })
-                                    .catch(() => console.log("error navigating to conversation"))
-                            }}>
-                            Collection
-                        </p>
-                        <p onClick={(e) => {
-                            e.stopPropagation();
-                            toggleModal();
-                            onRename(name)
-                            setIsMenuVisible(false)
-                        }} className="cursor-pointer">Rename</p>
-                        <p onClick={(e) => {
-                            e.stopPropagation();
-                            console.log(collectionId);
-                            backendClient.deleteCollection(collectionId)
-                                .then(() => {
-                                    router
-                                        .push({
-                                            pathname: `/`,
-                                            query: session,
-                                        })
-                                        .catch(() => console.log("error navigating to conversation"))
-                                    dispatchUploadedFile({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
-                                    setIsMenuVisible(false)
-                                })
-                        }} className="cursor-pointer">Delete</p>
+                                setConfirmDelete(false)
+                                dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+                            }}
+                            className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />
+                            </svg>
+                        </Menu.Button>
                     </div>
-                )}
+
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1">
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <a
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                router.push({
+                                                    pathname: `/collection/${id}`,
+                                                    query: session,
+                                                })
+                                                    .catch(() => console.log("error navigating to conversation"))
+                                            }}
+                                            className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                            )}
+                                        >
+                                            Collection
+                                        </a>
+                                    )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <a
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                toggleModal();
+                                                onRename(name)
+                                            }}
+                                            className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                            )}
+                                        >
+                                            Rename
+                                        </a>
+                                    )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <>
+                                            <a
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    setConfirmDelete(true)
+                                                }}
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                    'block px-4 py-2 text-sm'
+                                                )}
+                                            >
+                                                Delete
+                                            </a>
+                                            {confirmDelete && (
+                                                <div
+                                                    className={'block px-4 py-2 text-gray-900 text-sm border-t text-center'}
+                                                >
+                                                    Are you sure you want to delete the collection?
+                                                    <div className="flex mx-4 justify-between items-center pt-3">
+                                                        <button
+                                                            onClick={(e) => {
+                                                                e.stopPropagation();
+                                                                backendClient.deleteCollection(collectionId)
+                                                                    .then(() => {
+                                                                        router
+                                                                            .push({
+                                                                                pathname: `/`,
+                                                                                query: session,
+                                                                            })
+                                                                            .catch(() => console.log("error navigating to conversation"))
+                                                                        dispatchUploadedFile({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
+                                                                    })
+                                                            }}
+                                                            type="button"
+                                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                        >
+                                                            Yes
+                                                        </button>
+                                                        <button
+                                                            onClick={(e) => {
+                                                                console.log('onclick')
+                                                                e.stopPropagation();
+                                                                setConfirmDelete(false)
+                                                            }}
+                                                            type="button"
+                                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-red-400 shadow-sm ring-1 ring-inset ring-red-400 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                        >
+                                                            No
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </>
+                                    )}
+
+                                </Menu.Item>
+
+
+                            </div>
+                        </Menu.Items>
+                    </Transition>
+                </Menu>
             </div>
         </li>
     );
