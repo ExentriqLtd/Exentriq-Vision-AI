@@ -116,7 +116,6 @@ class BackendClient {
 
 
     const dataResult = (await res.json());
-    console.log('DATA', dataResult);
     return dataResult;
   }
 
@@ -126,7 +125,24 @@ class BackendClient {
     const res = await this.post(endpoint, payload);
     
     const data = (await res.json());
-    console.log('DATA', data);
+    return data;
+  }
+
+  public async deleteCollection(id: string): Promise<string> {
+    const endpoint = "api/collections/delete";
+    const payload = { session, id };
+    const res = await this.post(endpoint, payload);
+    
+    const data = (await res.json());
+    return data;
+  }
+
+  public async renameCollection(id: string, name: string): Promise<string> {
+    const endpoint = "api/collections/rename";
+    const payload = { session, id, name };
+    const res = await this.post(endpoint, payload);
+    
+    const data = (await res.json());
     return data;
   }
 

@@ -10,9 +10,11 @@ interface CollectionItemInt {
     created_at?: string;
     id?: string;
     key?: string;
+    toggleModal?: any;
+    getCollections?: any;
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections}: CollectionItemInt) => {
     const [isMenuVisible, setIsMenuVisible] = useState(false)
     const router = useRouter()
     //@ts-ignore
@@ -61,8 +63,19 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id }: C
                             }}>
                             Collection
                         </p>
-                        {/* <p className="cursor-pointer">Rename</p>
-                        <p className="cursor-pointer">Delete</p> */}
+                        <p onClick={(e) => {
+                            e.stopPropagation();
+                            toggleModal();
+                        }} className="cursor-pointer">Rename</p>
+                        <p onClick={(e) => {
+                            e.stopPropagation();
+                            console.log(collectionId);
+                            backendClient.deleteCollection(collectionId)
+                            .then(() => {
+                                console.log('cancellata, gestire refresh');
+                                getCollections();
+                            })
+                            }} className="cursor-pointer">Delete</p>
                     </div>
                 )}
             </div>

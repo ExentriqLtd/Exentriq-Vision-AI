@@ -81,7 +81,9 @@ const CollectionList: React.FC = () => {
               <CollectionItem
                 name={collection?.name}
                 created_at={collection?.created_at}
-                id={collection?.uuid} />
+                id={collection?.uuid}
+                toggleModal={toggleCollectionModal}
+                getCollections={getCollections} />
             );
           })}
         </ul>
