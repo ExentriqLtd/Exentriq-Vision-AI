@@ -14,6 +14,7 @@ const CollectionList: React.FC = () => {
   const [isRename, setIsRename] = useState<String | undefined>(undefined);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
+  const { collectionId } = stateUploadedFile;
   const router = useRouter()
 
   async function getCollections() {
@@ -28,7 +29,6 @@ const CollectionList: React.FC = () => {
   useEffect(() => {
     if (isEmpty(availableCollections)) return;
     if (newCollectionActive) {
-      console.log('prova', first(availableCollections));
       const firstEl = first(availableCollections);
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
       router
@@ -42,7 +42,7 @@ const CollectionList: React.FC = () => {
 
   const createCollection = (name: string) => {
     if (!name) return;
-    setNewCollectionActive(true)
+    setNewCollectionActive(true);
     backendClient.createCollection(name)
       .then(() => {
         toggleCollectionModal()
@@ -50,6 +50,14 @@ const CollectionList: React.FC = () => {
       })
   }
 
+  const renameCollection = (name: string) => {
+    if (!name) return;
+    backendClient.renameCollection(collectionId, name)
+      .then(() => {
+        toggleCollectionModal()
+        getCollections()
+      })
+  }
 
   const onRename = (val: string) => {
     setIsRename(val)
@@ -61,7 +69,7 @@ const CollectionList: React.FC = () => {
         isOpen={isCollectionModalOpen}
         isRename={isRename}
         toggleModal={toggleCollectionModal}
-        onClick={createCollection}
+        onClick={isRename ? renameCollection : createCollection}
       />
       <div className="w-1/5 bg-gray-100 relative p-4 rounded-l-lg flex flex-col">
         {/* <input type="text" name="search" id="pricsearche"
