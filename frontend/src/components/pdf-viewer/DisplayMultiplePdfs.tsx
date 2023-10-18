@@ -34,11 +34,14 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
             {/* TODO: SetClose qui? Da grafiche l'header della chat sparisce. Da fare appena sistemiamo la chat */}
           </div>
           {pdfs.map((file, index) => (
-            <div key={index}>
+            <div style={{ paddingBottom: 4 }} className={`border ${isActivePdf(file)
+              ? "border-l-0 bg-gray-pdf"
+              : "bg-white font-light text-gray-60 "
+              }`} key={index}>
               <button
                 onClick={() => handlePdfFocus(file)}
-                className={`group flex h-[80px] w-[80px] justify-start border px-2 py-1 font-nunito text-xs font-bold ${isActivePdf(file)
-                  ? "border-l-0 bg-gray-pdf"
+                className={`group overflow-hidden flex h-[85px] justify-center px-2 py-1 font-nunito text-xs font-bold ${isActivePdf(file)
+                  ? "border-l-0 bg-white-pdf"
                   : "bg-white font-light text-gray-60 "
                   }`}
               >
@@ -55,16 +58,16 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
                   className={`flex flex-col items-start justify-start`}
                 >
                   {/* <div>{file.ticker}</div> */}
-                  <div className="text-left">
+                  <div className="text-left" style={{ overflowWrap: 'anywhere' }}>
                     {file?.filename}
                     {/* {file.year} {file.quarter && `Q${file.quarter}`} */}
                   </div>
                 </div>
               </button>
-      </div>
+            </div>
           ))}
-      <div className="h-max w-[80px] flex-grow overflow-hidden border-l"></div>
-    </div >
+          <div className="h-max w-[80px] flex-grow overflow-hidden border-l"></div>
+        </div >
       </div >
     </>
   );

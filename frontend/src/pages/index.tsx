@@ -147,7 +147,7 @@ const LandingPage: NextPage = () => {
                   focus-visible:outline-2 
                   focus-visible:outline-offset-2 
                   focus-visible:outline-indigo-600">
-                  Let's go
+                  Start conversation
                 </button>
               </>
             )}
