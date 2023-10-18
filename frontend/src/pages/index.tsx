@@ -15,7 +15,7 @@ import { session } from "~/config";
 const LandingPage: NextPage = () => {
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const { arrayFileUploaded, collectionId } = stateUploadedFile;
+  const { arrayFileUploaded, collectionId, goToUpload } = stateUploadedFile;
   const [isUploading, setIsUploading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -59,6 +59,9 @@ const LandingPage: NextPage = () => {
 
   useEffect(() => {
     dispatchUploadedFile({ type: 'SET_EMPTY_ARRAY_FILES' })
+    return () => {
+     dispatchUploadedFile({type: 'SET_GO_TO_UPLOAD', payload: {goToUpload: false}})
+    }
   }, [])
 
 
@@ -74,7 +77,7 @@ const LandingPage: NextPage = () => {
           subtitle={'Vision AI'}
           collectionId={collectionId}
           colorSubtitlePrimary={true} />
-        {collectionId && (
+        {(collectionId && goToUpload) && (
           <>
             <DragAndDrop onUpload={handleUpload} />
             {/* <div className="my-6 w-2/3 flex flex-col items-center">

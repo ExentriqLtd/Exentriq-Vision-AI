@@ -32,6 +32,7 @@ const CollectionList: React.FC = () => {
     if (newCollectionActive) {
       const firstEl = first(availableCollections);
       dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
+      dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
       router
         .push({
           pathname: `/`,

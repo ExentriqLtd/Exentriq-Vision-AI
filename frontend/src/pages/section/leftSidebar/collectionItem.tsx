@@ -13,7 +13,7 @@ interface CollectionItemInt {
     key?: string;
     toggleModal?: any;
     getCollections?: any;
-    onRename?: (string: boolean) => {}
+    onRename?: (string: string) => {}
 }
 
 const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, getCollections, onRename }: CollectionItemInt) => {
@@ -47,7 +47,11 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                     <span>{name}</span>
                 </div>
                 <span
-                    onClick={(e) => { e.stopPropagation(); setIsMenuVisible(!isMenuVisible) }}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsMenuVisible(!isMenuVisible);
+                        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+                    }}
                     className=" cursor-pointer  bg-gray-100 rounded-full p-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
                         <path d="M10 3a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM10 8.5a1.5 1.5 0 110 3 1.5 1.5 0 010-3zM11.5 15.5a1.5 1.5 0 10-3 0 1.5 1.5 0 003 0z" />

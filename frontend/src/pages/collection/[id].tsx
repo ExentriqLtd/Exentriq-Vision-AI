@@ -87,6 +87,7 @@ const Collection: NextPage = () => {
                 <button
                     onClick={() => {
                         console.log('goback');
+                        dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                         router
                             .push({
                                 pathname: `/`,

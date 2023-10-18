@@ -52,6 +52,11 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 arrayFileUploaded: []
             };
+        case 'SET_GO_TO_UPLOAD':
+            return {
+                ...state,
+                goToUpload: action?.payload?.goToUpload
+            };
         case 'UPLOADEDFILE_RESET':
             return {
                 ...initialState,
@@ -65,4 +70,5 @@ export const initialState = {
     filesUploaded: null,
     arrayFileUploaded: [],
     collectionId: '',
+    goToUpload: false,
 };
