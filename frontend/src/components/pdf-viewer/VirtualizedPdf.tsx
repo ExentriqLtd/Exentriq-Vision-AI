@@ -135,7 +135,7 @@ const PageRenderer: React.FC<PageRenderer> = ({
     [showPageCanvas, listWidth]
   );
 
-  const documentFocused = pdfFocusState.documentId === file.id;
+  const documentFocused = pdfFocusState.documentId === file.file_id;
 
   useEffect(() => {
     maybeHighlight();
@@ -143,9 +143,13 @@ const PageRenderer: React.FC<PageRenderer> = ({
 
   const maybeHighlight = useCallback(
     debounce(() => {
+
+      console.log('pdfFocusState.citation?.pageNumber --->', pdfFocusState.citation?.pageNumber);
+      console.log('deve essere true, ma perché? --->', pdfFocusState.citation?.pageNumber === pageNumber + 1 );
+
       if (
         documentFocused &&
-        pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
+        // pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
         !isHighlighted
       ) {
         multiHighlight(
@@ -262,6 +266,7 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
     }: {
       pageNumber: number;
     }) => {
+      console.log('onItemClick PageNumber', itemPageNumber);
       const fixedPosition =
         itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
       if (listRef.current) {
@@ -279,6 +284,8 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
         </div>
       );
     };
+
+    console.log('PDF CHE VIENE RENDERIZZATO LO VEDO DA QUI --->', pdf);
 
     return (
       <div
@@ -306,12 +313,12 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
                 <PageRenderer
                   file={file}
                   key={`page-${index}`}
-                  pageNumber={index}
+                  pageNumber={index} //TODO: perché index?
                   style={style}
                   scale={scale}
                   listWidth={newWidthPx}
                   setPageInView={setIndex}
-                />
+                />                
               )}
             </List>
           ) : null}

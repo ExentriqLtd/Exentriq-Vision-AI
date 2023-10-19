@@ -25,7 +25,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
     const [confirmDelete, setConfirmDelete] = useState(false)
 
     const openCollection = () => {
-        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         backendClient
             .createConversation(id)
             .then((newConversationId) => {

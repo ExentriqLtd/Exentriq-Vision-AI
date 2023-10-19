@@ -15,7 +15,7 @@ export const useMultiplePdfs = (pdfs: SecDocument[]) => {
   useEffect(() => {
     if (pdfFocusState.documentId) {
       const selectedPdf = pdfs.find(
-        (doc) => doc.uuid == pdfFocusState.documentId
+        (doc) => doc.file_id == pdfFocusState.documentId
       );
       if (selectedPdf) {
         setActivePdfUrl(selectedPdf.url);

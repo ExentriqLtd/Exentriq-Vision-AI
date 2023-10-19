@@ -52,6 +52,7 @@ export default function Conversation() {
     if (id && typeof id === "string") {
       setConversationId(id);
     }
+    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } });
   }, [id]);
 
   useEffect(() => {
@@ -178,7 +179,7 @@ export default function Conversation() {
         <div className="flex h-[100vh] items-center w-full">
           <div className="flex h-[100vh] flex-col items-center bg-white w-full">
             <div className="flex h-[44px] w-full items-center justify-between border-b ">
-              <div className="flex w-full items-center justify-between">
+              <div className="flex w-full items-center justify-end p-2">
                 {/* <button
                       onClick={() => {
                         router
@@ -200,8 +201,7 @@ export default function Conversation() {
                   onClick={toggleIsViewer}
                   className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
                 >
-                  <div className="text-xs font-medium">OpenPDF</div>
-                  <FiShare className="ml-1" size={12} />
+                  <div className="text-xs font-medium">{isPdfViewerOpen ? "Close PDF" : "Open PDF"}</div>
                 </button>
               </div>
             </div>
