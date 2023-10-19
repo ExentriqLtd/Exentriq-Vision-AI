@@ -76,6 +76,11 @@ const CollectionList: React.FC = () => {
     if (value.length >= 3) {
       console.log('Eseguire la ricerca per:', value);
       getCollections(value);
+    } 
+
+    if(value.length == 0) {
+      console.log('------> 0');
+      getCollections('');
     }
   }, 1000); 
 
