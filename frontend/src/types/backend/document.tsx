@@ -5,7 +5,8 @@ export enum BackendDocumentType {
 
 export interface BackendDocument {
   created_at: string;
-  id: string;
+  file_id: string;
+  uuid: string;
   updated_at: string;
   metadata_map: BackendMetadataMap;
   url: string;

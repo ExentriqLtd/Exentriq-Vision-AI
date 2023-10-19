@@ -37,7 +37,7 @@ const usePDFViewer = (file: SecDocument) => {
 
   useEffect(() => {
     const activeDocumentId = pdfFocusState.documentId;
-    if (activeDocumentId === file.id) {
+    if (activeDocumentId === file.uuid) {
       if (pdfFocusState.pageNumber) {
         goToPage(pdfFocusState.pageNumber - 1);
       }

@@ -13,13 +13,19 @@ import { AiFillExclamationCircle } from "react-icons/ai";
 import type { SecDocument } from "~/types/document";
 import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 interface CitationDisplayProps {
   citation: Citation;
 }
 const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
   const { setPdfFocusState } = usePdfFocus();
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
+  const { isPdfViewerOpen } = stateUploadedFile;
+
   const handleCitationClick = (documentId: string, pageNumber: number) => {
+    console.log('SET PDF', documentId, pageNumber, citation);
+    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
     setPdfFocusState({ documentId, pageNumber, citation });
   };
 
@@ -135,7 +141,7 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                                 (citation, citationIndex) => {
                                   // get snippet and dispaly date from documentId
                                   const citationDocument = documents.find(
-                                    (doc) => doc.id === citation.document_id
+                                    (doc) => doc.file_id === citation.document_id
                                   );
                                   if (!citationDocument) {
                                     return;
@@ -150,10 +156,11 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                                       citation={
                                         {
                                           documentId: citation.document_id,
+                                          uuid: citationDocument.uuid,
                                           snippet: citation.text,
                                           pageNumber: citation.page_number,
                                           ticker: citationDocument?.ticker,
-                                          displayDate: yearDisplay,
+                                          displayDate: citationDocument.filename,
                                           color: citationDocument.color,
                                         } as Citation
                                       }
@@ -248,6 +255,8 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
 
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
+
+  console.log('DOCUMENTS--->', documents);
 
   useEffect(() => {
     if (isMessageSuccessful) {

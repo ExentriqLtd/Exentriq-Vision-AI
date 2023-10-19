@@ -10,7 +10,7 @@ import type { Message } from "~/types/conversation";
 import useMessages from "~/hooks/useMessages";
 import { backendClient } from "~/api/backend";
 import { RenderConversations as RenderConversations } from "~/components/conversations/RenderConversations";
-import { BiArrowBack } from "react-icons/bi";
+import { BiArrowBack, BiCurrentLocation } from "react-icons/bi";
 import { SecDocument } from "~/types/document";
 import { FiShare } from "react-icons/fi";
 import ShareLinkModal from "~/components/modals/ShareLinkModal";
@@ -18,6 +18,7 @@ import { BsArrowUpCircle } from "react-icons/bs";
 import { useModal } from "~/hooks/utils/useModal";
 import { useIntercom } from "react-use-intercom";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 export default function Conversation() {
   const router = useRouter();
@@ -32,7 +33,9 @@ export default function Conversation() {
     useModal();
 
   const { isMobile } = useIsMobile();
-  const [isPdfViewerOpen, setPdfViewer] = useState(false);
+  // const [isPdfViewerOpen, setPdfViewer] = useState(false);
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
+  const { isPdfViewerOpen } = stateUploadedFile;
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
@@ -139,7 +142,8 @@ export default function Conversation() {
   }, []);
 
   const toggleIsViewer = () => {
-    setPdfViewer(current => !current);
+    console.log('CURRENT', isPdfViewerOpen);
+    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
   };
 
   if (isMobile) {

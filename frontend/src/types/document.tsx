@@ -21,7 +21,7 @@ export interface SecDocument extends Ticker {
   created_at: string;
   file_id: string;
   filename: string;
-  id: string;
+  uuid: string;
   space_id: string;
   status: string;
   url: string;

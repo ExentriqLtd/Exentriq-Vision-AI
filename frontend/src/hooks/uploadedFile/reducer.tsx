@@ -8,6 +8,7 @@ interface stateReducer {
     arrayFileUploaded: [];
     collectionId: string;
     arrayCollections: [];
+    isPdfViewerOpen: boolean;
 }
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
@@ -84,6 +85,11 @@ export const reducer = (state: stateReducer, action: action) => {
             return {
                 ...initialState,
             };
+        case 'SET_PDF_VIEWER':
+            return {
+                ...state,
+                isPdfViewerOpen: action.payload.isPdfViewerOpen
+            };
         default:
             return state;
     }
@@ -95,4 +101,5 @@ export const initialState = {
     arrayCollections: [],
     collectionId: '',
     goToUpload: false,
+    isPdfViewerOpen: false,
 };

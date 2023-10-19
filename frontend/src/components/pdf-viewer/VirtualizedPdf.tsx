@@ -161,7 +161,7 @@ const PageRenderer: React.FC<PageRenderer> = ({
 
   return (
     <div
-      key={`${file.id}-${pageNumber}`}
+      key={`${file.uuid}-${pageNumber}`}
       ref={setRefs}
       style={{
         ...style,
@@ -197,6 +197,7 @@ export interface PdfFocusHandler {
 // eslint-disable-next-line react/display-name
 const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
   ({ file, scale, setIndex, setScaleFit, setNumPages }, ref) => {
+    
     const windowWidth = useWindowWidth();
     const windowHeight = useWindowHeight();
     const height = (windowHeight || 0) - PDF_HEADER_SIZE_PX;
@@ -284,7 +285,7 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
         className={`relative h-[calc(100vh-44px)] w-full border-gray-pdf bg-gray-pdf`}
       >
         <Document
-          key={file.id}
+          key={file.uuid}
           onItemClick={onItemClick}
           file={file.url}
           onLoadSuccess={onDocumentLoadSuccess}

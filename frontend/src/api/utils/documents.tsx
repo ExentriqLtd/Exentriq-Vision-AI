@@ -19,7 +19,8 @@ export const fromBackendDocumentToFrontend = (
     const filename = backendDoc?.filename?.replace('.pdf', '').replace('.PDF', '')
     // const colorIndex = index < 10 ? index : 0;
     const payload = {
-      id: backendDoc.id,
+      uuid: backendDoc.uuid,
+      file_id: backendDoc.file_id,
       url: backendDoc.url,
       filename
       // ticker: backendDoc.metadata_map.sec_document.company_ticker,
