@@ -117,6 +117,19 @@ class BackendClient {
     return dataResult;
   }
 
+  public async uploadFileFromDrive(file: any, collectionId: string): Promise<object> {
+    const endpoint = `api/collections/uploadFromDrive`;
+    console.log('collectionId', collectionId);
+    const payload = {
+      collectionId,
+      session
+    }
+    const res = await this.post(endpoint, payload);
+
+    const data = (await res.json());
+    return data;
+  }
+
   public async createCollection(name: string): Promise<string> {
     const endpoint = "api/collections/create";
     const payload = { session, name };

@@ -6,40 +6,64 @@ import Header from "./section/header";
 import { useRouter } from "next/router";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { session } from "~/config";
+import { generateUniqueId } from "~/utils/utility";
+import { backendClient } from "~/api/backend";
 
 const ChooseFromFolder: NextPage = () => {
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const { collectionId } = stateUploadedFile;
   const [uploadProgress, setUploadProgress] = useState(0);
   const [openPicker, authResponse] = useDrivePicker();
   const router = useRouter();
 
+  const handleUpload = (files: File[]) => {
+    try {
+      files?.map((file) => {
+        file.status = 'in progess'
+        const uuId = generateUniqueId();
+        file.id = uuId;
+        dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
+        backendClient.uploadFileFromDrive(file, collectionId)
+          .then((res) => {
+            dispatchUploadedFile({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
+          });
+      })
+    } catch (error) {
+      console.log(error);
+    } finally {
+      // setIsUploading(false);
+    }
+  };
+
   const handleOpenPicker = () => {
     openPicker({
-      clientId: "841515951225-t0foo58s6s8jt6oafvgi0e9dcfn3e22i.apps.googleusercontent.com",
+      clientId: "841515951225.apps.googleusercontent.com",
       developerKey: "AIzaSyApUTcsAu8uKlekoLbjT5L8GroNFYDkhuw",
       viewId: "DOCS",
-      // token: token, // pass oauth token in case you already have one
+      token: 'ya29.GlvsBm4Ds8sO8MHXPfQsrltV-ZvR0Toom68J_QdTrxmDr96QtXNThg57xazMIXT2hQpOkQPzSAOUBnN-b-pFRHwDbmAirmtsfpe9xoAJ0Ris3Cly0UEDnocMra09', // pass oauth token in case you already have one
       showUploadView: true,
       showUploadFolders: true,
       supportDrives: true,
       multiselect: true,
-      setIncludeFolders: true,
+      // setIncludeFolders: true,
       setSelectFolderEnabled: true,
       // customViews: customViewsArray, // custom view
       callbackFunction: (data) => {
         if (data.action === 'cancel') {
           console.log('User clicked cancel/close button')
         }
+        console.log('data::choose::',data)
         if (data?.docs) {
           const newData = data?.docs?.map((doc: any) => ({ ...doc, lastModified: doc?.lastEditedUtc }))
-          dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newData } })
+          handleUpload(newData)
           router
             .push({
               pathname: `/`,
               query: session,
             })
             .catch(() => console.log("error navigating to conversation"))
+          dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
         }
       },
     })
@@ -49,7 +73,7 @@ const ChooseFromFolder: NextPage = () => {
     <>
 
       <div className="mt-3 mx-6 w-4/5 flex flex-col">
-        <Header title={'Choose from folder'} subtitle={'Data Sources'} paragraph={false} />
+        <Header title={'Choose from other data source'} subtitle={'Data Sources'} paragraph={false} />
         <div
           className="
             block
@@ -77,7 +101,7 @@ const ChooseFromFolder: NextPage = () => {
           </div>
           <button className="underline" onClick={() => handleOpenPicker()}>Open folder</button>
         </div>
-        <div
+        {/* <div
           className="
             block
             w-full
@@ -103,10 +127,13 @@ const ChooseFromFolder: NextPage = () => {
             <p className="px-2">Exentriq Document Manager Folder</p>
           </div>
           <button className="underline" onClick={() => { }}>Open folder</button>
-        </div>
+        </div> */}
         <button
           onClick={() => router
-            .push(`/`)
+            .push({
+              pathname: `/`,
+              query: session,
+            })
             .catch(() => console.log("error navigating to conversation"))}
           className="
               block 
