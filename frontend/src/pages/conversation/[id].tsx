@@ -143,7 +143,6 @@ export default function Conversation() {
   }, []);
 
   const toggleIsViewer = () => {
-    console.log('CURRENT', isPdfViewerOpen);
     dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
   };
 

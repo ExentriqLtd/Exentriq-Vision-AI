@@ -24,7 +24,6 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
   const { isPdfViewerOpen } = stateUploadedFile;
 
   const handleCitationClick = (documentId: string, pageNumber: number) => {
-    console.log('SET PDF', documentId, pageNumber, citation);
     dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
     setPdfFocusState({ documentId, pageNumber, citation });
   };
@@ -256,7 +255,6 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
 
-  console.log('DOCUMENTS--->', documents);
 
   useEffect(() => {
     if (isMessageSuccessful) {

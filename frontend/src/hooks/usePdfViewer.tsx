@@ -40,7 +40,8 @@ const usePDFViewer = (file: SecDocument) => {
   
     if (activeDocumentId === file.file_id) {
       if (pdfFocusState.pageNumber) {
-        goToPage(pdfFocusState.pageNumber - 1);
+        //il pageNumber arriva corretto non sembra necessario mettere -1 (bisogna capire il perché buildando l'originale)
+        goToPage(pdfFocusState.pageNumber);
       }
     }
   }, [file, pdfFocusState]);

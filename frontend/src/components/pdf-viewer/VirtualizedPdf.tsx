@@ -143,10 +143,6 @@ const PageRenderer: React.FC<PageRenderer> = ({
 
   const maybeHighlight = useCallback(
     debounce(() => {
-
-      console.log('pdfFocusState.citation?.pageNumber --->', pdfFocusState.citation?.pageNumber);
-      console.log('deve essere true, ma perché? --->', pdfFocusState.citation?.pageNumber === pageNumber + 1 );
-
       if (
         documentFocused &&
         // pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
@@ -201,7 +197,6 @@ export interface PdfFocusHandler {
 // eslint-disable-next-line react/display-name
 const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
   ({ file, scale, setIndex, setScaleFit, setNumPages }, ref) => {
-    
     const windowWidth = useWindowWidth();
     const windowHeight = useWindowHeight();
     const height = (windowHeight || 0) - PDF_HEADER_SIZE_PX;
@@ -266,12 +261,17 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
     }: {
       pageNumber: number;
     }) => {
-      console.log('onItemClick PageNumber', itemPageNumber);
-      const fixedPosition =
-        itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
-      if (listRef.current) {
-        listRef.current.scrollTo(fixedPosition);
-      }
+
+      //TODO: il listRef.current viene valorizzato in seguito qui arriva null. Bisogna buildare l'originale e capire
+        setTimeout(() => {
+          const fixedPosition =
+            itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
+          if (listRef.current) {
+            listRef.current.scrollTo(fixedPosition);
+          } else {
+            onItemClick({pageNumber: itemPageNumber});
+          }
+        }, 1000);
     };
 
     const loadingDiv = () => {
@@ -284,8 +284,6 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
         </div>
       );
     };
-
-    console.log('PDF CHE VIENE RENDERIZZATO LO VEDO DA QUI --->', pdf);
 
     return (
       <div
