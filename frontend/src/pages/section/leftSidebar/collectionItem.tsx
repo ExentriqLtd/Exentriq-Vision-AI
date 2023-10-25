@@ -77,6 +77,27 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
+                                                dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                                router.push({
+                                                    pathname: `/`,
+                                                    query: session,
+                                                })
+                                                    .catch(() => console.log("error navigating to upload"))
+                                            }}
+                                            className={classNames(
+                                                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                'block px-4 py-2 text-sm'
+                                            )}
+                                        >
+                                            Upload
+                                        </a>
+                                    )}
+                                </Menu.Item>
+                                <Menu.Item>
+                                    {({ active }) => (
+                                        <a
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 router.push({
                                                     pathname: `/collection/${id}`,
                                                     query: session,
@@ -167,8 +188,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                     )}
 
                                 </Menu.Item>
-
-
                             </div>
                         </Menu.Items>
                     </Transition>

@@ -38,32 +38,62 @@ const Collection: NextPage = () => {
             <div className="mt-3 mx-6 w-4/5 flex flex-col">
                 <div className="flex flex-row items-center justify-between">
                     <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
-                    <button
-                        onClick={() => {
-                            router
-                                .push({
-                                    pathname: `/conversation/${id}`,
-                                    query: session,
-                                })
-                                .catch(() => console.log("error navigating to conversation"));
-                        }}
-                        className="
-                        block 
-                        rounded-sm 
-                        bg-primary-ex 
-                        px-3.5 
-                        py-2.5 
-                        text-center 
-                        text-sm 
-                        text-white 
-                        shadow-md 
-                        hover:bg-primary-ex 
-                        focus-visible:outline 
-                        focus-visible:outline-2 
-                        focus-visible:outline-offset-2 
-                        focus-visible:outline-indigo-600">
-                        Go to conversation
-                    </button>
+                    <div className="flex flex-row items-center gap-3">
+                        <button
+                            onClick={() => {
+                                router
+                                    .push({
+                                        pathname: `/conversation/${id}`,
+                                        query: session,
+                                    })
+                                    .catch(() => console.log("error navigating to conversation"));
+                            }}
+                            className="
+                            block 
+                            rounded-sm 
+                            bg-primary-ex 
+                            px-3.5 
+                            py-2.5 
+                            text-center 
+                            text-sm 
+                            text-white 
+                            shadow-md 
+                            hover:bg-primary-ex 
+                            focus-visible:outline 
+                            focus-visible:outline-2 
+                            focus-visible:outline-offset-2 
+                            focus-visible:outline-indigo-600">
+                            Go to conversation
+                        </button>
+                        <button
+                            onClick={() => {
+                                console.log('goback');
+                                dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                router
+                                    .push({
+                                        pathname: `/`,
+                                        query: session,
+                                    })
+                                    .catch(() => console.log("error navigating to conversation"))
+                            }}
+                            className="
+                            block 
+                            rounded-sm 
+                            bg-primary-ex 
+                            px-3.5 
+                            py-2.5 
+                            text-center 
+                            text-sm 
+                            text-white 
+                            shadow-md 
+                            hover:bg-primary-ex 
+                            focus-visible:outline 
+                            focus-visible:outline-2 
+                            focus-visible:outline-offset-2 
+                            focus-visible:outline-indigo-600">
+                            Go to upload
+                        </button>
+                    </div>
                 </div>
                 <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
                     <div className="rounded-md overflow-auto">
@@ -86,35 +116,6 @@ const Collection: NextPage = () => {
                         </table>
                     </div>
                 </div>
-                <button
-                    onClick={() => {
-                        console.log('goback');
-                        dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
-                        router
-                            .push({
-                                pathname: `/`,
-                                query: session,
-                            })
-                            .catch(() => console.log("error navigating to conversation"))
-                    }}
-                    className="
-                    block 
-                    w-full
-                    rounded-sm 
-                    bg-primary-ex 
-                    px-3.5 
-                    py-2.5 
-                    text-center 
-                    text-sm 
-                    text-white 
-                    shadow-md 
-                    hover:bg-primary-ex 
-                    focus-visible:outline 
-                    focus-visible:outline-2 
-                    focus-visible:outline-offset-2 
-                    focus-visible:outline-indigo-600">
-                    Go to upload
-                </button>
             </div>
         </>
     );
