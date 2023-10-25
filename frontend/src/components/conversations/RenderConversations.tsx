@@ -45,7 +45,7 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[10px]">p. {citation.pageNumber}</div>
       </div>
-      <p className="line-clamp-2 text-[10px] font-light leading-3">
+      <p className="line-clamp-4 text-[10px] font-light leading-3">
         {citation.snippet}
       </p>
     </div>
@@ -127,15 +127,15 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                       >
                         Generated Sub Query #{subQuestionIndex + 1}{" "}
                         <div className="flex w-11/12 flex-col rounded border">
-                          <div className="rounded-t border-b bg-gray-00 p-2 font-bold text-gray-90">
+                          <div className="rounded-t border-b bg-gray-00 p-2 font-bold mb-2 text-gray-90">
                             {subQuestion.question}
                           </div>
-                          <div className="overflow-scroll p-2 text-[11px] font-light">
+                          {/* <div className="overflow-scroll p-2 text-[11px] font-light">
                             {subQuestion.answer}
-                          </div>
+                          </div> */}
 
                           {hasCitations && (
-                            <div className=" mr-2 flex w-full overflow-x-scroll pl-2 ">
+                            <div className=" mr-2 w-full pl-2 ">
                               {subQuestion.citations?.map(
                                 (citation, citationIndex) => {
                                   // get snippet and dispaly date from documentId
