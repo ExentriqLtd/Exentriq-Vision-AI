@@ -305,7 +305,7 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
                 <PageRenderer
                   file={file}
                   key={`page-${index}`}
-                  pageNumber={index} //TODO: perché index?
+                  pageNumber={index} 
                   style={style}
                   scale={scale}
                   listWidth={newWidthPx}

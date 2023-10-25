@@ -13,12 +13,13 @@ interface CollectionItemInt {
     name?: string;
     created_at?: string;
     id?: string;
+    doc_number: number;
     key?: string;
     toggleModal?: any;
     onRename?: (string: string) => {}
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, onRename }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, doc_number, onRename }: CollectionItemInt) => {
     const router = useRouter()
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
@@ -46,7 +47,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                 <p className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
                 <div className="flex flex-1 justify-end items-start w-full pr-1.5">
                     <p className="text-sm"><HiDocument color="#D6D9DF" /></p>
-                    <p className="text-gray-300 text-xs">3</p>
+                    <p className="text-gray-300 text-xs">{doc_number}</p>
                 </div>
             </div>
             <div className="flex pt-1 justify-between items-center w-full">

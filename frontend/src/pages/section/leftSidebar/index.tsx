@@ -129,6 +129,7 @@ const CollectionList: React.FC = () => {
               <li key={index}>
                 <CollectionItem
                   name={collection?.name}
+                  doc_number={collection?.doc_number}
                   created_at={collection?.created_at}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
