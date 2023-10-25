@@ -207,7 +207,7 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-              <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+              <div className="flex border-l h-[100vh] max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
                 <RenderConversations
                   messages={messages}
                   documents={selectedDocuments}
