@@ -261,17 +261,11 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
     }: {
       pageNumber: number;
     }) => {
-
-      //TODO: il listRef.current viene valorizzato in seguito qui arriva null. Bisogna buildare l'originale e capire
-        setTimeout(() => {
-          const fixedPosition =
-            itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
-          if (listRef.current) {
-            listRef.current.scrollTo(fixedPosition);
-          } else {
-            onItemClick({pageNumber: itemPageNumber});
-          }
-        }, 1000);
+      const fixedPosition =
+        itemPageNumber * (windowHeight + VERTICAL_GUTTER_SIZE_PX) * scale;
+      if (listRef.current) {
+        listRef.current.scrollTo(fixedPosition);
+      }
     };
 
     const loadingDiv = () => {

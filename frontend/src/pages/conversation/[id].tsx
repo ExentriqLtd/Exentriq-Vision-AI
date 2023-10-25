@@ -204,35 +204,34 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-            {!isPdfViewerOpen ?
-              <>
-                <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
-                  <RenderConversations
-                    messages={messages}
-                    documents={selectedDocuments}
-                  />
-                </div>
-                <div className="relative flex h-[70px] w-[44vw] w-full items-center">
-                  <textarea
-                    ref={textFocusRef}
-                    rows={1}
-                    className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
-                    placeholder={"Start typing your question..."}
-                    value={userMessage}
-                    onChange={handleTextChange}
-                  />
-                  <button
-                    disabled={isMessagePending || userMessage.length === 0}
-                    onClick={submit}
-                    className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
-                  >
-                    <BsArrowUpCircle size={24} />
-                  </button>
-                </div>
-              </>
-              :
+            <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }}>
+              <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+                <RenderConversations
+                  messages={messages}
+                  documents={selectedDocuments}
+                />
+              </div>
+              <div className="relative flex h-[70px] w-[44vw] w-full items-center">
+                <textarea
+                  ref={textFocusRef}
+                  rows={1}
+                  className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
+                  placeholder={"Start typing your question..."}
+                  value={userMessage}
+                  onChange={handleTextChange}
+                />
+                <button
+                  disabled={isMessagePending || userMessage.length === 0}
+                  onClick={submit}
+                  className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
+                >
+                  <BsArrowUpCircle size={24} />
+                </button>
+              </div>
+            </div>
+            <div style={{ display: isPdfViewerOpen ? 'flex' : 'none' }} className="w-full">
               <DisplayMultiplePdfs pdfs={selectedDocuments} />
-            }
+            </div>
           </div>
           <ShareLinkModal
             isOpen={isShareModalOpen}
