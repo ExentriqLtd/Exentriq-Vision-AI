@@ -37,6 +37,7 @@ export interface Message extends hasId {
   role: ROLE;
   status: MESSAGE_STATUS;
   conversationId: string;
+  documents?: [];
   sub_processes?: MessageSubProcess[];
   created_at: Date;
 }
@@ -65,7 +66,7 @@ export interface SubQuestion {
 
 export interface BackendCitation {
   document_id: string;
-  page_number: number;
+  pageNumber: number;
   score: number;
   text: string;
 }

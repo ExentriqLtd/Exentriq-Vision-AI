@@ -262,7 +262,7 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
       pageNumber: number;
     }) => {
       const fixedPosition =
-        itemPageNumber * (windowHeight + VERTICAL_GUTTER_SIZE_PX) * scale;
+        itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
       if (listRef.current) {
         listRef.current.scrollTo(fixedPosition);
       }

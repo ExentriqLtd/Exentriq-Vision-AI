@@ -3,6 +3,8 @@ import { useMultiplePdfs } from "../../hooks/useMultiplePdfs";
 import type { SecDocument } from "~/types/document";
 import cx from "classnames";
 import { borderColors } from "~/utils/colors";
+import { AiOutlineCloseCircle } from 'react-icons/ai'
+import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 
 // TODO: Sistemare la visualizzazione dei documenti per come sono mappati adesso.
 
@@ -14,6 +16,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
   pdfs,
 }) => {
   const { isActivePdf, handlePdfFocus } = useMultiplePdfs(pdfs);
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
 
   return (
     <>
@@ -31,7 +34,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
 
         <div className="flex h-full w-[80px] flex-col">
           <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 ">
-            {/* TODO: SetClose qui? Da grafiche l'header della chat sparisce. Da fare appena sistemiamo la chat */}
+            <i onClick={() => dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })}> <AiOutlineCloseCircle /> </i>
           </div>
           {pdfs.map((file, index) => (
             <div style={{ paddingBottom: 4 }} className={`border ${isActivePdf(file)

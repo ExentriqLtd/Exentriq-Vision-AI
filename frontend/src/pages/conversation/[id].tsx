@@ -35,7 +35,7 @@ export default function Conversation() {
   const { isMobile } = useIsMobile();
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { isPdfViewerOpen } = stateUploadedFile;
+  const { isPdfViewerOpen, arrayCitDocs } = stateUploadedFile;
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
@@ -52,7 +52,6 @@ export default function Conversation() {
     if (id && typeof id === "string") {
       setConversationId(id);
     }
-    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } });
   }, [id]);
 
   useEffect(() => {
@@ -61,9 +60,6 @@ export default function Conversation() {
       if (result.messages) {
         setMessages(result.messages);
       }
-      if (result.documents) {
-        setSelectedDocuments(result.documents);
-      }
     };
     if (conversationId) {
       fetchConversation(conversationId).catch(() =>
@@ -71,6 +67,13 @@ export default function Conversation() {
       );
     }
   }, [conversationId, setMessages]);
+
+
+  useEffect(() => {
+    if (arrayCitDocs.length > 0) {
+      setSelectedDocuments(arrayCitDocs);
+    }
+  }, [arrayCitDocs])
 
   // Keeping this in this file for now because this will be subject to change
   const submit = () => {
@@ -142,9 +145,6 @@ export default function Conversation() {
     }
   }, []);
 
-  const toggleIsViewer = () => {
-    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
-  };
 
   if (isMobile) {
     return (
@@ -197,42 +197,60 @@ export default function Conversation() {
                       <FiShare className="ml-1" size={12} />
                     </button> */}
                 <button
-                  onClick={toggleIsViewer}
-                  className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
-                >
-                  <div className="text-xs font-medium">{isPdfViewerOpen ? "Close PDF" : "Open PDF"}</div>
+                  onClick={() => {
+                    router.push({
+                      pathname: `/collection/${id}`,
+                      query: session,
+                    })
+                      .catch(() => console.log("error navigating to conversation"))
+                  }}
+                  className="
+                  block 
+                  rounded-sm 
+                  bg-primary-ex 
+                  px-3.5 
+                  py-2.5 
+                  text-center 
+                  text-sm 
+                  text-white 
+                  shadow-md 
+                  hover:bg-primary-ex 
+                  focus-visible:outline 
+                  focus-visible:outline-2 
+                  focus-visible:outline-offset-2 
+                  focus-visible:outline-indigo-600">
+                  <div className="text-xs font-medium">Collection detail</div>
                 </button>
               </div>
             </div>
-            {!isPdfViewerOpen ?
-              <>
-                <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
-                  <RenderConversations
-                    messages={messages}
-                    documents={selectedDocuments}
-                  />
-                </div>
-                <div className="relative flex h-[70px] w-[44vw] w-full items-center">
-                  <textarea
-                    ref={textFocusRef}
-                    rows={1}
-                    className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
-                    placeholder={"Start typing your question..."}
-                    value={userMessage}
-                    onChange={handleTextChange}
-                  />
-                  <button
-                    disabled={isMessagePending || userMessage.length === 0}
-                    onClick={submit}
-                    className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
-                  >
-                    <BsArrowUpCircle size={24} />
-                  </button>
-                </div>
-              </>
-              :
+            <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }}>
+              <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+                <RenderConversations
+                  messages={messages}
+                  documents={selectedDocuments}
+                />
+              </div>
+              <div className="relative flex h-[70px] w-[44vw] w-full items-center">
+                <textarea
+                  ref={textFocusRef}
+                  rows={1}
+                  className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
+                  placeholder={"Start typing your question..."}
+                  value={userMessage}
+                  onChange={handleTextChange}
+                />
+                <button
+                  disabled={isMessagePending || userMessage.length === 0}
+                  onClick={submit}
+                  className="z-1 absolute right-6 top-1/2 mb-1 -translate-y-1/2 transform rounded text-gray-90 opacity-80 enabled:hover:opacity-100 disabled:opacity-30"
+                >
+                  <BsArrowUpCircle size={24} />
+                </button>
+              </div>
+            </div>
+            <div style={{ display: isPdfViewerOpen ? 'flex' : 'none' }} className="w-full">
               <DisplayMultiplePdfs pdfs={selectedDocuments} />
-            }
+            </div>
           </div>
           <ShareLinkModal
             isOpen={isShareModalOpen}

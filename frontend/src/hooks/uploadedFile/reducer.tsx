@@ -6,6 +6,7 @@ interface action {
 interface stateReducer {
     filesUploaded: [];
     arrayFileUploaded: [];
+    arrayCitDocs: [];
     collectionId: string;
     arrayCollections: [];
     isPdfViewerOpen: boolean;
@@ -33,6 +34,11 @@ export const reducer = (state: stateReducer, action: action) => {
             return {
                 ...state,
                 arrayCollections: filterTempColl
+            };
+        case 'SET_CITATION_DOCS':
+            return {
+                ...state,
+                arrayCitDocs: action.payload?.arrayCitDocs
             };
         case 'SET_ARRAY_FILES':
             const file = action.payload?.filesUploaded
@@ -99,6 +105,7 @@ export const initialState = {
     filesUploaded: null,
     arrayFileUploaded: [],
     arrayCollections: [],
+    arrayCitDocs: [],
     collectionId: '',
     goToUpload: false,
     isPdfViewerOpen: false,

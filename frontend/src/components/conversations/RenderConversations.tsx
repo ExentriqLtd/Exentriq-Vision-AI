@@ -145,10 +145,10 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                                   if (!citationDocument) {
                                     return;
                                   }
-                                  const yearDisplay =
-                                    citationDocument.quarter
-                                      ? `${citationDocument.year} Q${citationDocument.quarter}`
-                                      : `${citationDocument.year}`;
+                                  // const yearDisplay =
+                                  //   citationDocument.quarter
+                                  //     ? `${citationDocument.year} Q${citationDocument.quarter}`
+                                  //     : `${citationDocument.year}`;
                                   return (
                                     <CitationDisplay
                                       key={`${messageId}-${subProcessIndex}-${subQuestionIndex}-${citationIndex}`}
@@ -157,7 +157,7 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                                           documentId: citation.document_id,
                                           uuid: citationDocument.uuid,
                                           snippet: citation.text,
-                                          pageNumber: citation.page_number,
+                                          pageNumber: citation.pageNumber,
                                           ticker: citationDocument?.ticker,
                                           displayDate: citationDocument.filename,
                                           color: citationDocument.color,
@@ -251,16 +251,22 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   documents,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-
+  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
-
 
   useEffect(() => {
     if (isMessageSuccessful) {
       setIsExpanded(false);
     }
   }, [isMessageSuccessful]);
+
+  useEffect(() => {
+    if (message?.documents && isExpanded) {
+      dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: message?.documents } })
+    }
+  }, [isExpanded])
+
   return (
     <div className="border-b pb-4">
       <div className="flex ">
