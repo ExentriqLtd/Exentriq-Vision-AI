@@ -7,13 +7,15 @@ import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
 import { session } from "~/config";
+import { usePdfFocus } from "~/context/pdf";
 
 const Collection: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-    const { arrayCollections } = stateUploadedFile;
+    const { setPdfFocusState } = usePdfFocus();
+    const { arrayCollections, isPdfViewerOpen } = stateUploadedFile;
     const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
     const [limit, setLimit] = useState(50)
     const [documents, setDocuments] = useState<[] | null>(null)
@@ -32,7 +34,26 @@ const Collection: NextPage = () => {
     const handleWaypointEnter = () => {
         setLimit(limit + 50)
     };
-
+    const handleCitationClick = (documentId: string) => {
+        dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
+        setPdfFocusState({
+            documentId,
+            pageNumber: 0,
+            citation: {
+                documentId: '',
+                snippet: '',
+                pageNumber: 0,
+                ticker: '',
+                displayDate: ''
+            }
+        });
+        router
+            .push({
+                pathname: `/conversation/${id}`,
+                query: { ...session, backToDetail: true },
+            })
+            .catch(() => console.log("error navigating to conversation"));
+    };
     return (
         <>
             <div className="mt-3 mx-6 w-4/5 flex flex-col">
@@ -108,7 +129,7 @@ const Collection: NextPage = () => {
                             <tbody className="divide-y bg-white">
                                 {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: object, index: number) => (
                                     <tr key={index}>
-                                        <FileUploaded file={file} />
+                                        <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchUploadedFile={dispatchUploadedFile} />
                                     </tr>
                                 ))}
                                 <Waypoint onEnter={handleWaypointEnter} />

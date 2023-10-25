@@ -8,14 +8,24 @@ interface FileInt {
         created_at?: string;
         status?: string;
         url?: string;
-        id?: string;
-    }
+        uuid: string;
+    };
+    handleCitationClick: (id: string) => void
+    dispatchUploadedFile: (val: object) => void
 }
 
-const FileUploaded: NextPage<FileInt> = ({ file }: FileInt) => {
+const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUploadedFile }: FileInt) => {
     return (
         <>
-            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500"><a href={file?.url} download target={'_blank'} className="color-primary-ex">{file?.filename}</a></td>
+            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
+                <div onClick={() => {
+                    dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: [file] } })
+                    handleCitationClick(file?.uuid)
+                }}
+                    className="color-primary-ex cursor-pointer">
+                    {file?.filename}
+                </div>
+            </td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                 <div className="flex flex-row items-center">

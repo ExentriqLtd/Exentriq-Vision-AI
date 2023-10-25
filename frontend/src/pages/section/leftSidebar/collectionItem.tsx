@@ -91,6 +91,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setIsOpenMenu(false)
+                                                dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                                 router.push({
                                                     pathname: `/`,
@@ -113,6 +114,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 setIsOpenMenu(false)
+                                                dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 router.push({
                                                     pathname: `/collection/${id}`,
                                                     query: session,
@@ -134,6 +136,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                             onClick={(e) => {
                                                 setIsOpenMenu(false)
                                                 e.stopPropagation();
+                                                dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 toggleModal();
                                                 onRename(name)
                                             }}
@@ -152,6 +155,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                             <a
                                                 onClick={(e) => {
                                                     e.stopPropagation();
+                                                    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                     setConfirmDelete(true)
                                                 }}
                                                 className={classNames(

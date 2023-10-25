@@ -25,7 +25,7 @@ export interface Citation {
   pageNumber: number;
   ticker: string;
   displayDate: string;
-  color: DocumentColorEnum;
+  color?: DocumentColorEnum;
 }
 
 export interface Conversation extends hasId {

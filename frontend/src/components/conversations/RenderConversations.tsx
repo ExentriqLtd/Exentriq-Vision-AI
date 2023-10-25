@@ -245,9 +245,11 @@ const ErrorMessageDisplay = () => {
 interface AssistantDisplayProps {
   message: Message;
   documents: SecDocument[];
+  backToDetail?: boolean;
 }
 const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   message,
+  backToDetail,
   documents,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -262,7 +264,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   }, [isMessageSuccessful]);
 
   useEffect(() => {
-    if (message?.documents && isExpanded) {
+    if (message?.documents && isExpanded && !backToDetail) {
       dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: message?.documents } })
     }
   }, [isExpanded])
@@ -311,9 +313,11 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
 interface IRenderConversation {
   messages: Message[];
   documents: SecDocument[];
+  backToDetail?: boolean;
 }
 
 export const RenderConversations: React.FC<IRenderConversation> = ({
+  backToDetail,
   messages,
   documents,
 }) => {
@@ -333,6 +337,7 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
         if (message.role == ROLE.ASSISTANT) {
           display = (
             <AssistantDisplay
+              backToDetail={backToDetail}
               message={message}
               key={`${message.id}-answer-${index}`}
               documents={documents}

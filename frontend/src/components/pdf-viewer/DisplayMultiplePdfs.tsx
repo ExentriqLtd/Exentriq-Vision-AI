@@ -5,18 +5,25 @@ import cx from "classnames";
 import { borderColors } from "~/utils/colors";
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useRouter } from "next/router";
+import { session } from "~/config";
 
 // TODO: Sistemare la visualizzazione dei documenti per come sono mappati adesso.
 
 interface DisplayMultiplePdfsProps {
   pdfs: SecDocument[];
+  backToDetail?: boolean;
+  collectionId?: string;
 }
 
 export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
   pdfs,
+  backToDetail,
+  collectionId,
 }) => {
   const { isActivePdf, handlePdfFocus } = useMultiplePdfs(pdfs);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const router = useRouter()
 
   return (
     <>
@@ -34,7 +41,18 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
 
         <div className="flex h-full w-[80px] flex-col">
           <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 ">
-            <i onClick={() => dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })}> <AiOutlineCloseCircle size={22} /> </i>
+            <i onClick={() => {
+              if (backToDetail) {
+                router
+                  .push({
+                    pathname: `/collection/${collectionId}`,
+                    query: session,
+                  })
+              }
+              dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+            }}>
+              <AiOutlineCloseCircle size={22} />
+            </i>
           </div>
           {pdfs.map((file, index) => (
             <div style={{ paddingBottom: 4 }} className={`border ${isActivePdf(file)
