@@ -45,7 +45,7 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[10px]">p. {citation.pageNumber}</div>
       </div>
-      <p className="line-clamp-4 text-[10px] font-light leading-3">
+      <p className="line-clamp-4 text-[12px] font-light leading-3">
         {citation.snippet}
       </p>
     </div>
