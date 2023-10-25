@@ -34,7 +34,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
 
         <div className="flex h-full w-[80px] flex-col">
           <div className="flex h-[43px] w-[80px] items-center justify-center border-b border-l font-bold text-gray-90 ">
-            <i onClick={() => dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })}> <AiOutlineCloseCircle /> </i>
+            <i onClick={() => dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })}> <AiOutlineCloseCircle size={22} /> </i>
           </div>
           {pdfs.map((file, index) => (
             <div style={{ paddingBottom: 4 }} className={`border ${isActivePdf(file)
