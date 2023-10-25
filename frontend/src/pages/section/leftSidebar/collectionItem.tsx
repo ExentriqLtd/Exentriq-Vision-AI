@@ -44,11 +44,13 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
     return (
         <div className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
             <div className="flex justify-between items-center w-full">
-                <p className="text-gray-300 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
-                <div className="flex flex-1 justify-end items-start w-full pr-1.5">
-                    <p className="text-sm"><HiDocument color="#D6D9DF" /></p>
-                    <p className="text-gray-300 text-xs">{doc_number}</p>
-                </div>
+                <p className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
+                {doc_number && (
+                    <div className="flex flex-1 justify-end items-start w-full pr-1.5">
+                        <p className="text-sm"><HiDocument color="#9BA3AF" /></p>
+                        <p className="text-gray-400 text-xs">{doc_number}</p>
+                    </div>
+                )}
             </div>
             <div className="flex pt-1 justify-between items-center w-full">
                 <div className="flex gap-5 items-center">

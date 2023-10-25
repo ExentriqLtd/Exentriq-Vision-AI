@@ -177,25 +177,9 @@ export default function Conversation() {
       <PdfFocusProvider>
         <div className="flex h-[100vh] items-center w-full">
           <div className="flex h-[100vh] flex-col items-center bg-white w-full">
-            <div className="flex h-[44px] w-full items-center justify-between border-b ">
+            <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
+            <div className="flex h-[44px] w-full items-center justify-between border-b">
               <div className="flex w-full items-center justify-end p-2">
-                {/* <button
-                      onClick={() => {
-                        router
-                          .push("/")
-                          .catch(() => console.error("error navigating home"));
-                      }}
-                      className="ml-4 flex items-center justify-center rounded px-2 font-light text-[#9EA2B0] hover:text-gray-90"
-                    >
-                      <BiArrowBack className="mr-1" /> Back to Document Selection
-                    </button> */}
-                {/* <button
-                      onClick={toggleShareModal}
-                      className="mr-3 flex items-center justify-center rounded-full border border-gray-400 p-1 px-3 text-gray-400 hover:bg-gray-15"
-                    >
-                      <div className="text-xs font-medium">Share</div>
-                      <FiShare className="ml-1" size={12} />
-                    </button> */}
                 <button
                   onClick={() => {
                     router.push({
@@ -223,7 +207,6 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-            <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }}>
               <div className="flex border-l max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
                 <RenderConversations
                   messages={messages}
@@ -248,7 +231,7 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-            <div style={{ display: isPdfViewerOpen ? 'flex' : 'none' }} className="w-full">
+            <div style={{ display: isPdfViewerOpen ? 'block' : 'none' }} className="w-full">
               <DisplayMultiplePdfs pdfs={selectedDocuments} />
             </div>
           </div>
