@@ -204,14 +204,14 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-            <div className="flex border-l h-[100vh] max-h-[calc(100vh-114px)] flex-grow flex-col overflow-scroll w-full">
+            <div className="flex border h-[100vh] max-h-[calc(100vh-138px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
                 backToDetail={backToDetail}
                 messages={messages}
                 documents={selectedDocuments}
               />
             </div>
-            <div className="relative flex h-[70px] w-[44vw] w-full items-center">
+            <div className="relative flex h-[70px] w-full items-center border border-t-0">
               <textarea
                 ref={textFocusRef}
                 rows={1}
