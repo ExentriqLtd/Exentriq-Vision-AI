@@ -10,6 +10,7 @@ interface stateReducer {
     collectionId: string;
     arrayCollections: [];
     isPdfViewerOpen: boolean;
+    viewProgressActive: string;
 }
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
@@ -49,6 +50,11 @@ export const reducer = (state: stateReducer, action: action) => {
             return {
                 ...state,
                 arrayFileUploaded: arrayUploaded
+            };
+        case 'SET_VIEWPROGRESS_ACTIVE':
+            return {
+                ...state,
+                viewProgressActive: action?.payload?.viewProgressActive
             };
         case 'SET_ARRAY_FILES_STATUS':
             const status = action?.payload?.status;
@@ -109,4 +115,5 @@ export const initialState = {
     collectionId: '',
     goToUpload: false,
     isPdfViewerOpen: false,
+    viewProgressActive: ''
 };
