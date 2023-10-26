@@ -19,9 +19,13 @@ const Collection: NextPage = () => {
     const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
     const [limit, setLimit] = useState(50)
     const [documents, setDocuments] = useState<[] | null>(null)
+    const [tableHeight, setTableHeight] = useState(0);
+
 
     useEffect(() => {
-        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
+        console.log('HEI', document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
+        setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
     }, [id])
 
     useEffect(() => {
@@ -116,27 +120,30 @@ const Collection: NextPage = () => {
                         </button>
                     </div>
                 </div>
-                <div className="flex flex-col h-[80vh] mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md">
-                    <div className="rounded-md overflow-auto">
-                        <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
-                            <thead>
-                                <tr>
-                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
-                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Date</th>
-                                    <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Status</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y bg-white">
-                                {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: object, index: number) => (
-                                    <tr key={index}>
-                                        <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchUploadedFile={dispatchUploadedFile} />
+                <div className="getTableHeight flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1">
+                    <div className="flex flex-col relative rounded-md">
+                        <div className="h-full overflow-auto" style={{maxHeight: tableHeight}}>
+                            <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
+                                <thead>
+                                    <tr>
+                                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
+                                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Date</th>
+                                        <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Status</th>
                                     </tr>
-                                ))}
-                                <Waypoint onEnter={handleWaypointEnter} />
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody className="divide-y bg-white">
+                                    {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: object, index: number) => (
+                                        <tr key={index}>
+                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchUploadedFile={dispatchUploadedFile} />
+                                        </tr>
+                                    ))}
+                                    <Waypoint onEnter={handleWaypointEnter} />
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+                
             </div>
         </>
     );
