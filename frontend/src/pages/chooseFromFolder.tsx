@@ -72,7 +72,7 @@ const ChooseFromFolder: NextPage = () => {
   return (
     <>
 
-      <div className="mt-3 mx-6 w-4/5 flex flex-col">
+      <div className="mx-6 w-4/5 flex flex-col">
         <Header title={'Choose from other data source'} subtitle={'Data Sources'} paragraph={false} />
         <div
           className="

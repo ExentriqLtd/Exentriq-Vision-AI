@@ -175,7 +175,7 @@ export default function Conversation() {
       <div className="flex h-[100vh] items-center w-full">
         <div className="flex h-[100vh] flex-col items-center bg-white w-full">
           <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
-            <div className="flex h-[44px] w-full items-center justify-between border-b">
+            <div className="flex h-[80px] w-full items-center justify-between">
               <div className="flex w-full items-center justify-end p-2">
                 <button
                   onClick={() => {
@@ -204,7 +204,7 @@ export default function Conversation() {
                 </button>
               </div>
             </div>
-            <div className="flex border h-[100vh] max-h-[calc(100vh-138px)] flex-grow flex-col overflow-scroll w-full">
+            <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
                 backToDetail={backToDetail}
                 messages={messages}
