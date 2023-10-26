@@ -25,6 +25,7 @@ import "react-pdf/dist/esm/Page/TextLayer.css";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 import { usePdfFocus } from "~/context/pdf";
 import { multiHighlight } from "~/utils/multi-line-highlight";
+import { toInteger } from "lodash";
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
 const pdfjsOptions = pdfjs.GlobalWorkerOptions;
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -145,7 +146,7 @@ const PageRenderer: React.FC<PageRenderer> = ({
     debounce(() => {
       if (
         documentFocused &&
-        // pdfFocusState.citation?.pageNumber === pageNumber + 1 &&
+        (toInteger(pdfFocusState.citation?.pageNumber) === (pageNumber + 1)) &&
         !isHighlighted
       ) {
         multiHighlight(
@@ -265,6 +266,10 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
         itemPageNumber * (PAGE_HEIGHT + VERTICAL_GUTTER_SIZE_PX) * scale;
       if (listRef.current) {
         listRef.current.scrollTo(fixedPosition);
+      } else {
+        setTimeout(() => {
+          onItemClick({ pageNumber: itemPageNumber })
+        }, 1000);
       }
     };
 

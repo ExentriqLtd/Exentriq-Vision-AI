@@ -254,20 +254,30 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const {viewProgressActive} = stateUploadedFile;
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
 
   useEffect(() => {
     if (isMessageSuccessful) {
+      dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
       setIsExpanded(false);
     }
   }, [isMessageSuccessful]);
 
   useEffect(() => {
     if (message?.documents && isExpanded && !backToDetail) {
+      dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
       dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: message?.documents } })
     }
   }, [isExpanded])
+
+  useEffect(() => {
+    if(viewProgressActive !== message?.uuid) {
+      setIsExpanded(false)
+    }
+  }, [viewProgressActive])
+  
 
   return (
     <div className="border-b pb-4">
@@ -277,12 +287,16 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           {!isMessageError && (
             <div className="flex flex-col">
               <SubProcessDisplay
-                key={`${message.id}-sub-process`}
+                key={`${message.uuid}-sub-process`}
                 subProcesses={message.sub_processes || []}
                 isOpen={isExpanded}
-                toggleOpen={() => setIsExpanded((prev) => !prev)}
+                toggleOpen={() => {
+                  console.log('entro toggle',  message)
+                  dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
+                  setIsExpanded((prev) => !prev)
+                }}
                 showSpinner={!isMessageSuccessful}
-                messageId={message.id}
+                messageId={message.uuid}
                 documents={documents}
               />
             </div>
