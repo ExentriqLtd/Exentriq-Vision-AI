@@ -13,7 +13,7 @@ import { session } from "~/config";
 interface DisplayMultiplePdfsProps {
   pdfs: SecDocument[];
   backToDetail?: boolean;
-  collectionId?: string;
+  collectionId: string;
 }
 
 export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
@@ -47,7 +47,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
                   .push({
                     pathname: `/collection/${collectionId}`,
                     query: session,
-                  })
+                  }).catch(() => console.log("error navigating to collection"))
               }
               dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
             }}>
