@@ -298,7 +298,7 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
           {pdf ? (
             <List
               ref={listRef}
-              width={newWidthPx + HORIZONTAL_GUTTER_SIZE_PX}
+              width={'100%'}
               height={height}
               itemCount={pdf.numPages}
               itemSize={getPageHeight}
