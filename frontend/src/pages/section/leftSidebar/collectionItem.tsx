@@ -132,7 +132,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                 e.stopPropagation();
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 toggleModal();
-                                                onRename(name)
+                                                (onRename && name) && onRename(name)
                                             }}
                                             className={classNames(
                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
@@ -145,7 +145,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                 </Menu.Item>
                                 <Menu.Item>
                                     {({ active }) => (
-                                        <>
+                                        <div>
                                             <a
                                                 onClick={(e) => {
                                                     e.stopPropagation();
@@ -167,7 +167,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                     <div className="flex mx-4 justify-between items-center pt-3">
                                                         <button
                                                             onClick={(e) => {
-                                                                e.stopPropagation();
                                                                 backendClient.deleteCollection(collectionId)
                                                                     .then(() => {
                                                                         router
@@ -187,7 +186,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                         <button
                                                             onClick={(e) => {
                                                                 console.log('onclick')
-                                                                e.stopPropagation();
                                                                 setConfirmDelete(false)
                                                             }}
                                                             type="button"
@@ -198,7 +196,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                     </div>
                                                 </div>
                                             )}
-                                        </>
+                                        </div>
                                     )}
 
                                 </Menu.Item>
