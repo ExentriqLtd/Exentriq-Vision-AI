@@ -25,13 +25,9 @@ const LandingPage: NextPage = () => {
     try {
       setIsUploading(true);
       files?.map((file) => {
-        file.status = 'in progess'
-        const uuId = generateUniqueId();
-        file.id = uuId;
-        dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
         backendClient.uploadFile(file, collectionId)
-          .then((res) => {
-            dispatchUploadedFile({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
+          .then(({result}: any) => {
+            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: result} });
           });
       })
     } catch (error) {

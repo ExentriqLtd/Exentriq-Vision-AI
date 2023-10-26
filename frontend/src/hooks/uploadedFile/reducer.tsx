@@ -56,21 +56,6 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 viewProgressActive: action?.payload?.viewProgressActive
             };
-        case 'SET_ARRAY_FILES_STATUS':
-            const status = action?.payload?.status;
-            const idToUpdate = action?.payload?.id;
-            const updatedArrayFileUploaded = state.arrayFileUploaded.map((item) => {
-                if (item.id === idToUpdate) {
-                    item.status = status;
-                }
-                return item;
-            });
-
-            return {
-                ...state,
-                arrayFileUploaded: updatedArrayFileUploaded
-            };
-
         case 'SET_REMOVE_FILES':
             const filterTemp = state?.arrayFileUploaded?.filter((i: any) => i?.lastModified !== action.payload.lastModified)
             return {
@@ -109,7 +94,6 @@ export const reducer = (state: stateReducer, action: action) => {
 
 export const initialState = {
     filesUploaded: null,
-    arrayFileUploaded: [],
     arrayCollections: [],
     arrayCitDocs: [],
     collectionId: '',
