@@ -1,6 +1,7 @@
 import React from "react";
 import type { NextPage } from "next";
 import moment from "moment";
+import { HiOutlineDownload } from 'react-icons/hi'
 
 interface FileInt {
     file?: {
@@ -16,10 +17,10 @@ interface FileInt {
 
 const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUploadedFile }: FileInt) => {
     const ext = file?.filename?.split(/[#?]/)[0].split('.').pop().trim()
-    const filename = file?.filename?.replace('.'+ext, '')
+    const filename = file?.filename?.replace('.' + ext, '')
     return (
         <>
-            <td className="border-b border-slate-100 max-w-md p-4 pl-8 text-slate-500">
+            <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">
                 <div onClick={() => {
                     dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: [file] } })
                     handleCitationClick(file?.uuid)
@@ -28,8 +29,8 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUp
                     {filename}.{ext}
                 </div>
             </td>
-            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
-            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
+            <td className="border-b border-slate-100 p-4 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
+            <td className="border-b border-slate-100 p-4 text-slate-500">
                 <div className="flex flex-row items-center">
                     {file?.status == 'processed' ? (
                         <>
@@ -61,6 +62,11 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUp
                         </>
                     )}
                 </div>
+            </td>
+            <td className="border-b border-slate-100 p-4 text-slate-500">
+                <a href={file?.url} target="_blank" className="flex cursor-pointer justify-start">
+                    <HiOutlineDownload size={24} />
+                </a>
             </td>
         </>
     );
