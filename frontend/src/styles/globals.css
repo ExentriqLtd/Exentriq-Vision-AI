@@ -167,3 +167,7 @@
 .grow-1 {
   flex-grow: 1;
 }
+
+.border-t-0 {
+  border-top: 0;
+}

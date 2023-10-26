@@ -60,7 +60,7 @@ const Collection: NextPage = () => {
     };
     return (
         <>
-            <div className="mt-3 mx-6 w-4/5 flex flex-col">
+            <div className="mx-6 w-4/5 flex flex-col">
                 <div className="flex flex-row items-center justify-between">
                     <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
                     <div className="flex flex-row items-center gap-3">

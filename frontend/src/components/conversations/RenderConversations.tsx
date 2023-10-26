@@ -198,7 +198,7 @@ interface UserDisplayProps {
 const UserDisplay: React.FC<UserDisplayProps> = ({ message, showLoading }) => {
   return (
     <>
-      <div className="flex border-r bg-gray-00 pb-4">
+      <div className="flex bg-gray-00 pb-4">
         <div className="mt-4 w-1/5 flex-grow text-right font-nunito text-gray-60">
           <div className="flex items-center justify-center">
             {formatDisplayDate(message.created_at)}
@@ -209,7 +209,7 @@ const UserDisplay: React.FC<UserDisplayProps> = ({ message, showLoading }) => {
         </div>
       </div>
       {showLoading && (
-        <div className="flex border-b-2 pb-4">
+        <div className="flex pb-4">
           <div className="w-1/5"></div>
           <div className="w-4/5">
             <SubProcessDisplay
@@ -370,7 +370,7 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
         }
         if (index === messages.length - 1) {
           return (
-            <div className="mb-4 flex flex-col" key={`message-${message.id}`}>
+            <div className="flex flex-col" key={`message-${message.id}`}>
               {display}
             </div>
           );
