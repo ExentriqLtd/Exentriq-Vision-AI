@@ -23,7 +23,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
     const router = useRouter()
     //@ts-ignore
     const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-    const [isOpenMenu, setIsOpenMenu] = useState(false)
     const { collectionId } = stateUploadedFile;
     const [confirmDelete, setConfirmDelete] = useState(false)
 
@@ -62,7 +61,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                         <Menu.Button
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setIsOpenMenu(true)
                                 setConfirmDelete(false)
                                 dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
                             }}
@@ -74,7 +72,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                     </div>
 
                     <Transition
-                        // show={isOpenMenu}
                         as={Fragment}
                         enter="transition ease-out duration-100"
                         enterFrom="transform opacity-0 scale-95"
@@ -90,7 +87,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setIsOpenMenu(false)
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                                 router.push({
@@ -113,7 +109,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                setIsOpenMenu(false)
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 router.push({
                                                     pathname: `/collection/${id}`,
@@ -134,7 +129,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                     {({ active }) => (
                                         <a
                                             onClick={(e) => {
-                                                setIsOpenMenu(false)
                                                 e.stopPropagation();
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 toggleModal();
@@ -174,7 +168,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                         <button
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                setIsOpenMenu(false)
                                                                 backendClient.deleteCollection(collectionId)
                                                                     .then(() => {
                                                                         router
