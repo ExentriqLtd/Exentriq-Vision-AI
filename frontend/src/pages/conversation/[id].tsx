@@ -110,8 +110,10 @@ export default function Conversation() {
     const textarea = document.querySelector("textarea");
     if (textarea) {
       textarea.style.height = "auto";
-
       textarea.style.height = `${textarea.scrollHeight}px`;
+      if(textarea.style.height == '0px') {
+        textarea.style.height = 'auto'
+      }
     }
   }, [userMessage]);
 
