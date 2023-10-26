@@ -200,7 +200,7 @@ export default function Conversation() {
                   focus-visible:outline-2 
                   focus-visible:outline-offset-2 
                   focus-visible:outline-indigo-600">
-                  <div className="text-xs font-medium">Collection detail</div>
+                 Collection detail
                 </button>
               </div>
             </div>
