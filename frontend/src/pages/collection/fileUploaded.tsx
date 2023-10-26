@@ -15,15 +15,17 @@ interface FileInt {
 }
 
 const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUploadedFile }: FileInt) => {
+    const ext = file?.filename?.split(/[#?]/)[0].split('.').pop().trim()
+    const filename = file?.filename?.replace('.'+ext, '')
     return (
         <>
-            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
+            <td className="border-b border-slate-100 max-w-md p-4 pl-8 text-slate-500">
                 <div onClick={() => {
                     dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: [file] } })
                     handleCitationClick(file?.uuid)
                 }}
-                    className="color-primary-ex cursor-pointer">
-                    {file?.filename}
+                    className="color-primary-ex cursor-pointer line-clamp-2">
+                    {filename}.{ext}
                 </div>
             </td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
