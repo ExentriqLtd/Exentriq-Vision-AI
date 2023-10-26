@@ -123,7 +123,7 @@ const CollectionList: React.FC = () => {
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
-        <ul className="containerScroll overflow-y-auto w-full h-full pb-5">
+        <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((collection, index) => {
             return (
               <li key={index}>

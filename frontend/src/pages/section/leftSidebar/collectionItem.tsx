@@ -184,7 +184,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                                             })
                                                                             .catch(() => console.log("error navigating to conversation"))
                                                                         dispatchUploadedFile({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
-                                                                    })
+                                                                    }).catch(() => console.log('errore deleting collection'));
                                                             }}
                                                             type="button"
                                                             className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto"
