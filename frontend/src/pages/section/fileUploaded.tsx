@@ -5,16 +5,15 @@ interface FileUploadInt {
     file?: {
         lastEditedUtc?: number;
         lastModified?: number;
-        name?: string;
+        filename?: string;
         status?: string;
     },
 }
 
 const FileUploaded: NextPage<FileUploadInt> = ({ file }: FileUploadInt) => {
-
     return (
         <>
-            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.name?.substring(0, 20)} {file?.name?.length >= 20 && '...'}</td>
+            <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename?.substring(0, 20)} {file?.filename?.length >= 20 && '...'}</td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                 <div className="flex flex-row items-center">
                     {(file?.status == 'failed') ? (
