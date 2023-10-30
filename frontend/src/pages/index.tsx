@@ -9,6 +9,7 @@ import ProgressBar from "./section/progressBar";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { generateUniqueId } from "~/utils/utility";
 import { session } from "~/config";
+import useIsMobile from "~/hooks/utils/useIsMobile";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -20,14 +21,15 @@ const LandingPage: NextPage = () => {
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
+  const { isMobile } = useIsMobile()
 
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
       files?.map((file) => {
         backendClient.uploadFile(file, collectionId)
-          .then(({result}: any) => {
-            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: result} });
+          .then(({ result }: any) => {
+            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: result } });
           });
       })
     } catch (error) {
@@ -63,7 +65,7 @@ const LandingPage: NextPage = () => {
 
 
   return (
-    <div className="w-4/5 flex flex-row">
+    <div className={`${isMobile ? 'w-full' : 'w-4/5'} flex flex-row`}>
       <div className="mt-3 mx-6 w-2/3 flex flex-col">
         {isLoadingConversation && (
           <ProgressBar />
@@ -109,7 +111,7 @@ const LandingPage: NextPage = () => {
             </button> */}
             {arrayFileUploaded && arrayFileUploaded.length > 0 && (
               <>
-                <div className="flex flex-col h-[30vh] mt-3 my-6 relative shadow-md w-2/3 bg-slate-50 rounded-md">
+                <div className={`${isMobile ? 'w-full' : 'w-2/3'} flex flex-col h-[30vh] mt-3 my-6 relative shadow-md bg-slate-50 rounded-md`}>
                   <div className="absolute inset-0 flex-grow overflow-auto bg-grid-slate-100" />
                   <div className="rounded-md overflow-auto">
                     <div className="shadow-sm">
@@ -134,9 +136,9 @@ const LandingPage: NextPage = () => {
                 </div>
                 <button
                   onClick={startConversation}
-                  className="
+                  className={`
                   block 
-                  w-2/3
+                  ${isMobile ? 'w-full' : 'w-2/3'}
                   rounded-sm 
                   bg-primary-ex 
                   px-3.5 
@@ -149,7 +151,7 @@ const LandingPage: NextPage = () => {
                   focus-visible:outline 
                   focus-visible:outline-2 
                   focus-visible:outline-offset-2 
-                  focus-visible:outline-indigo-600">
+                  focus-visible:outline-indigo-600`}>
                   Start conversation
                 </button>
               </>

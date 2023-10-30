@@ -11,9 +11,15 @@ interface stateReducer {
     arrayCollections: [];
     isPdfViewerOpen: boolean;
     viewProgressActive: string;
+    toggleMenuMobile: boolean;
 }
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
+        case 'SET_OPEN_MENU_MOBILE':
+            return {
+                ...state,
+                toggleMenuMobile: action.payload?.toggleMenuMobile
+            };
         case 'SET_ARRAY_COLLECTION':
             return {
                 ...state,
@@ -99,5 +105,6 @@ export const initialState = {
     collectionId: '',
     goToUpload: false,
     isPdfViewerOpen: false,
-    viewProgressActive: ''
+    viewProgressActive: '',
+    toggleMenuMobile: false
 };

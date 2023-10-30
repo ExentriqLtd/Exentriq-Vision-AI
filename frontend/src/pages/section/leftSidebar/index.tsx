@@ -133,6 +133,8 @@ const CollectionList: React.FC = () => {
                   created_at={collection?.created_at}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
+                  dispatchUploadedFile={dispatchUploadedFile}
+                  collectionId={collectionId}
                   onRename={onRename}/>
               </li>
             );

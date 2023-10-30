@@ -8,6 +8,7 @@ import { session } from "~/config";
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { HiDocument } from 'react-icons/hi2';
+import useIsMobile from "~/hooks/utils/useIsMobile";
 
 interface CollectionItemInt {
     name?: string;
@@ -17,16 +18,19 @@ interface CollectionItemInt {
     key?: string;
     toggleModal?: any;
     onRename?: (string: string) => {}
+    collectionId: string;
+    dispatchUploadedFile: (val: any) => void
+    toggleSidebar?: () => void
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, doc_number, onRename }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId }: CollectionItemInt) => {
     const router = useRouter()
+    const { isMobile } = useIsMobile()
     //@ts-ignore
-    const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-    const { collectionId } = stateUploadedFile;
     const [confirmDelete, setConfirmDelete] = useState(false)
 
     const openCollection = () => {
+        toggleSidebar && toggleSidebar()
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         backendClient
             .createConversation(id)
@@ -87,6 +91,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
+                                                toggleSidebar && toggleSidebar()
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                                 router.push({
@@ -109,6 +114,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
+                                                toggleSidebar && toggleSidebar()
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 router.push({
                                                     pathname: `/collection/${id}`,
@@ -130,6 +136,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                         <a
                                             onClick={(e) => {
                                                 e.stopPropagation();
+                                                toggleSidebar && toggleSidebar()
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 toggleModal();
                                                 (onRename && name) && onRename(name)
@@ -167,6 +174,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                     <div className="flex mx-4 justify-between items-center pt-3">
                                                         <button
                                                             onClick={(e) => {
+                                                                toggleSidebar && toggleSidebar()
                                                                 backendClient.deleteCollection(collectionId)
                                                                     .then(() => {
                                                                         router
@@ -179,13 +187,13 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                                     }).catch(() => console.log('errore deleting collection'));
                                                             }}
                                                             type="button"
-                                                            className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                                            className={`${isMobile && 'mr-2'} mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                                                         >
                                                             Yes
                                                         </button>
                                                         <button
                                                             onClick={(e) => {
-                                                                console.log('onclick')
+                                                                toggleSidebar && toggleSidebar()
                                                                 setConfirmDelete(false)
                                                             }}
                                                             type="button"

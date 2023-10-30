@@ -111,7 +111,7 @@ export default function Conversation() {
     if (textarea) {
       textarea.style.height = "auto";
       textarea.style.height = `${textarea.scrollHeight}px`;
-      if(textarea.style.height == '0px') {
+      if (textarea.style.height == '0px') {
         textarea.style.height = 'auto'
       }
     }
@@ -146,39 +146,40 @@ export default function Conversation() {
   }, []);
 
 
-  if (isMobile) {
-    return (
-      <div className="landing-page-gradient-1 relative flex h-screen w-screen items-center justify-center">
-        <div className="flex h-min w-3/4 flex-col items-center justify-center rounded border bg-white p-4">
-          <div className="text-center text-xl ">
-            Sorry, the mobile view of this page is currently a work in progress.
-            Please switch to desktop!
-          </div>
-          <button
-            onClick={() => {
-              router
-                .push({
-                  pathname: `/`,
-                  query: session,
-                })
-                .catch(() => console.log("error navigating to conversation"));
-            }}
-            className="m-4 rounded border bg-llama-indigo px-8 py-2 font-bold text-white hover:bg-[#3B3775]"
-          >
-            Back Home
-          </button>
-        </div>
-      </div>
-    );
-  }
+  // if (isMobile) {
+  //   return (
+  //     <div className="landing-page-gradient-1 relative flex h-screen w-screen items-center justify-center">
+  //       <div className="flex h-min w-3/4 flex-col items-center justify-center rounded border bg-white p-4">
+  //         <div className="text-center text-xl ">
+  //           Sorry, the mobile view of this page is currently a work in progress.
+  //           Please switch to desktop!
+  //         </div>
+  //         <button
+  //           onClick={() => {
+  //             router
+  //               .push({
+  //                 pathname: `/`,
+  //                 query: session,
+  //               })
+  //               .catch(() => console.log("error navigating to conversation"));
+  //           }}
+  //           className="m-4 rounded border bg-llama-indigo px-8 py-2 font-bold text-white hover:bg-[#3B3775]"
+  //         >
+  //           Back Home
+  //         </button>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
-    <div className="mx-6 w-4/5">
-      <div className="flex h-[100vh] items-center w-full">
-        <div className="flex h-[100vh] flex-col items-center bg-white w-full">
+    <div className={`${isMobile ? 'w-full' : 'mx-6 w-4/5'}`}>
+      <div className={`flex ${isMobile ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
+        <div className={`flex  ${isMobile ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
           <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
-            <div className="flex h-[80px] w-full items-center justify-between">
-              <div className="flex w-full items-center justify-end p-2">
+
+            {isMobile
+              ? (
                 <button
                   onClick={() => {
                     router.push({
@@ -188,6 +189,38 @@ export default function Conversation() {
                       .catch(() => console.log("error navigating to conversation"))
                   }}
                   className="
+                    block 
+                    absolute
+                    top-3
+                    right-3
+                    rounded-sm 
+                    bg-primary-ex 
+                    px-3.5 
+                    py-2.5 
+                    text-center 
+                    text-sm 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600">
+                  Collection detail
+                </button>
+              )
+              : (
+                <div className="flex h-[80px] w-full items-center justify-between">
+                  <div className="flex w-full items-center justify-end p-2">
+                    <button
+                      onClick={() => {
+                        router.push({
+                          pathname: `/collection/${id}`,
+                          query: session,
+                        })
+                          .catch(() => console.log("error navigating to conversation"))
+                      }}
+                      className="
                   block 
                   rounded-sm 
                   bg-primary-ex 
@@ -202,10 +235,12 @@ export default function Conversation() {
                   focus-visible:outline-2 
                   focus-visible:outline-offset-2 
                   focus-visible:outline-indigo-600">
-                 Collection detail
-                </button>
-              </div>
-            </div>
+                      Collection detail
+                    </button>
+                  </div>
+                </div>
+              )}
+
             <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
                 backToDetail={backToDetail}

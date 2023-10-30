@@ -8,6 +8,7 @@ import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
 import { session } from "~/config";
 import { usePdfFocus } from "~/context/pdf";
+import useIsMobile from "~/hooks/utils/useIsMobile";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -20,6 +21,7 @@ const Collection: NextPage = () => {
     const [limit, setLimit] = useState(50)
     const [documents, setDocuments] = useState<[] | null>(null)
     const [tableHeight, setTableHeight] = useState(0);
+    const { isMobile } = useIsMobile()
 
 
     useEffect(() => {
@@ -60,10 +62,10 @@ const Collection: NextPage = () => {
     };
     return (
         <>
-            <div className="mx-6 w-4/5 flex flex-col">
-                <div className="flex flex-row items-center justify-between">
+            <div className={`${isMobile ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
+                <div className={`${!isMobile && 'flex flex-row'} items-center justify-between`}>
                     <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
-                    <div className="flex flex-row items-center gap-3">
+                    <div className={`${isMobile && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <button
                             onClick={() => {
                                 router
@@ -92,7 +94,6 @@ const Collection: NextPage = () => {
                         </button>
                         <button
                             onClick={() => {
-                                console.log('goback');
                                 dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                 router
                                     .push({
@@ -120,9 +121,9 @@ const Collection: NextPage = () => {
                         </button>
                     </div>
                 </div>
-                <div className="getTableHeight flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1">
+                <div className={`${!isMobile && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
                     <div className="flex flex-col relative rounded-md">
-                        <div className="h-full overflow-auto" style={{maxHeight: tableHeight}}>
+                        <div className="h-full overflow-auto" style={{ maxHeight: isMobile ? '100%' : tableHeight }}>
                             <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                                 <thead>
                                     <tr>
@@ -144,7 +145,7 @@ const Collection: NextPage = () => {
                         </div>
                     </div>
                 </div>
-                
+
             </div>
         </>
     );
