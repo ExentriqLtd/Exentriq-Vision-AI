@@ -137,21 +137,23 @@ const LandingPage: NextPage = () => {
                 <button
                   onClick={startConversation}
                   className={`
-                  block 
-                  ${isMobile ? 'w-full' : 'w-2/3'}
-                  rounded-sm 
-                  bg-primary-ex 
-                  px-3.5 
-                  py-2.5 
-                  text-center 
-                  text-sm 
-                  text-white 
-                  shadow-md 
-                  hover:bg-primary-ex 
-                  focus-visible:outline 
-                  focus-visible:outline-2 
-                  focus-visible:outline-offset-2 
-                  focus-visible:outline-indigo-600`}>
+                  mb-2
+                    block 
+                    rounded-sm 
+                    bg-primary-ex 
+                    ${isMobile ? (
+                      "px-2 py-2 text-xs w-full"
+                    ) : (
+                      "px-3.5 py-2.5 text-sm w-2/3"
+                    )}
+                    text-center 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600`}>
                   Start conversation
                 </button>
               </>

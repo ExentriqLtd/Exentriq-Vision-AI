@@ -191,14 +191,14 @@ export default function Conversation() {
                   className="
                     block 
                     absolute
-                    top-3
-                    right-3
+                    top-2
+                    right-2
                     rounded-sm 
                     bg-primary-ex 
-                    px-3.5 
-                    py-2.5 
+                    px-2 
+                    py-2 
                     text-center 
-                    text-sm 
+                    text-xs 
                     text-white 
                     shadow-md 
                     hover:bg-primary-ex 

@@ -75,21 +75,23 @@ const Collection: NextPage = () => {
                                     })
                                     .catch(() => console.log("error navigating to conversation"));
                             }}
-                            className="
+                            className={`
                             block 
                             rounded-sm 
                             bg-primary-ex 
-                            px-3.5 
-                            py-2.5 
+                            ${isMobile ? (
+                                    "px-2 py-2 text-xs"
+                                ) : (
+                                    "px-3.5 py-2.5 text-sm"
+                                )}
                             text-center 
-                            text-sm 
                             text-white 
                             shadow-md 
                             hover:bg-primary-ex 
                             focus-visible:outline 
                             focus-visible:outline-2 
                             focus-visible:outline-offset-2 
-                            focus-visible:outline-indigo-600">
+                            focus-visible:outline-indigo-600`}>
                             Go to conversation
                         </button>
                         <button
@@ -102,21 +104,23 @@ const Collection: NextPage = () => {
                                     })
                                     .catch(() => console.log("error navigating to conversation"))
                             }}
-                            className="
+                            className={`
                             block 
                             rounded-sm 
                             bg-primary-ex 
-                            px-3.5 
-                            py-2.5 
+                            ${isMobile ? (
+                                    "px-2 py-2 text-xs"
+                                ) : (
+                                    "px-3.5 py-2.5 text-sm"
+                                )}
                             text-center 
-                            text-sm 
                             text-white 
                             shadow-md 
                             hover:bg-primary-ex 
                             focus-visible:outline 
                             focus-visible:outline-2 
                             focus-visible:outline-offset-2 
-                            focus-visible:outline-indigo-600">
+                            focus-visible:outline-indigo-600`}>
                             Go to upload
                         </button>
                     </div>
