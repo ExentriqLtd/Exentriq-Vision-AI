@@ -17,7 +17,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <IntercomProvider appId={INTERCOM_ID}>
         <PdfFocusProvider>
           <UploadedFileProvider>
-            <div className="flex flex-row h-[100vh] shadow-lg">
+            <div className="flex flex-row h-[100vh]">
               <Layout>
                 <CollectionList />
                 <Component {...pageProps} />

@@ -1,6 +1,17 @@
 interface action {
     type: string;
-    payload: any;
+    payload: {
+        uuid: string,
+        lastModified: string;
+        arrayCollections: object;
+        collectionId: string;
+        name: string;
+        arrayCitDocs: object,
+        filesUploaded: object,
+        goToUpload: boolean,
+        viewProgressActive: string,
+        isPdfViewerOpen: boolean,
+    };
 }
 
 interface stateReducer {
@@ -11,7 +22,18 @@ interface stateReducer {
     arrayCollections: [];
     isPdfViewerOpen: boolean;
     viewProgressActive: string;
+    goToUpload: boolean;
 }
+
+interface FileItem {
+    lastModified: string;
+}
+
+interface Collection {
+    uuid: string,
+    name: string,
+}
+
 export const reducer = (state: stateReducer, action: action) => {
     switch (action.type) {
         case 'SET_ARRAY_COLLECTION':
@@ -20,7 +42,7 @@ export const reducer = (state: stateReducer, action: action) => {
                 arrayCollections: action.payload?.arrayCollections
             };
         case 'SET_RENAME_COLLECTION':
-            const updatedArrayColl = state.arrayCollections.map((item) => {
+            const updatedArrayColl = state.arrayCollections.map((item:Collection) => {
                 if (item.uuid === action?.payload?.collectionId) {
                     item.name = action?.payload?.name;
                 }
@@ -31,7 +53,7 @@ export const reducer = (state: stateReducer, action: action) => {
                 arrayCollections: updatedArrayColl
             };
         case 'SET_DELETE_COLLECTION':
-            const filterTempColl = state?.arrayCollections?.filter((i: any) => i?.uuid !== action.payload.uuid)
+            const filterTempColl = state?.arrayCollections?.filter((i: Collection) => i?.uuid !== action.payload.uuid)
             return {
                 ...state,
                 arrayCollections: filterTempColl
@@ -57,7 +79,7 @@ export const reducer = (state: stateReducer, action: action) => {
                 viewProgressActive: action?.payload?.viewProgressActive
             };
         case 'SET_REMOVE_FILES':
-            const filterTemp = state?.arrayFileUploaded?.filter((i: any) => i?.lastModified !== action.payload.lastModified)
+            const filterTemp = state?.arrayFileUploaded?.filter((i: FileItem) => i?.lastModified !== action.payload.lastModified)
             return {
                 ...state,
                 arrayFileUploaded: filterTemp
@@ -92,12 +114,14 @@ export const reducer = (state: stateReducer, action: action) => {
     }
 };
 
-export const initialState = {
-    filesUploaded: null,
+export const initialState: stateReducer = {
+    filesUploaded: [],
+    arrayFileUploaded: [],
     arrayCollections: [],
     arrayCitDocs: [],
     collectionId: '',
     goToUpload: false,
     isPdfViewerOpen: false,
     viewProgressActive: ''
-};
+  };
+  

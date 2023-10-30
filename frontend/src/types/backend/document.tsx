@@ -4,6 +4,7 @@ export enum BackendDocumentType {
 }
 
 export interface BackendDocument {
+  filename: string;
   created_at: string;
   file_id: string;
   uuid: string;
