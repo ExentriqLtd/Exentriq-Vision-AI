@@ -160,7 +160,7 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
                                           pageNumber: citation.pageNumber,
                                           ticker: citationDocument?.ticker,
                                           displayDate: citationDocument.filename,
-                                          color: citationDocument.color,
+                                          // color: citationDocument.color,
                                         } as Citation
                                       }
                                     />

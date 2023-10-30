@@ -10,6 +10,10 @@ interface CreateConversationPayload {
 }
 
 interface GetConversationPayload {
+  result: {
+    documents: BackendDocument[];
+    messages: Message[];
+  };
   id: string;
   messages: Message[];
   documents: BackendDocument[];
@@ -68,7 +72,7 @@ class BackendClient {
   public async fetchConversation(
     id: string
   ): Promise<GetConversationReturnType> {
-    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
+    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {
@@ -94,7 +98,7 @@ class BackendClient {
   }
 
   
-  public async uploadFile(file: any, collectionId: string): Promise<object> {
+  public async uploadFile(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload`;
     console.log('collectionId', collectionId);
     const payload = {
@@ -103,7 +107,7 @@ class BackendClient {
     }
     const fileName: string| undefined = file?.name
     const data = new FormData();
-    data.append('file', file as Blob, fileName);
+    data.append('file', file, fileName);
 
     data.append('data', JSON.stringify(payload));
     const url = backendUrl + endpoint;
@@ -112,8 +116,7 @@ class BackendClient {
       body: data,
     });
 
-
-    const dataResult = (await res.json());
+    const dataResult = await res.json() as object;
     return dataResult;
   }
 
@@ -126,7 +129,7 @@ class BackendClient {
     }
     const res = await this.post(endpoint, payload);
 
-    const data = (await res.json());
+    const data = await res.json() as object;
     return data;
   }
 
@@ -135,7 +138,7 @@ class BackendClient {
     const payload = { session, name };
     const res = await this.post(endpoint, payload);
     
-    const data = (await res.json());
+    const data = await res.json() as string;
     return data;
   }
 
@@ -144,7 +147,7 @@ class BackendClient {
     const payload = { session, collectionId: id };
     const res = await this.post(endpoint, payload);
     
-    const data = (await res.json());
+    const data = await res.json() as string;
     return data;
   }
 
@@ -153,7 +156,7 @@ class BackendClient {
     const payload = { session, collectionId: id, name };
     const res = await this.post(endpoint, payload);
     
-    const data = (await res.json());
+    const data = await res.json() as string;
     return data;
   }
 
@@ -162,8 +165,7 @@ class BackendClient {
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     
-    const data = (await res.json());
-    console.log('DATA', data);
+    const data = await res.json() as string;
     return data;
   }
 }

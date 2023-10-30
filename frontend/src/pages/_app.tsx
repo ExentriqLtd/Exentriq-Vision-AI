@@ -20,7 +20,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <IntercomProvider appId={INTERCOM_ID}>
         <PdfFocusProvider>
           <UploadedFileProvider>
-            <div className={`${!isMobile && 'flex flex-row'} h-[100vh] shadow-lg`}>
+            <div className={`${!isMobile && 'flex flex-row'} h-[100vh]`}>
               <Layout>
                 {isMobile ? (
                   <CollectionListMobile />
