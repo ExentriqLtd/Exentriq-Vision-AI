@@ -95,9 +95,9 @@ const CollectionListMobile: React.FC = () => {
   };
 
   const toggleSidebar = () => {
-    dispatchUploadedFile({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile} })
+    dispatchUploadedFile({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
   };
-  
+
   return (
     <>
       <div className="p-2 mb-2 shadow-md">
@@ -105,7 +105,7 @@ const CollectionListMobile: React.FC = () => {
           <RxHamburgerMenu size={24} />
         </button>
       </div>
-      <div className={`bg-gray-100 shadow-md h-full w-full fixed top-0 left-0 transform transition-transform ${toggleMenuMobile ? 'translate-x-0' : '-translate-x-full'}`} style={{zIndex:99}}>
+      <div className={`bg-gray-100 shadow-md h-full w-full fixed top-0 left-0 transform transition-transform ${toggleMenuMobile ? 'translate-x-0' : '-translate-x-full'}`} style={{ zIndex: 99 }}>
         <div className="p-4 flex justify-end">
           <button onClick={toggleSidebar} className="text-3xl cursor-pointer">
             <AiOutlineCloseCircle size={24} />
@@ -118,7 +118,7 @@ const CollectionListMobile: React.FC = () => {
               setIsRename('');
               toggleCollectionModal();
             }}
-            style={{zIndex: 99}}
+            style={{ zIndex: 99 }}
             className="cursor-pointer absolute bottom-4 right-4 shadow-md bg-primary-ex w-10 h-10 rounded-full flex justify-center items-center">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 text-white h-5">
               <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
@@ -159,6 +159,7 @@ const CollectionListMobile: React.FC = () => {
                     <CollectionItem
                       name={collection?.name}
                       doc_number={collection?.doc_number}
+                      doc_processing={collection?.doc_processing}
                       created_at={collection?.created_at}
                       id={collection?.uuid}
                       toggleModal={toggleCollectionModal}
