@@ -1,16 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { NextPage } from "next";
+import { backendClient } from "~/api/backend";
 
 interface FileUploadInt {
-    file?: {
+    file: {
         lastEditedUtc?: number;
         lastModified?: number;
         filename?: string;
         status?: string;
+        uuid: string;
     },
+    dispatchUploadedFile:Function
 }
 
-const FileUploaded: NextPage<FileUploadInt> = ({ file }: FileUploadInt) => {
+const TIMER = 1000
+
+const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchUploadedFile }: FileUploadInt) => {
+
+    const updateStatusFile = () => {
+        if(!file.uuid) return;
+        backendClient.getDetailFile(file.uuid)
+          .then(({ result }: any) => {
+            if (result?.status !== 'processed') {
+                setTimeout(() => {
+                    updateStatusFile()
+                }, TIMER);
+            } else {
+                dispatchUploadedFile({ type: 'UPDATE_STATUS_FILE', payload: { uuid: result.uuid, status: result.status } });
+            }
+          }).catch((e) => {
+            console.log('e.::::', e)
+          })
+    }
+
+    useEffect(() => {
+        updateStatusFile(); 
+    },[])
     return (
         <>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename?.substring(0, 20)} {file?.filename?.length >= 20 && '...'}</td>
@@ -30,7 +55,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file }: FileUploadInt) => {
                             </svg>
                             <p className="px-2">Failed</p>
                         </>
-                    ) : (file?.status == 'success') ? (
+                    ) : (file?.status == 'processed') ? (
                         <>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"

@@ -48,7 +48,7 @@ export const reducer = (state: stateReducer, action: action) => {
                 arrayCollections: action.payload?.arrayCollections
             };
         case 'SET_RENAME_COLLECTION':
-            const updatedArrayColl = state.arrayCollections.map((item:Collection) => {
+            const updatedArrayColl = state.arrayCollections.map((item: Collection) => {
                 if (item.uuid === action?.payload?.collectionId) {
                     item.name = action?.payload?.name;
                 }
@@ -70,14 +70,20 @@ export const reducer = (state: stateReducer, action: action) => {
                 arrayCitDocs: action.payload?.arrayCitDocs
             };
         case 'SET_ARRAY_FILES':
-            const file = action.payload?.filesUploaded
-            const arrayUploaded = [
-                ...state.arrayFileUploaded,
-                file
+            //@ts-ignore
+            const newData = [
+                ...state?.arrayFileUploaded,
+                action.payload?.filesUploaded
             ]
+            return { ...state, arrayFileUploaded: newData }
+        case 'UPDATE_STATUS_FILE':
+            const actualArrayFile = state?.arrayFileUploaded
+            //@ts-ignore
+            const index = actualArrayFile.findIndex((file) => file.uuid === action.payload?.uuid);
+            //@ts-ignore
+            actualArrayFile[index] = { ...actualArrayFile[index], status: action.payload?.status }
             return {
-                ...state,
-                arrayFileUploaded: arrayUploaded
+                ...state
             };
         case 'SET_VIEWPROGRESS_ACTIVE':
             return {
@@ -130,5 +136,5 @@ export const initialState: stateReducer = {
     isPdfViewerOpen: false,
     viewProgressActive: '',
     toggleMenuMobile: false
-  };
-  
+};
+

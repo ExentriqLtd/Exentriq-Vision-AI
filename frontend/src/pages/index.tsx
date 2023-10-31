@@ -10,6 +10,7 @@ import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { generateUniqueId } from "~/utils/utility";
 import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import { isEmpty } from "lodash";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -26,10 +27,11 @@ const LandingPage: NextPage = () => {
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
-      files?.map((file) => {
+      files?.forEach((file) => {
         backendClient.uploadFile(file, collectionId)
           .then(({ result }: any) => {
-            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: result } });
+            const newMap = {...result, status: 'in progress'}
+            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newMap } });
           });
       })
     } catch (error) {
@@ -125,7 +127,7 @@ const LandingPage: NextPage = () => {
                         <tbody className="divide-y bg-white">
                           {arrayFileUploaded.map((file: object, index: number) => (
                             <tr key={index}>
-                              <FileUploaded key={index} file={file} />
+                              <FileUploaded key={index} file={file} dispatchUploadedFile={dispatchUploadedFile}/>
                             </tr>
                           ))}
                         </tbody>

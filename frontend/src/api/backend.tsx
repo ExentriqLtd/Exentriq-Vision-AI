@@ -88,6 +88,14 @@ class BackendClient {
     const docs = fromBackendDocumentToFrontend(data);
     return docs;
   }
+  public async getDetailFile(
+    uuid: string
+  ): Promise<any> {
+    const endpoint = `api/file/${uuid}`;
+    const res = await this.get(endpoint);
+    const data = (await res.json());
+    return data
+  }
 
   public async fetchCollections(value: string): Promise<GetCollectionsReturnType[]> {
     const endpoint = `api/collections/list`;
@@ -132,7 +140,7 @@ class BackendClient {
     const data = await res.json() as object;
     return data;
   }
-
+  
   public async createCollection(name: string): Promise<string> {
     const endpoint = "api/collections/create";
     const payload = { session, name };
