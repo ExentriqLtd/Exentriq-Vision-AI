@@ -17,6 +17,7 @@ import { useModal } from "~/hooks/utils/useModal";
 import { useIntercom } from "react-use-intercom";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 export default function Conversation() {
   const router = useRouter();
@@ -31,6 +32,7 @@ export default function Conversation() {
     useModal();
 
   const { isMobile } = useIsMobile();
+  const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
   const { isPdfViewerOpen, arrayCitDocs } = stateUploadedFile;
@@ -145,40 +147,13 @@ export default function Conversation() {
     }
   }, []);
 
-
-  // if (isMobile) {
-  //   return (
-  //     <div className="landing-page-gradient-1 relative flex h-screen w-screen items-center justify-center">
-  //       <div className="flex h-min w-3/4 flex-col items-center justify-center rounded border bg-white p-4">
-  //         <div className="text-center text-xl ">
-  //           Sorry, the mobile view of this page is currently a work in progress.
-  //           Please switch to desktop!
-  //         </div>
-  //         <button
-  //           onClick={() => {
-  //             router
-  //               .push({
-  //                 pathname: `/`,
-  //                 query: session,
-  //               })
-  //               .catch(() => console.log("error navigating to conversation"));
-  //           }}
-  //           className="m-4 rounded border bg-llama-indigo px-8 py-2 font-bold text-white hover:bg-[#3B3775]"
-  //         >
-  //           Back Home
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
-  // }
-
   return (
-    <div className={`${isMobile ? 'w-full' : 'mx-6 w-4/5'}`}>
-      <div className={`flex ${isMobile ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
-        <div className={`flex  ${isMobile ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
+    <div className={`${(isMobile || isTablet) ? 'w-full' : 'mx-6 w-4/5'}`}>
+      <div className={`flex ${(isMobile || isTablet) ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
+        <div className={`flex  ${(isMobile || isTablet) ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
           <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
 
-            {isMobile
+            {(isMobile || isTablet)
               ? (
                 <button
                   onClick={() => {

@@ -10,19 +10,21 @@ import { UploadedFileProvider } from "~/hooks/uploadedFile/UploadedFileProvider"
 import { PdfFocusProvider } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import CollectionListMobile from "./section/leftSidebar/indexMobile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
 const MyApp: AppType = ({ Component, pageProps }) => {
   const { isMobile } = useIsMobile()
+  const { isTablet } = useIsTablet()
   return (
     <>
       <IntercomProvider appId={INTERCOM_ID}>
         <PdfFocusProvider>
           <UploadedFileProvider>
-            <div className={`${!isMobile && 'flex flex-row'} h-[100vh]`}>
+            <div className={`${!(isMobile || isTablet) && 'flex flex-row'} h-[100vh]`}>
               <Layout>
-                {isMobile ? (
+                {(isMobile || isTablet) ? (
                   <CollectionListMobile />
                 ) : (
                   <CollectionList />

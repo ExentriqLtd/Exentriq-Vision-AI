@@ -9,6 +9,7 @@ import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { HiDocument } from 'react-icons/hi2';
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 interface CollectionItemInt {
     name?: string;
@@ -27,6 +28,7 @@ interface CollectionItemInt {
 const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
+    const { isTablet } = useIsTablet()
     //@ts-ignore
     const [confirmDelete, setConfirmDelete] = useState(false)
 
@@ -188,7 +190,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                                                                     }).catch(() => console.log('errore deleting collection'));
                                                             }}
                                                             type="button"
-                                                            className={`${isMobile && 'mr-2'} mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                                                            className={`${(isMobile || isTablet) && 'mr-2'} mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold color-primary-ex shadow-sm ring-1 ring-inset ring-primary-ex hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                                                         >
                                                             Yes
                                                         </button>

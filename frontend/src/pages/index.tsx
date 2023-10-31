@@ -11,6 +11,7 @@ import { generateUniqueId } from "~/utils/utility";
 import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import { isEmpty } from "lodash";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -23,6 +24,7 @@ const LandingPage: NextPage = () => {
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
   const { isMobile } = useIsMobile()
+  const { isTablet } = useIsTablet()
 
   const handleUpload = (files: File[]) => {
     try {
@@ -67,7 +69,7 @@ const LandingPage: NextPage = () => {
 
 
   return (
-    <div className={`${isMobile ? 'w-full' : 'w-4/5'} flex flex-row`}>
+    <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-4/5'} flex flex-row`}>
       <div className="mt-3 mx-6 w-2/3 flex flex-col">
         {isLoadingConversation && (
           <ProgressBar />
@@ -113,7 +115,7 @@ const LandingPage: NextPage = () => {
             </button> */}
             {arrayFileUploaded && arrayFileUploaded.length > 0 && (
               <>
-                <div className={`${isMobile ? 'w-full' : 'w-2/3'} flex flex-col h-[30vh] mt-3 my-6 relative shadow-md bg-slate-50 rounded-md`}>
+                <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} flex flex-col h-[30vh] mt-3 my-6 relative shadow-md bg-slate-50 rounded-md`}>
                   <div className="absolute inset-0 flex-grow overflow-auto bg-grid-slate-100" />
                   <div className="rounded-md overflow-auto">
                     <div className="shadow-sm">
@@ -143,7 +145,7 @@ const LandingPage: NextPage = () => {
                     block 
                     rounded-sm 
                     bg-primary-ex 
-                    ${isMobile ? (
+                    ${(isMobile || isTablet) ? (
                       "px-2 py-2 text-xs w-full"
                     ) : (
                       "px-3.5 py-2.5 text-sm w-2/3"

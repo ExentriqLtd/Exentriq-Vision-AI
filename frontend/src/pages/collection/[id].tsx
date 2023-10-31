@@ -9,6 +9,7 @@ import { backendClient } from "~/api/backend";
 import { session } from "~/config";
 import { usePdfFocus } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -22,7 +23,7 @@ const Collection: NextPage = () => {
     const [documents, setDocuments] = useState<[] | null>(null)
     const [tableHeight, setTableHeight] = useState(0);
     const { isMobile } = useIsMobile()
-
+    const { isTablet } = useIsTablet()
 
     useEffect(() => {
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
@@ -62,10 +63,10 @@ const Collection: NextPage = () => {
     };
     return (
         <>
-            <div className={`${isMobile ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
-                <div className={`${!isMobile && 'flex flex-row'} items-center justify-between`}>
+            <div className={`${(isMobile || isTablet) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
+                <div className={`${!(isMobile || isTablet) && 'flex flex-row'} items-center justify-between`}>
                     <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
-                    <div className={`${isMobile && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
+                    <div className={`${(isMobile || isTablet) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <button
                             onClick={() => {
                                 router
@@ -79,7 +80,7 @@ const Collection: NextPage = () => {
                             block 
                             rounded-sm 
                             bg-primary-ex 
-                            ${isMobile ? (
+                            ${(isMobile || isTablet) ? (
                                     "px-2 py-2 text-xs"
                                 ) : (
                                     "px-3.5 py-2.5 text-sm"
@@ -108,7 +109,7 @@ const Collection: NextPage = () => {
                             block 
                             rounded-sm 
                             bg-primary-ex 
-                            ${isMobile ? (
+                            ${(isMobile || isTablet) ? (
                                     "px-2 py-2 text-xs"
                                 ) : (
                                     "px-3.5 py-2.5 text-sm"
@@ -125,9 +126,9 @@ const Collection: NextPage = () => {
                         </button>
                     </div>
                 </div>
-                <div className={`${!isMobile && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
+                <div className={`${!(isMobile || isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
                     <div className="flex flex-col relative rounded-md">
-                        <div className="h-full overflow-auto" style={{ maxHeight: isMobile ? '100%' : tableHeight }}>
+                        <div className="h-full overflow-auto" style={{ maxHeight: (isMobile || isTablet) ? '100%' : tableHeight }}>
                             <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                                 <thead>
                                     <tr>

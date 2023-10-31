@@ -1,6 +1,7 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useRef, useState } from "react";
 import useIsMobile from "~/hooks/utils/useIsMobile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 type Props = {
   onUpload: (files: File[]) => void;
@@ -11,6 +12,7 @@ const DragAndDrop = ({ onUpload }: Props) => {
   const [open, setOpen] = useState(false)
   const cancelButtonRef = useRef(null)
   const { isMobile } = useIsMobile()
+  const { isTablet } = useIsTablet()
   
   const handleDragEnter = () => {
     setIsDragActive(true);
@@ -89,7 +91,7 @@ const DragAndDrop = ({ onUpload }: Props) => {
         </Dialog>
       </Transition.Root>
       <div
-        className={`flex justify-center items-center ${isMobile ? 'w-full' : 'w-2/3'} h-48 border-2 border-dashed rounded-lg p-5
+        className={`flex justify-center items-center ${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} h-48 border-2 border-dashed rounded-lg p-5
         ${isDragActive ? "bg-sky-50 border-sky-400" : "border-gray-300"}`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
