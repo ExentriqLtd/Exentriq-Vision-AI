@@ -24,6 +24,13 @@ const CollectionList: React.FC = () => {
     //@ts-ignore
     if (collections && collections?.result) {
       dispatchUploadedFile({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
+      collections?.result?.map((item: any) => {
+        if (item?.doc_number !== item?.doc_processing) {
+          setTimeout(() => {
+            getCollections(value)
+          }, 1000);
+        }
+      })
     }
   }
 
@@ -76,13 +83,13 @@ const CollectionList: React.FC = () => {
     if (value.length >= 3) {
       console.log('Eseguire la ricerca per:', value);
       getCollections(value);
-    } 
+    }
 
-    if(value.length == 0) {
+    if (value.length == 0) {
       console.log('------> 0');
       getCollections('');
     }
-  }, 1000); 
+  }, 1000);
 
 
   const handleInputChange = (event: any) => {
@@ -119,7 +126,7 @@ const CollectionList: React.FC = () => {
           placeholder="Search..."
           value={searchTerm}
           onChange={handleInputChange}
-        /> 
+        />
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
@@ -130,12 +137,13 @@ const CollectionList: React.FC = () => {
                 <CollectionItem
                   name={collection?.name}
                   doc_number={collection?.doc_number}
+                  doc_processing={collection?.doc_processing}
                   created_at={collection?.created_at}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
                   dispatchUploadedFile={dispatchUploadedFile}
                   collectionId={collectionId}
-                  onRename={onRename}/>
+                  onRename={onRename} />
               </li>
             );
           })}

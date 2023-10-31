@@ -15,6 +15,7 @@ interface CollectionItemInt {
     created_at?: string;
     id?: string;
     doc_number: number;
+    doc_processing: number;
     key?: string;
     toggleModal?: any;
     onRename?: (string: string) => {}
@@ -23,7 +24,7 @@ interface CollectionItemInt {
     toggleSidebar?: () => void
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     //@ts-ignore
@@ -52,7 +53,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                 {doc_number && (
                     <div className="flex flex-1 justify-end items-start w-full pr-1.5">
                         <p className="text-sm"><HiDocument color="#9BA3AF" /></p>
-                        <p className="text-gray-400 text-xs">{doc_number}</p>
+                        <p className="text-gray-400 text-xs">{doc_number}/{doc_processing}</p>
                     </div>
                 )}
             </div>
