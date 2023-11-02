@@ -9,7 +9,6 @@ export const fromBackendDocumentToFrontend = (
 ) => {
   const frontendDocs: SecDocument[] = [];
   backendDocuments.map((backendDoc, index) => {
-    console.log('backendDocuments index', index);
     
     // const backendDocType = backendDoc.metadata_map.sec_document.doc_type;
     // const frontendDocType =

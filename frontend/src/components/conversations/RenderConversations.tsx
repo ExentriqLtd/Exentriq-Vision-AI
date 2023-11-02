@@ -291,7 +291,6 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
                 subProcesses={message.sub_processes || []}
                 isOpen={isExpanded}
                 toggleOpen={() => {
-                  console.log('entro toggle',  message)
                   dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
                   setIsExpanded((prev) => !prev)
                 }}
