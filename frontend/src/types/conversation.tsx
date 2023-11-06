@@ -40,6 +40,8 @@ export interface Message extends hasId {
   documents?: [];
   sub_processes?: MessageSubProcess[];
   created_at: Date;
+  errorUi: boolean;
+  uuid:string;
 }
 export interface MessageSubProcess extends hasId {
   messageId: string;

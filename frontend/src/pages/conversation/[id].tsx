@@ -18,6 +18,8 @@ import { useIntercom } from "react-use-intercom";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import { v4 as uuidv4 } from "uuid";
+
 
 export default function Conversation() {
   const router = useRouter();
@@ -42,7 +44,7 @@ export default function Conversation() {
   const [userMessage, setUserMessage] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<SecDocument[]>([]);
 
-  const { messages, userSendMessage, systemSendMessage, setMessages } =
+  const { messages, userSendMessage, systemSendMessage, setMessages, setErrorMessage } =
     useMessages(conversationId || "");
 
   const textFocusRef = useRef<HTMLTextAreaElement | null>(null);
@@ -57,6 +59,19 @@ export default function Conversation() {
   useEffect(() => {
     const fetchConversation = async (id: string) => {
       const result = await backendClient.fetchConversation(id);
+      // const testErrorUid = ['bda33fc6-7a42-11ee-9083-e2a70e41aa24', 'cb12b194-7a44-11ee-b72d-e2a70e41aa24'];
+
+      // //@ts-ignore
+      // const newMessages: Message[] = result.messages.map((item: Message) => {
+      //   if (testErrorUid.includes(item.uuid)) {
+      //     item.errorUi = true
+      //   }
+      //   return item
+      // });
+      // if (newMessages) {
+      //   setMessages(newMessages);
+      // }
+      console.log('fetchConversation:::', result.messages)
       if (result.messages) {
         setMessages(result.messages);
       }
@@ -80,20 +95,22 @@ export default function Conversation() {
     if (!userMessage || !conversationId) {
       return;
     }
-
+    // console.log('userMessage:::.', userMessage)
     setIsMessagePending(true);
-    userSendMessage(userMessage);
+    const id = uuidv4()
+    userSendMessage(userMessage, id);
     setUserMessage("");
 
     const messageEndpoint =
       backendUrl + `api/conversation/${conversationId}/message`;
     const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
-    console.log('URL----', url);
+    // console.log('URL----', url);
     const events = new EventSource(url);
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
     events.onmessage = (event: MessageEvent) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
       const parsedData: Message = JSON.parse(event.data);
+      // console.log("0...parsedData:::", parsedData)
       systemSendMessage(parsedData);
 
       if (
@@ -104,6 +121,12 @@ export default function Conversation() {
         setIsMessagePending(false);
       }
     };
+
+    events.onerror = (event) => {
+      events.close();
+      setIsMessagePending(false);
+      setErrorMessage(id)
+    }
   };
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setUserMessage(event.target.value);

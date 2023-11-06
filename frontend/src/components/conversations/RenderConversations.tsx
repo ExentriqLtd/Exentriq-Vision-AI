@@ -208,7 +208,15 @@ const UserDisplay: React.FC<UserDisplayProps> = ({ message, showLoading }) => {
           {message.content}
         </div>
       </div>
-      {showLoading && (
+      {message.errorUi && (
+        <div className="flex pb-4">
+          <div className="w-1/5"></div>
+          <div className="w-4/5">
+            <div className="text-red-500">Error, the request was not successful</div>
+          </div>
+        </div>
+      )}
+      {(showLoading && !message.errorUi) && (
         <div className="flex pb-4">
           <div className="w-1/5"></div>
           <div className="w-4/5">
