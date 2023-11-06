@@ -90,10 +90,10 @@ export default function Conversation() {
   }, [arrayCitDocs])
 
   useEffect(() => {
-    if(!actualEvent) {
+    if(!actualEvent && isMessagePending) {
       setIsMessagePending(false)
     }
-  }, [actualEvent])
+  }, [actualEvent, isMessagePending])
   
   // Keeping this in this file for now because this will be subject to change
   const submit = () => {
@@ -124,12 +124,14 @@ export default function Conversation() {
         parsedData.status === MESSAGE_STATUS.ERROR
       ) {
         events.close();
+        dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         setIsMessagePending(false);
       }
     };
 
     events.onerror = (event) => {
       events.close();
+      dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
       setIsMessagePending(false);
       setErrorMessage(id)
     }

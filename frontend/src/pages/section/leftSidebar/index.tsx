@@ -15,7 +15,7 @@ const CollectionList: React.FC = () => {
   const [isRename, setIsRename] = useState<String | undefined>(undefined);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { collectionId, arrayCollections } = stateUploadedFile;
+  const { collectionId, arrayCollections, actualEvent } = stateUploadedFile;
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
@@ -139,6 +139,7 @@ const CollectionList: React.FC = () => {
                   doc_number={collection?.doc_number}
                   doc_processing={collection?.doc_processing}
                   created_at={collection?.created_at}
+                  actualEvent={actualEvent}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
                   dispatchUploadedFile={dispatchUploadedFile}

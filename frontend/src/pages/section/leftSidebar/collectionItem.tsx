@@ -23,11 +23,12 @@ interface CollectionItemInt {
     toggleModal?: any;
     onRename?: (string: string) => {}
     collectionId: string;
-    dispatchUploadedFile: (val: any) => void
-    toggleSidebar?: () => void
+    dispatchUploadedFile: (val: any) => void;
+    toggleSidebar?: () => void;
+    actualEvent: EventSource;
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, publicCollection, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, publicCollection, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
@@ -36,6 +37,11 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, pub
 
     const openCollection = () => {
         toggleSidebar && toggleSidebar()
+        if(actualEvent) {
+            actualEvent && actualEvent.close()
+            dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
+            dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+        }
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         backendClient
             .createConversation(id)
