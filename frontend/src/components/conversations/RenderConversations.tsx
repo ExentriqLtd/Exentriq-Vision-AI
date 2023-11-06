@@ -262,9 +262,19 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const {viewProgressActive} = stateUploadedFile;
+  const { viewProgressActive } = stateUploadedFile;
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
+
+  useEffect(() => {
+    if (message.status == MESSAGE_STATUS.PENDING) {
+      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+    } else if (message.status === MESSAGE_STATUS.SUCCESS) {
+      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+    } else if (message.status === MESSAGE_STATUS.ERROR) {
+      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+    }
+  }, [message.status])
 
   useEffect(() => {
     if (isMessageSuccessful) {
@@ -281,7 +291,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   }, [isExpanded])
 
   useEffect(() => {
-    if(viewProgressActive !== message?.uuid) {
+    if (viewProgressActive !== message?.uuid) {
       setIsExpanded(false)
     }
   }, [viewProgressActive])
@@ -335,12 +345,18 @@ interface IRenderConversation {
   messages: Message[];
   documents: SecDocument[];
   backToDetail?: boolean;
+  messageStatus: string;
+  actualEvent: EventSource;
+  dispatchUploadedFile: ({})=>{};
 }
 
 export const RenderConversations: React.FC<IRenderConversation> = ({
   backToDetail,
   messages,
   documents,
+  messageStatus,
+  actualEvent,
+  dispatchUploadedFile,
 }) => {
   const lastElementRef = useRef<HTMLDivElement | null>(null);
 
@@ -353,6 +369,15 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
   const showLoading = messages[messages.length - 1]?.role === ROLE.USER;
   return (
     <div className="box-border flex h-full flex-col justify-start font-nunito text-sm text-[#2B3175]">
+      {messageStatus == 'PENDING' && (
+        <div onClick={() => {
+          actualEvent && actualEvent.close()
+          dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
+          dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+        }} className="cursor-pointer absolute bottom-20 right-6 border py-2 px-6 rounded bg-white">
+          Stop generating
+        </div>
+      )}
       {messages.map((message, index) => {
         let display;
         if (message.role == ROLE.ASSISTANT) {

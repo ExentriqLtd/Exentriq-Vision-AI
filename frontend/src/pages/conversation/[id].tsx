@@ -37,7 +37,7 @@ export default function Conversation() {
   const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { isPdfViewerOpen, arrayCitDocs } = stateUploadedFile;
+  const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateUploadedFile;
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
@@ -71,7 +71,6 @@ export default function Conversation() {
       // if (newMessages) {
       //   setMessages(newMessages);
       // }
-      console.log('fetchConversation:::', result.messages)
       if (result.messages) {
         setMessages(result.messages);
       }
@@ -90,6 +89,12 @@ export default function Conversation() {
     }
   }, [arrayCitDocs])
 
+  useEffect(() => {
+    if(!actualEvent) {
+      setIsMessagePending(false)
+    }
+  }, [actualEvent])
+  
   // Keeping this in this file for now because this will be subject to change
   const submit = () => {
     if (!userMessage || !conversationId) {
@@ -106,6 +111,7 @@ export default function Conversation() {
     const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
     // console.log('URL----', url);
     const events = new EventSource(url);
+    dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
     events.onmessage = (event: MessageEvent) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
@@ -219,20 +225,20 @@ export default function Conversation() {
                           .catch(() => console.log("error navigating to conversation"))
                       }}
                       className="
-                  block 
-                  rounded-sm 
-                  bg-primary-ex 
-                  px-3.5 
-                  py-2.5 
-                  text-center 
-                  text-sm 
-                  text-white 
-                  shadow-md 
-                  hover:bg-primary-ex 
-                  focus-visible:outline 
-                  focus-visible:outline-2 
-                  focus-visible:outline-offset-2 
-                  focus-visible:outline-indigo-600">
+                        block 
+                        rounded-sm 
+                        bg-primary-ex 
+                        px-3.5 
+                        py-2.5 
+                        text-center 
+                        text-sm 
+                        text-white 
+                        shadow-md 
+                        hover:bg-primary-ex 
+                        focus-visible:outline 
+                        focus-visible:outline-2 
+                        focus-visible:outline-offset-2 
+                        focus-visible:outline-indigo-600">
                       Collection detail
                     </button>
                   </div>
@@ -242,10 +248,14 @@ export default function Conversation() {
             <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
                 backToDetail={backToDetail}
+                messageStatus={messageStatus}
+                dispatchUploadedFile={dispatchUploadedFile}
                 messages={messages}
+                actualEvent={actualEvent}
                 documents={selectedDocuments}
               />
             </div>
+
             <div className="relative flex h-[70px] w-full items-center border border-t-0">
               <textarea
                 ref={textFocusRef}

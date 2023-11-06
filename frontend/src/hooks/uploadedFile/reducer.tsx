@@ -11,6 +11,9 @@ interface action {
         goToUpload: boolean,
         viewProgressActive: string,
         isPdfViewerOpen: boolean,
+        toggleMenuMobile: boolean,
+        messageStatus: string,
+        actualEvent: object,
     };
 }
 
@@ -24,6 +27,8 @@ interface stateReducer {
     viewProgressActive: string;
     toggleMenuMobile: boolean;
     goToUpload: boolean;
+    messageStatus: string;
+    actualEvent: object;
 }
 
 interface FileItem {
@@ -68,6 +73,16 @@ export const reducer = (state: stateReducer, action: action) => {
             return {
                 ...state,
                 arrayCitDocs: action.payload?.arrayCitDocs
+            };
+        case 'SET_STATUS_MESSAGE':
+            return {
+                ...state,
+                messageStatus: action.payload?.messageStatus
+            };
+        case 'SET_ACTUAL_EVENT':
+            return {
+                ...state,
+                actualEvent: action.payload?.actualEvent
             };
         case 'SET_ARRAY_FILES':
             //@ts-ignore
@@ -135,6 +150,8 @@ export const initialState: stateReducer = {
     goToUpload: false,
     isPdfViewerOpen: false,
     viewProgressActive: '',
-    toggleMenuMobile: false
+    toggleMenuMobile: false,
+    messageStatus: '',
+    actualEvent:{}
 };
 
