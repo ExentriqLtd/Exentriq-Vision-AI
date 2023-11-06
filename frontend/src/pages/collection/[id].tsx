@@ -133,9 +133,9 @@ const Collection: NextPage = () => {
                                 <thead>
                                     <tr>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Name</th>
-                                        <th className="sticky top-0  bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
-                                        <th className="sticky top-0  bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
-                                        <th className="sticky top-0  bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Download</th>
+                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
+                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
+                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Download</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y bg-white">
