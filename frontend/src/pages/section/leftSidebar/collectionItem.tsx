@@ -38,7 +38,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
     const openCollection = () => {
         toggleSidebar && toggleSidebar()
         if(actualEvent) {
-            actualEvent && actualEvent.close()
+            actualEvent && actualEvent?.close()
             dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
             dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         }
