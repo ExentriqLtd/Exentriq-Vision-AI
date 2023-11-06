@@ -97,7 +97,7 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
   return (
     <div key={`${messageId}-sub-process`} className="mt-4 w-full rounded ">
       <div
-        className="flex w-max cursor-pointer items-center rounded p-1 font-nunito text-sm text-gray-90 hover:bg-gray-00"
+        className="flex w-max cursor-pointer items-center rounded p-1 font-nunito text-gray-90 text-[16px] hover:bg-gray-00"
         onClick={() => toggleOpen()}
       >
         View progress
@@ -111,7 +111,7 @@ const SubProcessDisplay: React.FC<SubProcessDisplayProps> = ({
       </div>
       {isOpen && (
         <>
-          <div className="ml-4 border-l border-l-gray-30 pb-1 pl-4 font-nunito text-[11px] font-light text-gray-60">
+          <div className="ml-4 border-l border-l-gray-30 pb-1 pl-4 font-nunito text-[12px] font-light text-gray-60">
             <div>Question Received</div>
             {subQuestions.length > 0 && (
               <div
@@ -200,11 +200,11 @@ const UserDisplay: React.FC<UserDisplayProps> = ({ message, showLoading }) => {
     <>
       <div className="flex bg-gray-00 pb-4">
         <div className="mt-4 w-1/5 flex-grow text-right font-nunito text-gray-60">
-          <div className="flex items-center justify-center">
+          <div className="flex items-center justify-center text-[16px] lineHeight30">
             {formatDisplayDate(message.created_at)}
           </div>
         </div>
-        <div className="mt-4 w-4/5 pr-3 font-nunito font-bold text-gray-90">
+        <div className="mt-4 w-4/5 pr-3 font-nunito font-bold text-gray-90 text-[18px] lineHeight30">
           {message.content}
         </div>
       </div>
@@ -330,7 +330,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           <div className="flex ">
             <div className="w-1/5"></div>
             <div className="w-4/5">
-              <p className="relative mb-2 mt-2 pr-3 font-nunito whitespace-pre-wrap font-bold text-gray-90">
+              <p className="relative mb-2 mt-2 pr-3 font-nunito whitespace-pre-wrap font-bold text-gray-90 text-[18px] lineHeight30">
                 {message.content}
               </p>
             </div>
