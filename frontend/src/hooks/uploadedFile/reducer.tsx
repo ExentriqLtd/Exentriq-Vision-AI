@@ -13,7 +13,7 @@ interface action {
         isPdfViewerOpen: boolean,
         toggleMenuMobile: boolean,
         messageStatus: string,
-        actualEvent: object,
+        actualEvent: object | null,
     };
 }
 
@@ -28,7 +28,7 @@ interface stateReducer {
     toggleMenuMobile: boolean;
     goToUpload: boolean;
     messageStatus: string;
-    actualEvent: object;
+    actualEvent: object | null;
 }
 
 interface FileItem {
@@ -152,6 +152,6 @@ export const initialState: stateReducer = {
     viewProgressActive: '',
     toggleMenuMobile: false,
     messageStatus: '',
-    actualEvent:{}
+    actualEvent: null
 };
 

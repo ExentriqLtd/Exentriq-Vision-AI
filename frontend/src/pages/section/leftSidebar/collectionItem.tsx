@@ -25,7 +25,7 @@ interface CollectionItemInt {
     collectionId: string;
     dispatchUploadedFile: (val: any) => void;
     toggleSidebar?: () => void;
-    actualEvent: EventSource;
+    actualEvent?: EventSource;
 }
 
 const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, publicCollection, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
@@ -38,7 +38,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
     const openCollection = () => {
         toggleSidebar && toggleSidebar()
         if(actualEvent) {
-            actualEvent && actualEvent?.close()
+            actualEvent?.close()
             dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
             dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         }
