@@ -86,7 +86,6 @@ const CollectionList: React.FC = () => {
     }
 
     if (value.length == 0) {
-      console.log('------> 0');
       getCollections('');
     }
   }, 1000);
@@ -136,6 +135,7 @@ const CollectionList: React.FC = () => {
               <li key={index}>
                 <CollectionItem
                   name={collection?.name}
+                  publicCollection={collection?.public}
                   doc_number={collection?.doc_number}
                   doc_processing={collection?.doc_processing}
                   created_at={collection?.created_at}

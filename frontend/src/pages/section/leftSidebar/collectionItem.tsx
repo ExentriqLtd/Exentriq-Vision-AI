@@ -8,6 +8,7 @@ import { session } from "~/config";
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { HiDocument } from 'react-icons/hi2';
+import { FaUsers } from 'react-icons/fa6';
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 
@@ -17,6 +18,7 @@ interface CollectionItemInt {
     id?: string;
     doc_number: number;
     doc_processing: number;
+    publicCollection?: boolean;
     key?: string;
     toggleModal?: any;
     onRename?: (string: string) => {}
@@ -25,7 +27,7 @@ interface CollectionItemInt {
     toggleSidebar?: () => void
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, publicCollection, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
@@ -63,6 +65,11 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, created_at, id, tog
                 <div className="flex gap-5 items-center">
                     <span>{name}</span>
                 </div>
+                {publicCollection && (
+                    <div className="flex flex-1 justify-end text-left pr-2">
+                        <FaUsers color="#9BA3AF" size={20} />
+                    </div>
+                )}
                 <Menu as="div" className="relative inline-block text-left">
                     <div>
                         <Menu.Button

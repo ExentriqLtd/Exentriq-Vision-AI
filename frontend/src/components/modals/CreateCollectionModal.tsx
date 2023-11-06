@@ -17,7 +17,11 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState('');
+  const [isOn, setIsOn] = useState(false);
 
+  const toggleSwitch = () => {
+    setIsOn(!isOn);
+  };
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.select();
@@ -56,6 +60,26 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
         >
           {isRename ? 'Save' : 'Create'}
         </button>
+      </div>
+      <div className="flex flex-row items-center mt-5">
+        <div className="relative w-12 h-6 rounded-full bg-gray-200">
+          <label htmlFor="toggle" className={`absolute left-0 top-0 w-6 h-6 rounded-full cursor-pointer`}>
+            <input
+              type="checkbox"
+              id="toggle"
+              className="w-0 h-0 opacity-0"
+              checked={isOn}
+              onChange={toggleSwitch}
+            />
+            <span
+              className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-primary-ex transform ${isOn ? 'translate-x-6 block' : 'hidden'}`} />
+            <span
+              className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-white transform ${isOn && 'hidden'}`} />
+          </label>
+        </div>
+        <p className="pl-3 text-sm text-gray-500">
+          Visible to all users of the App
+        </p>
       </div>
     </Modal>
   );
