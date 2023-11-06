@@ -122,8 +122,8 @@ const LandingPage: NextPage = () => {
                       <table className="relative border-collapse table-auto w-full text-sm">
                         <thead>
                           <tr>
-                            <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Name</th>
-                            <th className="sticky top-0 bg-slate-50 border-b font-medium py-3 text-slate-400 text-left pl-8">Status</th>
+                            <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Name</th>
+                            <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Status</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y bg-white">
