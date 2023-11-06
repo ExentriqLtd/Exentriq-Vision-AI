@@ -7,7 +7,7 @@ import { backendClient } from "~/api/backend";
 import { session } from "~/config";
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
-import { HiDocument } from 'react-icons/hi2';
+import { HiMiniDocumentCheck } from 'react-icons/hi2';
 import { FaUsers } from 'react-icons/fa6';
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
@@ -224,9 +224,9 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                 </Menu>
             </div>
             {doc_number && (
-                <div className="flex flex-1 items-start w-full">
-                    <p className="text-sm"><HiDocument color="#9BA3AF" /></p>
-                    <p className="text-gray-400 text-xs">{doc_number}/{doc_processing}</p>
+                <div className="flex flex-1 items-center w-full">
+                    <p className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12}/></p>
+                    <p className="pl-2 text-gray-400 text-xs">{doc_number}/{doc_processing}</p>
                 </div>
             )}
         </div>
