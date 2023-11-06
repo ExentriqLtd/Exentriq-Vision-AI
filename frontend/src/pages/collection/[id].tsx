@@ -65,7 +65,7 @@ const Collection: NextPage = () => {
         <>
             <div className={`${(isMobile || isTablet) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
                 <div className={`${!(isMobile || isTablet) && 'flex flex-row'} items-center justify-between`}>
-                    <Header title={'Collection'} subtitle={`${selectedCollection?.name}`} paragraph={false} />
+                    <Header subtitle={`${selectedCollection?.name}`} paragraph={false} />
                     <div className={`${(isMobile || isTablet) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <button
                             onClick={() => {
