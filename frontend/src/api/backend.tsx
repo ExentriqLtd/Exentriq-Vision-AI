@@ -142,9 +142,9 @@ class BackendClient {
     return data;
   }
   
-  public async createCollection(name: string): Promise<string> {
+  public async createCollection({ name, is_public }: any): Promise<string> {
     const endpoint = "api/collections/create";
-    const payload = { session, name };
+    const payload = { session, name, is_public };
     const res = await this.post(endpoint, payload);
     
     const data = await res.json() as string;
@@ -160,9 +160,9 @@ class BackendClient {
     return data;
   }
 
-  public async renameCollection(id: string, name: string): Promise<string> {
+  public async renameCollection({ id, name, is_public }: any): Promise<string> {
     const endpoint = "api/collections/rename";
-    const payload = { session, collectionId: id, name };
+    const payload = { session, collectionId: id, name, is_public };
     const res = await this.post(endpoint, payload);
     
     const data = await res.json() as string;

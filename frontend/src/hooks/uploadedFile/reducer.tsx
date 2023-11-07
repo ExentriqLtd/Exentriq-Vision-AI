@@ -15,6 +15,7 @@ interface action {
         toggleMenuMobile: boolean,
         messageStatus: string,
         actualEvent: object | null,
+        is_public: boolean,
     };
 }
 
@@ -41,6 +42,7 @@ interface FileItem {
 interface Collection {
     uuid: string,
     name: string,
+    is_public: boolean,
 }
 
 export const reducer = (state: stateReducer, action: action) => {
@@ -59,6 +61,7 @@ export const reducer = (state: stateReducer, action: action) => {
             const updatedArrayColl = state.arrayCollections.map((item: Collection) => {
                 if (item.uuid === action?.payload?.collectionId) {
                     item.name = action?.payload?.name;
+                    item.is_public = action?.payload?.is_public;
                 }
                 return item;
             });

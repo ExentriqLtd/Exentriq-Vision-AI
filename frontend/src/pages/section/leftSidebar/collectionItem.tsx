@@ -18,17 +18,18 @@ interface CollectionItemInt {
     id?: string;
     doc_number: number;
     doc_processing: number;
-    publicCollection?: boolean;
+    is_public?: boolean;
     key?: string;
     toggleModal?: any;
-    onRename?: (string: string) => {}
+    onRename?: (string: string) => void
+    onIsPublic?: (bool: boolean) => void
     collectionId: string;
     dispatchUploadedFile: (val: any) => void;
     toggleSidebar?: () => void;
     actualEvent?: EventSource;
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, publicCollection, toggleModal, toggleSidebar, doc_number, onRename, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, is_public, toggleModal, toggleSidebar, doc_number, onRename, onIsPublic, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
@@ -36,7 +37,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
 
     const openCollection = () => {
         toggleSidebar && toggleSidebar()
-        if(actualEvent) {
+        if (actualEvent) {
             actualEvent?.close()
             dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
             dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
@@ -65,7 +66,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                     <div className="flex gap-5 items-center">
                         <span>{name}</span>
                     </div>
-                    {publicCollection && (
+                    {is_public && (
                         <div className="flex flex-1 justify-end text-left pr-2">
                             <FaUsers color="#9BA3AF" size={20} />
                         </div>
@@ -153,13 +154,14 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                 toggleModal();
                                                 (onRename && name) && onRename(name)
+                                                onIsPublic && onIsPublic(is_public)
                                             }}
                                             className={classNames(
                                                 active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                                                 'block px-4 py-2 text-sm'
                                             )}
                                         >
-                                            Rename
+                                            Modify
                                         </a>
                                     )}
                                 </Menu.Item>
@@ -230,16 +232,16 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                 <div className="flex items-center w-full pt-1">
                     {doc_number === doc_processing ? (
                         <>
-                            <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12}/></div>
+                            <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
                             <p className="pl-1 text-gray-400 text-xs">{doc_number} document processed</p>
-                        </> 
+                        </>
                     ) : (
                         <>
-                            <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22}/></div>
+                            <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} /></div>
                             <p className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</p>
                         </>
                     )}
-                    
+
                 </div>
             )}
         </div>

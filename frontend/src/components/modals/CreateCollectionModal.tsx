@@ -4,9 +4,10 @@ import { isString } from "lodash";
 
 interface CreateCollectionModal {
   isOpen: boolean;
-  isRename?: string;
+  isRename: string;
+  is_public: boolean;
   toggleModal: () => void;
-  onClick: (val: string) => void;
+  onClick: ({ name, isPublic }: any) => void;
 }
 
 const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
@@ -14,6 +15,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   isRename,
   toggleModal,
   onClick,
+  is_public,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [value, setValue] = useState('');
@@ -26,6 +28,13 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
     if (isOpen) {
       inputRef.current?.select();
     }
+    is_public && setIsOn(is_public);
+    if (isString(isRename) && isRename !== '') {
+      setValue(isRename)
+    } else {
+      setValue('')
+      setIsOn(false);
+    }
   }, [isOpen]);
 
   useEffect(() => {
@@ -33,14 +42,19 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
       setValue(isRename)
     } else {
       setValue('')
+      setIsOn(false);
     }
   }, [isRename])
 
+  useEffect(() => {
+    setIsOn(is_public);
+  }, [is_public])
+
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Rename collection" : "Create new collection"}>
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Modify collection" : "Create new collection"}>
       <p className="mb-6 mt-2 text-sm text-gray-500">
-        Enter the collection's name
+        Enter the collection's info
       </p>
 
       <div className="flex items-center space-x-2">
@@ -53,7 +67,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
         />
         <button
           onClick={() => {
-            onClick(value)
+            onClick({ name: value, is_public: isOn })
             setValue('')
           }}
           className="rounded bg-primary-ex px-4 py-2 font-bold text-white opacity-90 hover:opacity-100"
