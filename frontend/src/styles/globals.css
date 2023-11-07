@@ -183,3 +183,7 @@ body {
 .customBoxShadow {
   box-shadow: 0 1px 30px rgb(0 0 0 / 0.05);
 }
+
+.mr-416 {
+  margin-right: 5.16%;
+}
