@@ -8,15 +8,21 @@ import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import { session } from "~/config";
+import { RxHamburgerMenu } from 'react-icons/rx'
+import { AiOutlineCloseCircle } from 'react-icons/ai'
 import _ from 'lodash';
+import useIsMobile from "~/hooks/utils/useIsMobile";
+import useIsTablet from "~/hooks/utils/useIsTablet";
 
 const CollectionList: React.FC = () => {
+  const { isMobile } = useIsMobile()
+  const { isTablet } = useIsTablet()
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   const [isRename, setIsRename] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { collectionId, arrayCollections, actualEvent } = stateUploadedFile;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateUploadedFile;
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
@@ -34,6 +40,10 @@ const CollectionList: React.FC = () => {
       })
     }
   }
+
+  const toggleSidebar = () => {
+    dispatchUploadedFile({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
+  };
 
   useEffect(() => {
     getCollections('').catch(() => console.error("could not fetch documents"));
@@ -103,7 +113,7 @@ const CollectionList: React.FC = () => {
     handleSearchDebounced(value);
   };
 
-  return (
+  const insideComponent = (
     <>
       <CreateCollectionModal
         isOpen={isCollectionModalOpen}
@@ -112,7 +122,8 @@ const CollectionList: React.FC = () => {
         toggleModal={toggleCollectionModal}
         onClick={isRename ? renameCollection : createCollection}
       />
-      <div className="w-1/5 bg-gray-100 relative p-4 rounded-l-lg flex flex-col">
+
+      <div className={`${(isMobile || isTablet) ? 'w-full h-full' : 'w-1/5 bg-gray-100'} relative p-4 rounded-l-lg flex flex-col`}>
         <input type="text" name="search" id="pricsearche"
           className="
            block 
@@ -167,6 +178,46 @@ const CollectionList: React.FC = () => {
 
         </div>
       </div>
+    </>
+  )
+
+  return (
+    <>
+      {(isMobile || isTablet) ? (
+        <>
+          <div className="p-2 mb-2 shadow-md">
+            <button onClick={toggleSidebar} className="text-3xl cursor-pointer">
+              <RxHamburgerMenu size={24} />
+            </button>
+          </div>
+          <div className={`bg-gray-100 shadow-md h-full w-full fixed top-0 left-0 transform transition-transform ${toggleMenuMobile ? 'translate-x-0' : '-translate-x-full'}`} style={{ zIndex: 99 }}>
+            <div className="p-4 flex justify-end">
+              <button onClick={toggleSidebar} className="text-3xl cursor-pointer">
+                <AiOutlineCloseCircle size={24} />
+              </button>
+            </div>
+            <nav className="h-full">
+              <div
+                onClick={() => {
+                  toggleSidebar()
+                  setIsRename('');
+                  toggleCollectionModal();
+                }}
+                style={{ zIndex: 99 }}
+                className="cursor-pointer absolute bottom-4 right-4 shadow-md bg-primary-ex w-10 h-10 rounded-full flex justify-center items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 text-white h-5">
+                  <path d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z" />
+                </svg>
+              </div>
+              {insideComponent}
+            </nav>
+          </div>
+        </>
+      ) : (
+        <>
+          {insideComponent}
+        </>
+      )}
     </>
   );
 };
