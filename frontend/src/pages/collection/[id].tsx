@@ -27,7 +27,6 @@ const Collection: NextPage = () => {
 
     useEffect(() => {
         dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
-        console.log('HEI', document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
     }, [id])
 
