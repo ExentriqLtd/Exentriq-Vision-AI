@@ -258,7 +258,7 @@ export default function Conversation() {
               />
             </div>
 
-            <div className="relative flex h-[70px] w-full items-center border border-t-0">
+            <div className="relative flex h-[70px] w-full items-center border border-t-0 customBoxShadow">
               <textarea
                 ref={textFocusRef}
                 rows={1}

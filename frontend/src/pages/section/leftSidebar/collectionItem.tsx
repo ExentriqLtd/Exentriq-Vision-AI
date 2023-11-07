@@ -11,6 +11,7 @@ import { HiMiniDocumentCheck } from 'react-icons/hi2';
 import { FaUsers } from 'react-icons/fa6';
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import { BiLoaderAlt } from "react-icons/bi";
 
 interface CollectionItemInt {
     name?: string;
@@ -57,19 +58,23 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
     }
 
     return (
-        <div className={`bg-white shadow-md px-5 relative py-3 w-full my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
-            <div className="flex justify-between items-center w-full">
-                <p className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
-            </div>
-            <div className="flex pt-1 justify-between items-center w-full">
-                <div className="flex gap-5 items-center">
-                    <span>{name}</span>
+        <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
+            <div className="w-5/6">
+                <div className="flex justify-between items-center w-full">
+                    <p className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
                 </div>
-                {publicCollection && (
-                    <div className="flex flex-1 justify-end text-left pr-2">
-                        <FaUsers color="#9BA3AF" size={20} />
+                <div className="flex pt-1 justify-between items-center w-full">
+                    <div className="flex gap-5 items-center">
+                        <span>{name}</span>
                     </div>
-                )}
+                    {publicCollection && (
+                        <div className="flex flex-1 justify-end text-left pr-2">
+                            <FaUsers color="#9BA3AF" size={20} />
+                        </div>
+                    )}
+                </div>
+            </div>
+            <div className="w-1/6 justify-end flex">
                 <Menu as="div" className="relative inline-block text-left">
                     <div>
                         <Menu.Button
@@ -224,9 +229,19 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                 </Menu>
             </div>
             {doc_number && (
-                <div className="flex flex-1 items-center w-full">
-                    <p className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12}/></p>
-                    <p className="pl-2 text-gray-400 text-xs">{doc_number}/{doc_processing}</p>
+                <div className="flex items-center w-full pt-1">
+                    {doc_number === doc_processing ? (
+                        <>
+                            <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12}/></div>
+                            <p className="pl-1 text-gray-400 text-xs">{doc_number} document processed</p>
+                        </> 
+                    ) : (
+                        <>
+                            <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22}/></div>
+                            <p className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</p>
+                        </>
+                    )}
+                    
                 </div>
             )}
         </div>
