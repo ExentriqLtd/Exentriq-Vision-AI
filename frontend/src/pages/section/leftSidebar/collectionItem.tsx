@@ -66,24 +66,24 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                     <div className="flex gap-5 items-center">
                         <span>{name}</span>
                     </div>
-                    {is_public && (
-                        <div className="flex flex-1 justify-end text-left pr-2">
-                            <FaUsers color="#9BA3AF" size={20} />
-                        </div>
-                    )}
                 </div>
             </div>
-            <div className="w-1/6 justify-end flex">
+            <div className="w-1/6 justify-end flex items-start">
+                {is_public && (
+                    <div className="relative inline-block text-left pt-1 pr-2">
+                        <FaUsers color="#9BA3AF" size={20} />
+                    </div>
+                )}
                 <Menu as="div" className="relative inline-block text-left">
                     <div>
                         <Menu.Button
                             onClick={(e) => {
                                 router
-                                .push({
-                                    pathname: `/conversation/${collectionId}`,
-                                    query: session,
-                                })
-                                .catch(() => console.log("error navigating to conversation"));
+                                    .push({
+                                        pathname: `/conversation/${collectionId}`,
+                                        query: session,
+                                    })
+                                    .catch(() => console.log("error navigating to conversation"));
                                 e.stopPropagation();
                                 setConfirmDelete(false);
                                 dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
