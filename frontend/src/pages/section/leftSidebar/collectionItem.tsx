@@ -2,16 +2,15 @@ import React, { Fragment, useState } from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
 import { backendClient } from "~/api/backend";
 import { session } from "~/config";
 import { Menu, Transition } from "@headlessui/react";
 import classNames from "classnames";
 import { HiMiniDocumentCheck } from 'react-icons/hi2';
 import { FaUsers } from 'react-icons/fa6';
+import { BiLoaderAlt } from "react-icons/bi";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
-import { BiLoaderAlt } from "react-icons/bi";
 
 interface CollectionItemInt {
     name?: string;
@@ -33,7 +32,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
-    //@ts-ignore
     const [confirmDelete, setConfirmDelete] = useState(false)
 
     const openCollection = () => {

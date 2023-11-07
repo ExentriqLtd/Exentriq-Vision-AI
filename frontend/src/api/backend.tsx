@@ -93,7 +93,8 @@ class BackendClient {
   ): Promise<any> {
     const endpoint = `api/file/${uuid}`;
     const res = await this.get(endpoint);
-    const data = (await res.json());
+    
+    const data = await res.json() as object;
     return data
   }
 

@@ -1,6 +1,7 @@
 interface action {
     type: string;
     payload: {
+        status: string;
         uuid: string,
         lastModified: string;
         arrayCollections: object;
@@ -19,7 +20,7 @@ interface action {
 
 interface stateReducer {
     filesUploaded: [];
-    arrayFileUploaded: [];
+    arrayFileUploaded: Array<{ uuid: string; status: string }>;
     arrayCitDocs: [];
     collectionId: string;
     arrayCollections: [];
@@ -33,6 +34,8 @@ interface stateReducer {
 
 interface FileItem {
     lastModified: string;
+    uuid: string;
+    status: string;
 }
 
 interface Collection {
@@ -85,20 +88,20 @@ export const reducer = (state: stateReducer, action: action) => {
                 actualEvent: action.payload?.actualEvent
             };
         case 'SET_ARRAY_FILES':
-            //@ts-ignore
             const newData = [
                 ...state?.arrayFileUploaded,
                 action.payload?.filesUploaded
             ]
             return { ...state, arrayFileUploaded: newData }
         case 'UPDATE_STATUS_FILE':
-            const actualArrayFile = state?.arrayFileUploaded
-            //@ts-ignore
+            const actualArrayFile = state.arrayFileUploaded;
             const index = actualArrayFile.findIndex((file) => file.uuid === action.payload?.uuid);
-            //@ts-ignore
-            actualArrayFile[index] = { ...actualArrayFile[index], status: action.payload?.status }
+            if (index !== -1) {
+                actualArrayFile[index] = { uuid: action.payload?.uuid || '', status: action.payload?.status || '' };
+            }
             return {
-                ...state
+                ...state,
+                arrayFileUploaded: actualArrayFile,
             };
         case 'SET_VIEWPROGRESS_ACTIVE':
             return {
@@ -106,10 +109,13 @@ export const reducer = (state: stateReducer, action: action) => {
                 viewProgressActive: action?.payload?.viewProgressActive
             };
         case 'SET_REMOVE_FILES':
-            const filterTemp = state?.arrayFileUploaded?.filter((i: FileItem) => i?.lastModified !== action.payload.lastModified)
+            const filterTemp = state?.arrayFileUploaded?.filter((i) => {
+                const fileItem = i as FileItem;
+                return fileItem.lastModified !== action.payload.lastModified;
+            });
             return {
                 ...state,
-                arrayFileUploaded: filterTemp
+                arrayFileUploaded: filterTemp || [],
             };
         case 'SET_COLLECTION_ACTIVE':
             return {
