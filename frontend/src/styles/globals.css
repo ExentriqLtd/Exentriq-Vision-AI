@@ -17,6 +17,10 @@
   }
 }
 
+body {
+  background-color: #FFF;
+}
+
 .loader {
   border-top-color: #9ca3af;
   /* The color of your spinner */
