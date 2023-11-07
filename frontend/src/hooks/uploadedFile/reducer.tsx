@@ -97,7 +97,7 @@ export const reducer = (state: stateReducer, action: action) => {
             const actualArrayFile = state.arrayFileUploaded;
             const index = actualArrayFile.findIndex((file) => file.uuid === action.payload?.uuid);
             if (index !== -1) {
-                actualArrayFile[index] = { uuid: action.payload?.uuid || '', status: action.payload?.status || '' };
+                actualArrayFile[index] = {...actualArrayFile[index], uuid: action.payload?.uuid || '', status: action.payload?.status || '' };
             }
             return {
                 ...state,
