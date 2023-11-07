@@ -330,7 +330,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           <div className="flex ">
             <div className="w-1/5"></div>
             <div className="w-4/5">
-              <p className="relative mb-2 mt-2 pr-3 font-nunito whitespace-pre-wrap font-bold text-gray-90 text-[18px] lineHeight30">
+              <p className="relative mb-2 mt-2 mr-416 font-nunito whitespace-pre-wrap font-bold text-gray-90 text-[18px] lineHeight30">
                 {message.content}
               </p>
             </div>
