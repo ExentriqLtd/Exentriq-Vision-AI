@@ -77,9 +77,15 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                     <div>
                         <Menu.Button
                             onClick={(e) => {
+                                router
+                                .push({
+                                    pathname: `/conversation/${collectionId}`,
+                                    query: session,
+                                })
+                                .catch(() => console.log("error navigating to conversation"));
                                 e.stopPropagation();
-                                setConfirmDelete(false)
-                                dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } })
+                                setConfirmDelete(false);
+                                dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
                             }}
                             className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
