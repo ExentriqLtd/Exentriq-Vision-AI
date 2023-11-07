@@ -13,7 +13,8 @@ import _ from 'lodash';
 
 const CollectionListMobile: React.FC = () => {
   const [newCollectionActive, setNewCollectionActive] = useState(false);
-  const [isRename, setIsRename] = useState<String | undefined>(undefined);
+  const [isRename, setIsRename] = useState('');
+  const [isPublic, setIsPublic] = useState(false);
   //@ts-ignore
   const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
   const { collectionId, arrayCollections, toggleMenuMobile } = stateUploadedFile;
@@ -50,29 +51,31 @@ const CollectionListMobile: React.FC = () => {
 
   const { isOpen: isCollectionModalOpen, toggleModal: toggleCollectionModal } = useModal();
 
-  const createCollection = (name: string) => {
+  const createCollection = ({ name, is_public }: any) => {
     if (!name) return;
     setNewCollectionActive(true);
-    backendClient.createCollection(name)
+    backendClient.createCollection({ name, is_public })
       .then(() => {
         toggleCollectionModal()
         getCollections('')
       })
   }
 
-  const renameCollection = (name: string) => {
+  const renameCollection = ({ name, is_public }: any) => {
     if (!name) return;
-    backendClient.renameCollection(collectionId, name)
+    backendClient.renameCollection({ collectionId, name, is_public })
       .then(() => {
         toggleCollectionModal()
-        dispatchUploadedFile({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name } })
+        dispatchUploadedFile({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name, is_public } })
       })
   }
 
   const onRename = (val: string) => {
     setIsRename(val)
   }
-
+  const onIsPublic = (val: boolean) => {
+    setIsPublic(val)
+  }
   const handleSearchDebounced = _.debounce((value) => {
     if (value.length >= 3) {
       console.log('Eseguire la ricerca per:', value);
@@ -127,6 +130,7 @@ const CollectionListMobile: React.FC = () => {
           <CreateCollectionModal
             isOpen={isCollectionModalOpen}
             isRename={isRename}
+            is_public={isPublic}
             toggleModal={toggleCollectionModal}
             onClick={isRename ? renameCollection : createCollection}
           />
@@ -161,6 +165,8 @@ const CollectionListMobile: React.FC = () => {
                       doc_number={collection?.doc_number}
                       doc_processing={collection?.doc_processing}
                       created_at={collection?.created_at}
+                      is_public={collection?.is_public}
+                      onIsPublic={onIsPublic}
                       id={collection?.uuid}
                       toggleModal={toggleCollectionModal}
                       dispatchUploadedFile={dispatchUploadedFile}
