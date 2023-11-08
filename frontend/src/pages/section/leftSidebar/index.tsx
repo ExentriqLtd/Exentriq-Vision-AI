@@ -4,7 +4,7 @@ import type { SecCollections } from "~/types/collections";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
 import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
 import { session } from "~/config";
@@ -21,8 +21,8 @@ const CollectionList: React.FC = () => {
   const [isRename, setIsRename] = useState('');
   const [isPublic, setIsPublic] = useState(false);
   //@ts-ignore
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI();
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateVisionAI;
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
@@ -30,7 +30,7 @@ const CollectionList: React.FC = () => {
     const collections = await backendClient.fetchCollections(value);
     //@ts-ignore
     if (collections && collections?.result) {
-      dispatchUploadedFile({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
+      dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
           setTimeout(() => {
@@ -42,7 +42,7 @@ const CollectionList: React.FC = () => {
   }
 
   const toggleSidebar = () => {
-    dispatchUploadedFile({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
+    dispatchVisionAI({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
   };
 
   useEffect(() => {
@@ -53,8 +53,8 @@ const CollectionList: React.FC = () => {
     if (isEmpty(arrayCollections)) return;
     if (newCollectionActive) {
       const firstEl = first(arrayCollections);
-      dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
-      dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+      dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
+      dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
       router
         .push({
           pathname: `/`,
@@ -82,7 +82,7 @@ const CollectionList: React.FC = () => {
     backendClient.renameCollection({ collectionId, name, is_public })
       .then(() => {
         toggleCollectionModal()
-        dispatchUploadedFile({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name, is_public } })
+        dispatchVisionAI({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name, is_public } })
       })
   }
 
@@ -158,7 +158,7 @@ const CollectionList: React.FC = () => {
                   actualEvent={actualEvent}
                   id={collection?.uuid}
                   toggleModal={toggleCollectionModal}
-                  dispatchUploadedFile={dispatchUploadedFile}
+                  dispatchVisionAI={dispatchVisionAI}
                   collectionId={collectionId}
                   onIsPublic={onIsPublic}
                   onRename={onRename} />

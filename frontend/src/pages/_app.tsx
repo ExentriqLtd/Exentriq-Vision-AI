@@ -6,7 +6,7 @@ import ReactGA from "react-ga4";
 import { IntercomProvider } from "react-use-intercom";
 import { GOOGLE_ANALYTICS_ID, INTERCOM_ID } from "~/constants";
 import CollectionList from "./section/leftSidebar";
-import { UploadedFileProvider } from "~/hooks/uploadedFile/UploadedFileProvider";
+import { VisionAIProvider } from "~/hooks/uploadedFile/VisionAIProvider";
 import { PdfFocusProvider } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
@@ -20,14 +20,14 @@ const MyApp: AppType = ({ Component, pageProps }) => {
     <>
       <IntercomProvider appId={INTERCOM_ID}>
         <PdfFocusProvider>
-          <UploadedFileProvider>
+          <VisionAIProvider>
             <div className={`${!(isMobile || isTablet) && 'flex flex-row'} h-[100vh]`}>
               <Layout>
                 <CollectionList />
                 <Component {...pageProps} />
               </Layout>
             </div>
-          </UploadedFileProvider>
+          </VisionAIProvider>
         </PdfFocusProvider>
       </IntercomProvider>
     </>

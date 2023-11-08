@@ -13,18 +13,18 @@ import { AiFillExclamationCircle } from "react-icons/ai";
 import type { SecDocument } from "~/types/document";
 import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 
 interface CitationDisplayProps {
   citation: Citation;
 }
 const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
   const { setPdfFocusState } = usePdfFocus();
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { isPdfViewerOpen } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI();
+  const { isPdfViewerOpen } = stateVisionAI;
 
   const handleCitationClick = (documentId: string, pageNumber: number) => {
-    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
+    dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
     setPdfFocusState({ documentId, pageNumber, citation });
   };
 
@@ -261,32 +261,32 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   documents,
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const { viewProgressActive } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI()
+  const { viewProgressActive } = stateVisionAI;
   const isMessageSuccessful = message.status === MESSAGE_STATUS.SUCCESS;
   const isMessageError = message.status === MESSAGE_STATUS.ERROR;
 
   useEffect(() => {
     if (message.status == MESSAGE_STATUS.PENDING) {
-      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+      dispatchVisionAI({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
     } else if (message.status === MESSAGE_STATUS.SUCCESS) {
-      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+      dispatchVisionAI({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
     } else if (message.status === MESSAGE_STATUS.ERROR) {
-      dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
+      dispatchVisionAI({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: message.status } })
     }
   }, [message.status])
 
   useEffect(() => {
     if (isMessageSuccessful) {
-      dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
+      dispatchVisionAI({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
       setIsExpanded(false);
     }
   }, [isMessageSuccessful]);
 
   useEffect(() => {
     if (message?.documents && isExpanded && !backToDetail) {
-      dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
-      dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: message?.documents } })
+      dispatchVisionAI({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
+      dispatchVisionAI({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: message?.documents } })
     }
   }, [isExpanded])
 
@@ -309,7 +309,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
                 subProcesses={message.sub_processes || []}
                 isOpen={isExpanded}
                 toggleOpen={() => {
-                  dispatchUploadedFile({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
+                  dispatchVisionAI({ type: 'SET_VIEWPROGRESS_ACTIVE', payload: { viewProgressActive: message.uuid } })
                   setIsExpanded((prev) => !prev)
                 }}
                 showSpinner={!isMessageSuccessful}
@@ -347,7 +347,7 @@ interface IRenderConversation {
   backToDetail?: boolean;
   messageStatus: string;
   actualEvent: EventSource;
-  dispatchUploadedFile: ({})=>{};
+  dispatchVisionAI: ({})=>{};
 }
 
 export const RenderConversations: React.FC<IRenderConversation> = ({
@@ -356,7 +356,7 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
   documents,
   messageStatus,
   actualEvent,
-  dispatchUploadedFile,
+  dispatchVisionAI,
 }) => {
   const lastElementRef = useRef<HTMLDivElement | null>(null);
 
@@ -372,8 +372,8 @@ export const RenderConversations: React.FC<IRenderConversation> = ({
       {messageStatus == 'PENDING' && (
         <div onClick={() => {
           actualEvent && actualEvent.close()
-          dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
-          dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+          dispatchVisionAI({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
+          dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         }} className="cursor-pointer absolute bottom-20 right-6 border py-2 px-6 rounded bg-white">
           Stop generating
         </div>

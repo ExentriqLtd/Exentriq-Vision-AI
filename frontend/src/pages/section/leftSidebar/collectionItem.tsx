@@ -25,12 +25,12 @@ interface CollectionItemInt {
     onRename?: (string: string) => void
     onIsPublic?: (bool: boolean) => void
     collectionId: string;
-    dispatchUploadedFile: (val: any) => void;
+    dispatchVisionAI: (val: any) => void;
     toggleSidebar?: () => void;
     actualEvent?: EventSource;
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, is_public, toggleModal, toggleSidebar, doc_number, onRename, onIsPublic, dispatchUploadedFile, collectionId, doc_processing }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, is_public, toggleModal, toggleSidebar, doc_number, onRename, onIsPublic, dispatchVisionAI, collectionId, doc_processing }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
@@ -40,10 +40,10 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
         toggleSidebar && toggleSidebar()
         if (actualEvent) {
             actualEvent?.close()
-            dispatchUploadedFile({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
-            dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+            dispatchVisionAI({ type: 'SET_STATUS_MESSAGE', payload: { messageStatus: '' } })
+            dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         }
-        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
+        dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         backendClient
             .createConversation(id)
             .then((newConversationId) => {
@@ -88,7 +88,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                         .catch(() => console.log("error navigating to conversation"));
                                     e.stopPropagation();
                                     setConfirmDelete(false);
-                                    dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
+                                    dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
                                 }}
                                 className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                     <HiDotsVertical color="#9BA3AF" size={18} />
@@ -112,8 +112,8 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleSidebar && toggleSidebar()
-                                                    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
-                                                    dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                                    dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+                                                    dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                                     router.push({
                                                         pathname: `/`,
                                                         query: session,
@@ -135,7 +135,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleSidebar && toggleSidebar()
-                                                    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+                                                    dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                     router.push({
                                                         pathname: `/collection/${id}`,
                                                         query: session,
@@ -157,7 +157,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     toggleSidebar && toggleSidebar()
-                                                    dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+                                                    dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                     toggleModal();
                                                     (onRename && name) && onRename(name)
                                                     onIsPublic && onIsPublic(is_public)
@@ -177,7 +177,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 <a
                                                     onClick={(e) => {
                                                         e.stopPropagation();
-                                                        dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+                                                        dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
                                                         setConfirmDelete(true)
                                                     }}
                                                     className={classNames(
@@ -204,7 +204,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                                                     query: session,
                                                                                 })
                                                                                 .catch(() => console.log("error navigating to conversation"))
-                                                                            dispatchUploadedFile({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
+                                                                            dispatchVisionAI({ type: 'SET_DELETE_COLLECTION', payload: { uuid: collectionId } })
                                                                         }).catch(() => console.log('errore deleting collection'));
                                                                 }}
                                                                 type="button"

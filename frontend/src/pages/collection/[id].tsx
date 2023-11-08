@@ -3,7 +3,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Header from "../section/header";
 import FileUploaded from "./fileUploaded";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
 import { session } from "~/config";
@@ -15,9 +15,9 @@ const Collection: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
     //@ts-ignore
-    const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+    const [stateVisionAI, dispatchVisionAI] = useVisionAI()
     const { setPdfFocusState } = usePdfFocus();
-    const { arrayCollections, isPdfViewerOpen } = stateUploadedFile;
+    const { arrayCollections, isPdfViewerOpen } = stateVisionAI;
     const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
     const [limit, setLimit] = useState(50)
     const [documents, setDocuments] = useState<[] | null>(null)
@@ -26,7 +26,7 @@ const Collection: NextPage = () => {
     const { isTablet } = useIsTablet()
 
     useEffect(() => {
-        dispatchUploadedFile({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
+        dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
     }, [id])
 
@@ -41,7 +41,7 @@ const Collection: NextPage = () => {
         setLimit(limit + 50)
     };
     const handleCitationClick = (documentId: string) => {
-        dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
+        dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
         setPdfFocusState({
             documentId,
             pageNumber: 0,
@@ -96,7 +96,7 @@ const Collection: NextPage = () => {
                         </button>
                         <button
                             onClick={() => {
-                                dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
                                 router
                                     .push({
                                         pathname: `/`,
@@ -140,7 +140,7 @@ const Collection: NextPage = () => {
                                 <tbody className="divide-y bg-white">
                                     {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: object, index: number) => (
                                         <tr key={index}>
-                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchUploadedFile={dispatchUploadedFile} />
+                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} />
                                         </tr>
                                     ))}
                                     <Waypoint onEnter={handleWaypointEnter} />

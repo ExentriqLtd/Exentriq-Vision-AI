@@ -4,7 +4,7 @@ import type { SecDocument } from "~/types/document";
 import cx from "classnames";
 import { borderColors } from "~/utils/colors";
 import { AiOutlineCloseCircle } from 'react-icons/ai'
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { useRouter } from "next/router";
 import { session } from "~/config";
 
@@ -22,7 +22,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
   collectionId,
 }) => {
   const { isActivePdf, handlePdfFocus } = useMultiplePdfs(pdfs);
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI()
   const router = useRouter()
 
   return (
@@ -49,7 +49,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
                     query: session,
                   }).catch(() => console.log("error navigating to collection"))
               }
-              dispatchUploadedFile({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+              dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
             }}>
               <AiOutlineCloseCircle size={22} />
             </i>

@@ -1,4 +1,4 @@
-import { UploadedFileContext } from './UploadedFileContext';
-import { UploadedFileProvider } from './UploadedFileProvider';
+import { VisionAIContext } from './VisionAIContext';
+import { VisionAIProvider } from './VisionAIProvider';
 
-export { UploadedFileContext, UploadedFileProvider };
+export { VisionAIContext, VisionAIProvider };

@@ -12,17 +12,17 @@ interface FileInt {
         uuid: string;
     };
     handleCitationClick: (id: string) => void
-    dispatchUploadedFile: (val: object) => void
+    dispatchVisionAI: (val: object) => void
 }
 
-const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchUploadedFile }: FileInt) => {
+const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI }: FileInt) => {
     const ext = file?.filename?.split(/[#?]/)[0].split('.').pop().trim()
     const filename = file?.filename?.replace('.' + ext, '')
     return (
         <>
             <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">
                 <div onClick={() => {
-                    dispatchUploadedFile({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: [file] } })
+                    dispatchVisionAI({ type: 'SET_CITATION_DOCS', payload: { arrayCitDocs: [file] } })
                     handleCitationClick(file?.uuid)
                 }}
                     className="color-primary-ex cursor-pointer line-clamp-2">

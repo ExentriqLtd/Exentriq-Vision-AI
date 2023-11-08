@@ -16,7 +16,7 @@ import { BsArrowUpCircle } from "react-icons/bs";
 import { useModal } from "~/hooks/utils/useModal";
 import { useIntercom } from "react-use-intercom";
 import useIsMobile from "~/hooks/utils/useIsMobile";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 import { v4 as uuidv4 } from "uuid";
 
@@ -36,8 +36,8 @@ export default function Conversation() {
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile();
-  const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI();
+  const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateVisionAI;
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
@@ -111,7 +111,7 @@ export default function Conversation() {
     const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
     // console.log('URL----', url);
     const events = new EventSource(url);
-    dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
+    dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
     events.onmessage = (event: MessageEvent) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
@@ -124,14 +124,14 @@ export default function Conversation() {
         parsedData.status === MESSAGE_STATUS.ERROR
       ) {
         events.close();
-        dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+        dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         setIsMessagePending(false);
       }
     };
 
     events.onerror = (event) => {
       events.close();
-      dispatchUploadedFile({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
+      dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
       setIsMessagePending(false);
       setErrorMessage(id)
     }
@@ -251,7 +251,7 @@ export default function Conversation() {
               <RenderConversations
                 backToDetail={backToDetail}
                 messageStatus={messageStatus}
-                dispatchUploadedFile={dispatchUploadedFile}
+                dispatchVisionAI={dispatchVisionAI}
                 messages={messages}
                 actualEvent={actualEvent}
                 documents={selectedDocuments}

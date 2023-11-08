@@ -4,15 +4,15 @@ import type { NextPage } from "next";
 import useDrivePicker from 'react-google-drive-picker'
 import Header from "./section/header";
 import { useRouter } from "next/router";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { session } from "~/config";
 import { generateUniqueId } from "~/utils/utility";
 import { backendClient } from "~/api/backend";
 
 const ChooseFromFolder: NextPage = () => {
   //@ts-ignore
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const { collectionId } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI()
+  const { collectionId } = stateVisionAI;
   const [uploadProgress, setUploadProgress] = useState(0);
   const [openPicker, authResponse] = useDrivePicker();
   const router = useRouter();
@@ -23,10 +23,10 @@ const ChooseFromFolder: NextPage = () => {
         file.status = 'in progess'
         const uuId = generateUniqueId();
         file.id = uuId;
-        dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
+        dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
         backendClient.uploadFileFromDrive(file, collectionId)
           .then((res) => {
-            dispatchUploadedFile({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
+            dispatchVisionAI({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
           });
       })
     } catch (error) {
@@ -63,7 +63,7 @@ const ChooseFromFolder: NextPage = () => {
               query: session,
             })
             .catch(() => console.log("error navigating to conversation"))
-          dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+          dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
         }
       },
     })

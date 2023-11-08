@@ -6,7 +6,7 @@ import { backendClient } from "~/api/backend";
 import Header from "./section/header";
 import FileUploaded from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
-import { useUploadedFile } from "~/hooks/uploadedFile/useUploadFile";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { generateUniqueId } from "~/utils/utility";
 import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
@@ -17,8 +17,8 @@ import useIsTablet from "~/hooks/utils/useIsTablet";
 
 const LandingPage: NextPage = () => {
   //@ts-ignore
-  const [stateUploadedFile, dispatchUploadedFile] = useUploadedFile()
-  const { arrayFileUploaded, collectionId, goToUpload } = stateUploadedFile;
+  const [stateVisionAI, dispatchVisionAI] = useVisionAI()
+  const { arrayFileUploaded, collectionId, goToUpload } = stateVisionAI;
   const [isUploading, setIsUploading] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
@@ -33,7 +33,7 @@ const LandingPage: NextPage = () => {
         backendClient.uploadFile(file, collectionId)
           .then(({ result }: any) => {
             const newMap = {...result, status: 'in progress'}
-            dispatchUploadedFile({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newMap } });
+            dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newMap } });
           });
       })
     } catch (error) {
@@ -60,9 +60,9 @@ const LandingPage: NextPage = () => {
   }
 
   useEffect(() => {
-    dispatchUploadedFile({ type: 'SET_EMPTY_ARRAY_FILES' })
+    dispatchVisionAI({ type: 'SET_EMPTY_ARRAY_FILES' })
     return () => {
-      dispatchUploadedFile({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: false } })
+      dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: false } })
     }
   }, [])
 
@@ -129,7 +129,7 @@ const LandingPage: NextPage = () => {
                         <tbody className="divide-y bg-white">
                           {arrayFileUploaded.map((file: object, index: number) => (
                             <tr key={index}>
-                              <FileUploaded key={index} file={file} dispatchUploadedFile={dispatchUploadedFile}/>
+                              <FileUploaded key={index} file={file} dispatchVisionAI={dispatchVisionAI}/>
                             </tr>
                           ))}
                         </tbody>

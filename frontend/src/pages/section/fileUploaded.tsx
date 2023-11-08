@@ -10,12 +10,12 @@ interface FileUploadInt {
         status?: string;
         uuid: string;
     },
-    dispatchUploadedFile:Function
+    dispatchVisionAI:Function
 }
 
 const TIMER = 1000
 
-const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchUploadedFile }: FileUploadInt) => {
+const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchVisionAI }: FileUploadInt) => {
 
     const updateStatusFile = () => {
         if(!file.uuid) return;
@@ -26,7 +26,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchUploadedFile }: F
                     updateStatusFile()
                 }, TIMER);
             } else {
-                dispatchUploadedFile({ type: 'UPDATE_STATUS_FILE', payload: { uuid: result.uuid, status: result.status } });
+                dispatchVisionAI({ type: 'UPDATE_STATUS_FILE', payload: { uuid: result.uuid, status: result.status } });
             }
           }).catch((e) => {
             console.log('e.::::', e)
