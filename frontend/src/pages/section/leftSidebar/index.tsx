@@ -3,7 +3,7 @@ import { backendClient } from "~/api/backend";
 import type { CreateCollection, RenameCollection } from "~/api/backend";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
-import type CreateCollectionModal from "~/components/modals/CreateCollectionModal";
+import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
