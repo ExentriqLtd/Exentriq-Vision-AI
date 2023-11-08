@@ -30,7 +30,10 @@ const ChooseFromFolder: NextPage = () => {
           .then((res) => {
             //@ts-ignore
             dispatchVisionAI({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
-          });
+          })
+          .catch((e) => {
+            console.log('e', e)
+          })
       })
     } catch (error) {
       console.log(error);

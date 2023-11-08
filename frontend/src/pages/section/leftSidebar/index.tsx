@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { CreateCollection, RenameCollection, backendClient } from "~/api/backend";
-import type { SecCollections } from "~/types/collections";
+import { backendClient } from "~/api/backend";
+import type { CreateCollection, RenameCollection } from "~/api/backend";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
-import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
+import type CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { first, isEmpty } from "lodash";
 import { useRouter } from "next/router";
@@ -78,6 +78,9 @@ const CollectionList: React.FC = () => {
         toggleCollectionModal()
         getCollections('')
       })
+      .catch((e) => {
+        console.log('e', e)
+      })
   }
 
   const renameCollection = ({ name, is_public }: RenameCollection) => {
@@ -86,6 +89,9 @@ const CollectionList: React.FC = () => {
       .then(() => {
         toggleCollectionModal()
         dispatchVisionAI({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name, is_public } })
+      })
+      .catch((e) => {
+        console.log('e', e)
       })
   }
 

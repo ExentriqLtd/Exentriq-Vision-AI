@@ -33,7 +33,6 @@ export const ViewPdf: React.FC<ViewPdfProps> = ({ file }) => {
     <div className="relative">
       {scaleText && (
         <PDFOptionsBar
-          file={file}
           scrolledIndex={scrolledIndex}
           numPages={numPages}
           scaleText={scaleText}

@@ -4,13 +4,12 @@ import type { NextPage } from "next";
 import DragAndDrop from "~/components/basics/DragAndDrop";
 import { backendClient } from "~/api/backend";
 import Header from "./section/header";
-import FileUploaded, { FileUploadInt } from "./section/fileUploaded";
+import FileUploaded from "./section/fileUploaded";
+import type { FileUploadInt } from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
-import { generateUniqueId } from "~/utils/utility";
 import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
-import { isEmpty } from "lodash";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
@@ -34,7 +33,10 @@ const LandingPage: NextPage = () => {
           .then(({ result }: any) => {
             const newMap = {...result, status: 'in progress'}
             dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newMap } });
-          });
+          })
+          .catch((e) => {
+            console.log('e', e)
+          })
       })
     } catch (error) {
       console.log(error);

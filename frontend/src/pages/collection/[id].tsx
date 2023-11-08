@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Header from "../section/header";
-import FileUploaded, { FileInt } from "./fileUploaded";
+import FileUploaded from "./fileUploaded";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
@@ -33,9 +33,12 @@ const Collection: NextPage = () => {
     useEffect(() => {
         if (!id) return;
         //@ts-ignore
-        backendClient.getCollectionDetails(id).then(({ result }: any) => {
+        backendClient.getCollectionDetails(id)
+        .then(({ result }: any) => {
             setDocuments(result?.documents)
-        });
+        }).catch((e) => {
+            console.log('e', e)
+          })
     }, [id]);
     const handleWaypointEnter = () => {
         setLimit(limit + 50)

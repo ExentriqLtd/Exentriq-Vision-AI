@@ -4,7 +4,7 @@ import { usePdfFocus } from "~/context/pdf";
 
 import type { PdfFocusHandler as PdfFocusHandler } from "~/components/pdf-viewer/VirtualizedPdf";
 import React from "react";
-import { SecDocument } from "~/types/document";
+import type { SecDocument } from "~/types/document";
 
 export const zoomLevels = [
   "50%",

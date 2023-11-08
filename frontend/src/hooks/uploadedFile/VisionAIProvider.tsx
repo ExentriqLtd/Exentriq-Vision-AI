@@ -1,6 +1,7 @@
 import React, { useReducer } from 'react';
 import { VisionAIContext } from './VisionAIContext';
-import { action, initialState, reducer, stateReducer } from './reducer';
+import { initialState, reducer } from './reducer';
+import type { action, stateReducer } from './reducer';
 
 interface ProviderProps {
   (prevState: stateReducer, action: action): any

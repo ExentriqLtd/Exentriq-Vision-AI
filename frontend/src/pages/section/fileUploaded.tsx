@@ -10,7 +10,7 @@ export interface FileUploadInt {
         status: string;
         uuid: string;
     },
-    dispatchVisionAI:Function
+    dispatchVisionAI: (val: object) => void
 }
 
 const TIMER = 1000

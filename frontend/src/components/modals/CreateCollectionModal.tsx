@@ -38,21 +38,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
       setValue('')
       setIsOn(false);
     }
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (isString(isRename) && isRename !== '') {
-      setValue(isRename)
-    } else {
-      setValue('')
-      setIsOn(false);
-    }
-  }, [isRename])
-
-  useEffect(() => {
-    setIsOn(is_public);
-  }, [is_public])
-
+  }, [isOpen, isRename, is_public]);
 
   return (
     <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Modify collection" : "Create new collection"}>
@@ -82,7 +68,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
       </div>
       <div className="flex flex-row items-center mt-5">
         <div className="relative w-12 h-6 rounded-full bg-gray-200">
-          <label htmlFor="toggle" className={`absolute left-0 top-0 w-6 h-6 rounded-full cursor-pointer`}>
+          <label htmlFor="toggle" className='absolute left-0 top-0 w-6 h-6 rounded-full cursor-pointer'>
             <input
               type="checkbox"
               id="toggle"
@@ -93,7 +79,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
             <span
               className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-primary-ex transform ${isOn ? 'translate-x-6 block' : 'hidden'}`} />
             <span
-              className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-white transform ${isOn && 'hidden'}`} />
+              className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-white transform ${isOn ? 'hidden' : ''}`} />
           </label>
         </div>
         <p className="pl-3 text-sm text-gray-500">

@@ -244,7 +244,10 @@ const VirtualizedPDF = forwardRef<PdfFocusHandler, VirtualizedPDFProps>(
                 // set scale to fit to page
                 setScaleFit(computedScaleFit);
               }
-            );
+            )
+            .catch((e) => {
+              console.log('e', e)
+            })
         }
       }
       loadFirstPage().catch(() => console.log("page load error"));
