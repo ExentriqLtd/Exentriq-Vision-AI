@@ -34,7 +34,15 @@ interface GetCollectionsReturnType {
     username: string;
   };
 }
-
+export interface CreateCollection {
+  name: string;
+  is_public: boolean;
+}
+interface RenameCollection {
+  name: string;
+  is_public: boolean;
+  id: string;
+}
 class BackendClient {
   private async get(endpoint: string) {
     const url = backendUrl + endpoint;
@@ -93,7 +101,7 @@ class BackendClient {
   ): Promise<any> {
     const endpoint = `api/file/${uuid}`;
     const res = await this.get(endpoint);
-    
+
     const data = await res.json() as object;
     return data
   }
@@ -106,7 +114,7 @@ class BackendClient {
     return data;
   }
 
-  
+
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload`;
     console.log('collectionId', collectionId);
@@ -114,7 +122,7 @@ class BackendClient {
       collectionId,
       session
     }
-    const fileName: string| undefined = file?.name
+    const fileName: string | undefined = file?.name
     const data = new FormData();
     data.append('file', file, fileName);
 
@@ -129,7 +137,7 @@ class BackendClient {
     return dataResult;
   }
 
-  public async uploadFileFromDrive(file: any, collectionId: string): Promise<object> {
+  public async uploadFileFromDrive(collectionId: string): Promise<object> {
     const endpoint = `api/collections/uploadFromDrive`;
     console.log('collectionId', collectionId);
     const payload = {
@@ -141,42 +149,42 @@ class BackendClient {
     const data = await res.json() as object;
     return data;
   }
-  
-  public async createCollection({ name, is_public }: any): Promise<string> {
-    const endpoint = "api/collections/create";
-    const payload = { session, name, is_public };
-    const res = await this.post(endpoint, payload);
-    
-    const data = await res.json() as string;
-    return data;
-  }
 
-  public async deleteCollection(id: string): Promise<string> {
-    const endpoint = "api/collections/delete";
-    const payload = { session, collectionId: id };
-    const res = await this.post(endpoint, payload);
-    
-    const data = await res.json() as string;
-    return data;
-  }
+  public async createCollection({ name, is_public }: CreateCollection): Promise < string > {
+  const endpoint = "api/collections/create";
+  const payload = { session, name, is_public };
+  const res = await this.post(endpoint, payload);
 
-  public async renameCollection({ id, name, is_public }: any): Promise<string> {
-    const endpoint = "api/collections/rename";
-    const payload = { session, collectionId: id, name, is_public };
-    const res = await this.post(endpoint, payload);
-    
-    const data = await res.json() as string;
-    return data;
-  }
+  const data = await res.json() as string;
+  return data;
+}
 
-  public async getCollectionDetails(collectionId?: string): Promise<string> {
-    const endpoint = "api/collections/details";
-    const payload = { session, collectionId };
-    const res = await this.post(endpoint, payload);
-    
-    const data = await res.json() as string;
-    return data;
-  }
+  public async deleteCollection(id: string): Promise < string > {
+  const endpoint = "api/collections/delete";
+  const payload = { session, collectionId: id };
+  const res = await this.post(endpoint, payload);
+
+  const data = await res.json() as string;
+  return data;
+}
+
+  public async renameCollection({ id, name, is_public }: RenameCollection): Promise < string > {
+  const endpoint = "api/collections/rename";
+  const payload = { session, collectionId: id, name, is_public };
+  const res = await this.post(endpoint, payload);
+
+  const data = await res.json() as string;
+  return data;
+}
+
+  public async getCollectionDetails(collectionId ?: string): Promise < string > {
+  const endpoint = "api/collections/details";
+  const payload = { session, collectionId };
+  const res = await this.post(endpoint, payload);
+
+  const data = await res.json() as string;
+  return data;
+}
 }
 
 export const backendClient = new BackendClient();

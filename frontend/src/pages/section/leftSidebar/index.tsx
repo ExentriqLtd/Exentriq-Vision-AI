@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { backendClient } from "~/api/backend";
+import { CreateCollection, backendClient } from "~/api/backend";
 import type { SecCollections } from "~/types/collections";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
@@ -19,7 +19,7 @@ const CollectionList: React.FC = () => {
   const { isTablet } = useIsTablet()
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   const [isRename, setIsRename] = useState('');
-  const [isPublic, setIsPublic] = useState(false);
+  const [is_public, SetIs_public] = useState(false);
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
   const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateVisionAI;
@@ -67,7 +67,7 @@ const CollectionList: React.FC = () => {
 
   const { isOpen: isCollectionModalOpen, toggleModal: toggleCollectionModal } = useModal();
 
-  const createCollection = ({ name, is_public }: any) => {
+  const createCollection = ({ name, is_public }: CreateCollection) => {
     if (!name) return;
     setNewCollectionActive(true);
     backendClient.createCollection({ name, is_public })
@@ -91,7 +91,7 @@ const CollectionList: React.FC = () => {
   }
 
   const onIsPublic = (val: boolean) => {
-    setIsPublic(val)
+    SetIs_public(val)
   }
   const handleSearchDebounced = _.debounce((value) => {
     if (value.length >= 3) {
@@ -117,7 +117,7 @@ const CollectionList: React.FC = () => {
     <>
       <CreateCollectionModal
         isOpen={isCollectionModalOpen}
-        is_public={isPublic}
+        is_public={is_public}
         isRename={isRename}
         toggleModal={toggleCollectionModal}
         onClick={isRename ? renameCollection : createCollection}

@@ -21,7 +21,7 @@ interface CollectionItemInt {
     doc_processing: number;
     is_public?: boolean;
     key?: string;
-    toggleModal?: any;
+    toggleModal?: () => void;
     onRename?: (string: string) => void
     onIsPublic?: (bool: boolean) => void
     collectionId: string;
@@ -91,7 +91,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                     dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
                                 }}
                                 className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-                                    <HiDotsVertical color="#9BA3AF" size={18} />
+                                <HiDotsVertical color="#9BA3AF" size={18} />
                             </Menu.Button>
                         </div>
 
@@ -158,7 +158,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                     e.stopPropagation();
                                                     toggleSidebar && toggleSidebar()
                                                     dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
-                                                    toggleModal();
+                                                    toggleModal && toggleModal();
                                                     (onRename && name) && onRename(name)
                                                     onIsPublic && onIsPublic(is_public)
                                                 }}

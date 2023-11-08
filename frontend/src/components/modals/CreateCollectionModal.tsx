@@ -1,13 +1,14 @@
 import React, { useRef, useEffect, useState } from "react";
 import Modal from "../basics/Modal";
 import { isString } from "lodash";
+import { CreateCollection } from "~/api/backend";
 
 interface CreateCollectionModal {
   isOpen: boolean;
   isRename: string;
   is_public: boolean;
   toggleModal: () => void;
-  onClick: ({ name, isPublic }: any) => void;
+  onClick: ({ name, is_public }: CreateCollection) => void;
 }
 
 const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
