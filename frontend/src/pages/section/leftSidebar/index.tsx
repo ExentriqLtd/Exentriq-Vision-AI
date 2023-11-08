@@ -176,6 +176,7 @@ const CollectionList: React.FC = () => {
                   created_at={collection?.created_at}
                   actualEvent={actualEvent}
                   id={collection?.uuid}
+                  toggleSidebar={toggleSidebar}
                   toggleModal={toggleCollectionModal}
                   dispatchVisionAI={dispatchVisionAI}
                   collectionId={collectionId}
