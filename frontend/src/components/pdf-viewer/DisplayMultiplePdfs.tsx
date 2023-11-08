@@ -2,7 +2,6 @@ import { ViewPdf } from "~/components/pdf-viewer/ViewPdf";
 import { useMultiplePdfs } from "../../hooks/useMultiplePdfs";
 import type { SecDocument } from "~/types/document";
 import cx from "classnames";
-import { borderColors } from "~/utils/colors";
 import { AiOutlineCloseCircle } from 'react-icons/ai'
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { useRouter } from "next/router";
@@ -22,6 +21,7 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
   collectionId,
 }) => {
   const { isActivePdf, handlePdfFocus } = useMultiplePdfs(pdfs);
+  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI()
   const router = useRouter()
 

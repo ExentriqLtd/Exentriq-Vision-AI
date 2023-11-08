@@ -8,7 +8,7 @@ const useMessages = (conversationId: string) => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const userSendMessage = (content: string, uuidv4: string) => {
-    setMessages((prevMessages) => [
+    setMessages((prevMessages:any) => [
       ...prevMessages,
 
       {

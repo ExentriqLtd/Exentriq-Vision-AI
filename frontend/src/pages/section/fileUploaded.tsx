@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import type { NextPage } from "next";
 import { backendClient } from "~/api/backend";
 
-interface FileUploadInt {
+export interface FileUploadInt {
     file: {
-        lastEditedUtc?: number;
-        lastModified?: number;
-        filename?: string;
-        status?: string;
+        lastEditedUtc: number;
+        lastModified: number;
+        filename: string;
+        status: string;
         uuid: string;
     },
     dispatchVisionAI:Function

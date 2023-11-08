@@ -36,6 +36,7 @@ export default function Conversation() {
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
+  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
   const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateVisionAI;
 
@@ -90,11 +91,11 @@ export default function Conversation() {
   }, [arrayCitDocs])
 
   useEffect(() => {
-    if(!actualEvent && isMessagePending) {
+    if (!actualEvent && isMessagePending) {
       setIsMessagePending(false)
     }
   }, [actualEvent, isMessagePending])
-  
+
   // Keeping this in this file for now because this will be subject to change
   const submit = () => {
     if (!userMessage || !conversationId) {
@@ -249,6 +250,7 @@ export default function Conversation() {
 
             <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
+                //@ts-ignore
                 backToDetail={backToDetail}
                 messageStatus={messageStatus}
                 dispatchVisionAI={dispatchVisionAI}
@@ -277,6 +279,7 @@ export default function Conversation() {
             </div>
           </div>
           <div style={{ display: isPdfViewerOpen ? 'block' : 'none' }} className="w-full">
+            {/* @ts-ignore */}
             <DisplayMultiplePdfs pdfs={selectedDocuments} collectionId={id} backToDetail={backToDetail} />
           </div>
         </div>

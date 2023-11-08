@@ -18,7 +18,7 @@ import {
   VERTICAL_GUTTER_SIZE_PX,
 } from "~/components/pdf-viewer/pdfDisplayConstants";
 
-import { SecDocument as PdfDocument } from "~/types/document";
+import type{ SecDocument as PdfDocument } from "~/types/document";
 
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/TextLayer.css";
@@ -147,12 +147,13 @@ const PageRenderer: React.FC<PageRenderer> = ({
       if (
         documentFocused &&
         (toInteger(pdfFocusState.citation?.pageNumber) === (pageNumber + 1)) &&
-        !isHighlighted
+        !isHighlighted &&
+        pdfFocusState?.citation
       ) {
         multiHighlight(
-          pdfFocusState.citation.snippet,
+          pdfFocusState?.citation.snippet,
           pageNumber,
-          pdfFocusState.citation.color
+          pdfFocusState?.citation.color
         );
         setIsHighlighted(true);
       }

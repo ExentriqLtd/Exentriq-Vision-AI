@@ -5,6 +5,7 @@ export enum DocumentColorEnum {
   orange = "llama-orange",
   yellow = "llama-yellow",
   lime = "llama-lime",
+  green = "color-green-300",
   teal = "llama-teal",
   cyan = "llama-cyan",
   blue = "llama-blue",
@@ -14,6 +15,7 @@ export enum DocumentColorEnum {
 // order matters! must be high contrast
 export const documentColors = [
   DocumentColorEnum.lime,
+  DocumentColorEnum.green,
   DocumentColorEnum.orange,
   DocumentColorEnum.cyan,
   DocumentColorEnum.yellow,
@@ -33,6 +35,7 @@ export const borderColors: { [key in DocumentColorEnum]: string } = {
   [DocumentColorEnum.red]: "border-llama-red",
   [DocumentColorEnum.indigo]: "border-llama-indigo",
   [DocumentColorEnum.lime]: "border-llama-lime",
+  [DocumentColorEnum.green]: "border-green-300",
   [DocumentColorEnum.orange]: "border-llama-orange",
   [DocumentColorEnum.blue]: "border-llama-blue",
   [DocumentColorEnum.yellow]: "border-llama-yellow",
@@ -46,6 +49,7 @@ export const highlightColors: { [key in DocumentColorEnum]: string } = {
   [DocumentColorEnum.red]: "bg-llama-red-light",
   [DocumentColorEnum.indigo]: "bg-llama-indigo-light",
   [DocumentColorEnum.lime]: "bg-llama-lime-light",
+  [DocumentColorEnum.green]: "border-green-50",
   [DocumentColorEnum.orange]: "bg-llama-orange-light",
   [DocumentColorEnum.blue]: "bg-llama-blue-light",
   [DocumentColorEnum.yellow]: "bg-llama-yellow-light",

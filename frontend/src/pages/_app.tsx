@@ -21,7 +21,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
       <IntercomProvider appId={INTERCOM_ID}>
         <PdfFocusProvider>
           <VisionAIProvider>
-            <div className={`${!(isMobile || isTablet) && 'flex flex-row'} h-[100vh]`}>
+            <div className={`${(!isMobile || !isTablet) && 'flex flex-row'} h-[100vh]`}>
               <Layout>
                 <CollectionList />
                 <Component {...pageProps} />

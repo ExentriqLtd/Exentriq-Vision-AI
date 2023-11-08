@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import Header from "../section/header";
-import FileUploaded from "./fileUploaded";
+import FileUploaded, { FileInt } from "./fileUploaded";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { Waypoint } from 'react-waypoint';
 import { backendClient } from "~/api/backend";
@@ -27,7 +27,7 @@ const Collection: NextPage = () => {
 
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
-        setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight);
+        setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
 
     useEffect(() => {
@@ -63,7 +63,7 @@ const Collection: NextPage = () => {
     return (
         <>
             <div className={`${(isMobile || isTablet) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
-                <div className={`${!(isMobile || isTablet) && 'flex flex-row'} items-center justify-between`}>
+                <div className={`${(!isMobile || !isTablet) && 'flex flex-row'} items-center justify-between`}>
                     <Header subtitle={`${selectedCollection?.name}`} paragraph={false} />
                     <div className={`${(isMobile || isTablet) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <button
@@ -125,7 +125,7 @@ const Collection: NextPage = () => {
                         </button>
                     </div>
                 </div>
-                <div className={`${!(isMobile || isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
+                <div className={`${(!isMobile || !isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
                     <div className="flex flex-col relative rounded-md">
                         <div className="h-full overflow-auto" style={{ maxHeight: (isMobile || isTablet) ? '100%' : tableHeight }}>
                             <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
@@ -138,7 +138,7 @@ const Collection: NextPage = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y bg-white">
-                                    {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: object, index: number) => (
+                                    {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: any, index: number) => (
                                         <tr key={index}>
                                             <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} />
                                         </tr>
@@ -146,7 +146,7 @@ const Collection: NextPage = () => {
                                     <Waypoint onEnter={handleWaypointEnter} />
                                 </tbody>
                             </table>
-                        </div>
+                        </div> 
                     </div>
                 </div>
 

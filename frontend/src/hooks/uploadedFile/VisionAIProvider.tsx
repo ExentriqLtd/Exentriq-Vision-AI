@@ -1,15 +1,16 @@
 import React, { useReducer } from 'react';
 import { VisionAIContext } from './VisionAIContext';
-import { initialState, reducer } from './reducer';
+import { action, initialState, reducer, stateReducer } from './reducer';
 
 interface ProviderProps {
-  (prevState: any, action: any): any
+  (prevState: stateReducer, action: action): any
 }
 export const VisionAIProvider = ({ children }: any) => {
   const [state, dispatch] = useReducer<ProviderProps>(reducer, initialState);
 
 
   return (
+    //@ts-ignore
     <VisionAIContext.Provider value={[state, dispatch]}>
       {children}
     </VisionAIContext.Provider>

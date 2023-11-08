@@ -19,7 +19,7 @@ interface CollectionItemInt {
     id?: string;
     doc_number: number;
     doc_processing: number;
-    is_public?: boolean;
+    is_public: boolean;
     key?: string;
     toggleModal?: () => void;
     onRename?: (string: string) => void

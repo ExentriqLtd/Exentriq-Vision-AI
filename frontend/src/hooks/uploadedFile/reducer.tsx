@@ -1,4 +1,4 @@
-interface action {
+export interface action {
     type: string;
     payload: {
         status: string;
@@ -19,7 +19,7 @@ interface action {
     };
 }
 
-interface stateReducer {
+export interface stateReducer {
     filesUploaded: [];
     arrayFileUploaded: Array<{ uuid: string; status: string }>;
     arrayCitDocs: [];

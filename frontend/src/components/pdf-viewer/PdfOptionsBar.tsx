@@ -7,10 +7,8 @@ import {
 import { PiCaretDownBold, PiCaretUpBold } from "react-icons/pi";
 import { zoomLevels } from "~/hooks/usePdfViewer";
 import type { SecDocument } from "~/types/document";
-import { borderColors } from "~/utils/colors";
 
 interface PDFOptionsBarProps {
-  file: SecDocument;
   scrolledIndex: number;
   numPages: number;
   scaleText: string;
@@ -25,7 +23,6 @@ interface PDFOptionsBarProps {
 }
 
 export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
-  file,
   scrolledIndex,
   numPages,
   scaleText,

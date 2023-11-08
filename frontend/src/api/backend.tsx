@@ -38,7 +38,7 @@ export interface CreateCollection {
   name: string;
   is_public: boolean;
 }
-interface RenameCollection {
+export interface RenameCollection {
   name: string;
   is_public: boolean;
   id: string;
@@ -98,7 +98,7 @@ class BackendClient {
   }
   public async getDetailFile(
     uuid: string
-  ): Promise<any> {
+  ): Promise<NonNullable<unknown>> {
     const endpoint = `api/file/${uuid}`;
     const res = await this.get(endpoint);
 

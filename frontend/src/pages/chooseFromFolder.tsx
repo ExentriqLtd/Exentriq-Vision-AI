@@ -20,12 +20,15 @@ const ChooseFromFolder: NextPage = () => {
   const handleUpload = (files: File[]) => {
     try {
       files?.map((file) => {
+        //@ts-ignore
         file.status = 'in progess'
         const uuId = generateUniqueId();
+          //@ts-ignore
         file.id = uuId;
         dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: file } });
-        backendClient.uploadFileFromDrive(file, collectionId)
+        backendClient.uploadFileFromDrive(collectionId)
           .then((res) => {
+            //@ts-ignore
             dispatchVisionAI({ type: 'SET_ARRAY_FILES_STATUS', payload: { status: res?.status, id: uuId } });
           });
       })

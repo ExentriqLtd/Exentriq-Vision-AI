@@ -3,12 +3,12 @@ import type { NextPage } from "next";
 import moment from "moment";
 import { HiOutlineDownload } from 'react-icons/hi'
 
-interface FileInt {
-    file?: {
-        filename?: string;
-        created_at?: string;
-        status?: string;
-        url?: string;
+export interface FileInt {
+    file: {
+        filename: string;
+        created_at: string;
+        status: string;
+        url: string;
         uuid: string;
     };
     handleCitationClick: (id: string) => void
@@ -16,7 +16,8 @@ interface FileInt {
 }
 
 const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI }: FileInt) => {
-    const ext = file?.filename?.split(/[#?]/)[0].split('.').pop().trim()
+    //@ts-ignore
+    const ext = file.filename.split(/[#?]/)[0].split('.').pop().trim()
     const filename = file?.filename?.replace('.' + ext, '')
     return (
         <>

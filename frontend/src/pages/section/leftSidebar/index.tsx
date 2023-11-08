@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CreateCollection, backendClient } from "~/api/backend";
+import { CreateCollection, RenameCollection, backendClient } from "~/api/backend";
 import type { SecCollections } from "~/types/collections";
 import CollectionItem from "./collectionItem";
 import { useModal } from "~/hooks/utils/useModal";
@@ -30,7 +30,9 @@ const CollectionList: React.FC = () => {
     const collections = await backendClient.fetchCollections(value);
     //@ts-ignore
     if (collections && collections?.result) {
+      //@ts-ignore
       dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
+      //@ts-ignore
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
           setTimeout(() => {
@@ -53,6 +55,7 @@ const CollectionList: React.FC = () => {
     if (isEmpty(arrayCollections)) return;
     if (newCollectionActive) {
       const firstEl = first(arrayCollections);
+      //@ts-ignore
       dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
       dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
       router
@@ -77,9 +80,9 @@ const CollectionList: React.FC = () => {
       })
   }
 
-  const renameCollection = ({ name, is_public }: any) => {
+  const renameCollection = ({ name, is_public }: RenameCollection) => {
     if (!name) return;
-    backendClient.renameCollection({ collectionId, name, is_public })
+    backendClient.renameCollection({ id: collectionId, name, is_public })
       .then(() => {
         toggleCollectionModal()
         dispatchVisionAI({ type: 'SET_RENAME_COLLECTION', payload: { collectionId, name, is_public } })
@@ -120,7 +123,8 @@ const CollectionList: React.FC = () => {
         is_public={is_public}
         isRename={isRename}
         toggleModal={toggleCollectionModal}
-        onClick={isRename ? renameCollection : createCollection}
+        renameCollection={renameCollection}
+        createCollection={createCollection}
       />
 
       <div className={`${(isMobile || isTablet) ? 'w-full h-full' : 'w-1/5 bg-gray-100'} relative p-4 rounded-l-lg flex flex-col`}>
@@ -146,7 +150,16 @@ const CollectionList: React.FC = () => {
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
         <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
-          {arrayCollections.map((collection, index) => {
+          {arrayCollections.map((
+            collection: {
+              name: string | undefined;
+              is_public: boolean;
+              doc_number: number;
+              doc_processing: number;
+              created_at: string | undefined;
+              uuid: string | undefined;
+            },
+            index: React.Key | null | undefined) => {
             return (
               <li key={index}>
                 <CollectionItem

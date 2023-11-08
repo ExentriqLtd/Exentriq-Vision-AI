@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { GroupBase } from "react-select";
 import Select from "react-select/dist/declarations/src/Select";
-import { SecDocument, DocumentType, Ticker } from "~/types/document";
+import type { SecDocument, DocumentType, Ticker } from "~/types/document";
 import type { SelectOption } from "~/types/selection";
 import {
   findDocumentById,

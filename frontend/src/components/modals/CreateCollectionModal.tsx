@@ -1,21 +1,23 @@
 import React, { useRef, useEffect, useState } from "react";
 import Modal from "../basics/Modal";
 import { isString } from "lodash";
-import { CreateCollection } from "~/api/backend";
+import type { CreateCollection, RenameCollection } from "~/api/backend";
 
 interface CreateCollectionModal {
   isOpen: boolean;
   isRename: string;
   is_public: boolean;
   toggleModal: () => void;
-  onClick: ({ name, is_public }: CreateCollection) => void;
+  createCollection: (val: CreateCollection) => void;
+  renameCollection: (val: RenameCollection) => void;
 }
 
 const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   isOpen,
   isRename,
   toggleModal,
-  onClick,
+  createCollection,
+  renameCollection,
   is_public,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -68,7 +70,9 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
         />
         <button
           onClick={() => {
-            onClick({ name: value, is_public: isOn })
+            isRename
+              ? renameCollection({ id: '', name: value, is_public: isOn })
+              : createCollection(({ name: value, is_public: isOn }))
             setValue('')
           }}
           className="rounded bg-primary-ex px-4 py-2 font-bold text-white opacity-90 hover:opacity-100"

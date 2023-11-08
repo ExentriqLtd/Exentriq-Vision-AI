@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 import DragAndDrop from "~/components/basics/DragAndDrop";
 import { backendClient } from "~/api/backend";
 import Header from "./section/header";
-import FileUploaded from "./section/fileUploaded";
+import FileUploaded, { FileUploadInt } from "./section/fileUploaded";
 import ProgressBar from "./section/progressBar";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { generateUniqueId } from "~/utils/utility";
@@ -127,8 +127,9 @@ const LandingPage: NextPage = () => {
                           </tr>
                         </thead>
                         <tbody className="divide-y bg-white">
-                          {arrayFileUploaded.map((file: object, index: number) => (
+                          {arrayFileUploaded.map((file: FileUploadInt, index: number) => (
                             <tr key={index}>
+                              {/* @ts-ignore */}
                               <FileUploaded key={index} file={file} dispatchVisionAI={dispatchVisionAI}/>
                             </tr>
                           ))}
