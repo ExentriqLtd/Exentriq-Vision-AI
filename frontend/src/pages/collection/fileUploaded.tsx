@@ -16,9 +16,8 @@ export interface FileInt {
 }
 
 const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI }: FileInt) => {
-    //@ts-ignore
-    const ext = file.filename.split(/[#?]/)[0].split('.').pop().trim()
-    const filename = file?.filename?.replace('.' + ext, '')
+    const ext = file?.filename?.split(/[#?]/)[0]?.split('.')?.pop()?.trim() || '';
+    const filename = file?.filename?.replace('.' + ext, '') || '';
     return (
         <>
             <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">
