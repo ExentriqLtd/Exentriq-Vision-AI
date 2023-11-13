@@ -20,7 +20,6 @@ const CollectionList: React.FC = () => {
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   const [isRename, setIsRename] = useState('');
   const [is_public, SetIs_public] = useState(false);
-  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
   const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateVisionAI;
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,11 +27,8 @@ const CollectionList: React.FC = () => {
 
   async function getCollections(value: string) {
     const collections = await backendClient.fetchCollections(value);
-    //@ts-ignore
     if (collections && collections?.result) {
-      //@ts-ignore
       dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
-      //@ts-ignore
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
           setTimeout(() => {
@@ -55,7 +51,6 @@ const CollectionList: React.FC = () => {
     if (isEmpty(arrayCollections)) return;
     if (newCollectionActive) {
       const firstEl = first(arrayCollections);
-      //@ts-ignore
       dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
       dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
       router
@@ -155,6 +150,16 @@ const CollectionList: React.FC = () => {
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
+        <div className="bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer rounded-md border-2 border-transparent flex items-center gap-3" onClick={() => {
+          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
+          router.push({
+              pathname: `/yoda`,
+              query: session,
+          })
+          .catch(() => console.log("error navigating to yoda"))}}>
+            <img width={40} height={40} src="https://www.exentriq.com/AvatarService?username=Yoda" />
+          Chat with Yoda
+        </div>
         <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
             collection: {

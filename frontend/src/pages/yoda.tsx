@@ -1,0 +1,19 @@
+import React from "react";
+
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+
+const Yoda: NextPage = () => {
+    const router = useRouter();
+
+    const { sessionToken } = router.query;
+    console.log("QUI", sessionToken);
+    return (
+        <div className="mx-6 w-4/5">
+            <div className="w-full h-full">
+                <iframe width={'100%'} height={'100%'} src="https://talk-stage.exentriq.com/chat/demo?sessionToken=iKOfGbDHPkCQvgtMbQBthsuqGEKclDoOqBxqGcFRsiMbJKZZmAVsCipviOWpQiBo"></iframe>
+            </div>
+        </div>
+    );
+};
+export default Yoda;
