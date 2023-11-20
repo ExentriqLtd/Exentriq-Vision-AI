@@ -13,6 +13,7 @@ import { AiOutlineCloseCircle } from 'react-icons/ai'
 import _ from 'lodash';
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import Image from "next/image";
 
 const CollectionList: React.FC = () => {
   const { isMobile } = useIsMobile()
@@ -159,8 +160,8 @@ const CollectionList: React.FC = () => {
               query: session,
           })
           .catch(() => console.log("error navigating to yoda"))}}>
-            <img width={40} height={40} src="https://www.exentriq.com/AvatarService?username=Yoda" />
-          Chat with Yoda
+            <Image src="https://www.exentriq.com/AvatarService?username=Yoda" alt="Yoda" width={40} height={40} />
+            Chat with Yoda
         </div>
         <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
