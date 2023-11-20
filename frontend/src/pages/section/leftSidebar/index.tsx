@@ -21,7 +21,8 @@ const CollectionList: React.FC = () => {
   const [isRename, setIsRename] = useState('');
   const [is_public, SetIs_public] = useState(false);
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile } = stateVisionAI;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected } = stateVisionAI;
+
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
@@ -150,8 +151,9 @@ const CollectionList: React.FC = () => {
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
-        <div className="bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer rounded-md border-2 border-transparent flex items-center gap-3" onClick={() => {
+        <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
           dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
+          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: 'true'}})
           router.push({
               pathname: `/yoda`,
               query: session,

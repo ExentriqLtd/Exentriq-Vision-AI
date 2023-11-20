@@ -16,6 +16,7 @@ export interface action {
         messageStatus: string,
         actualEvent: object | null,
         is_public: boolean,
+        isYodaSelected: boolean,
     };
 }
 
@@ -31,6 +32,7 @@ export interface stateReducer {
     goToUpload: boolean;
     messageStatus: string;
     actualEvent: object | null;
+    isYodaSelected: boolean;
 }
 
 interface FileItem {
@@ -125,7 +127,11 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 collectionId: action?.payload?.collectionId
             };
-
+        case 'SET_YODA_ACTIVE':
+            return {
+                ...state,
+                isYodaSelected: action?.payload?.isYodaSelected
+            };
         case 'SET_EMPTY_ARRAY_FILES':
             return {
                 ...state,
@@ -161,6 +167,7 @@ export const initialState: stateReducer = {
     viewProgressActive: '',
     toggleMenuMobile: false,
     messageStatus: '',
-    actualEvent: null
+    actualEvent: null,
+    isYodaSelected: false,
 };
 
