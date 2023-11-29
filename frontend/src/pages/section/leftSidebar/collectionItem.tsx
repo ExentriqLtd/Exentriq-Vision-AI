@@ -83,13 +83,14 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                 onClick={(e) => {
                                     router
                                         .push({
-                                            pathname: `/conversation/${collectionId}`,
+                                            pathname: `/conversation/${id}`,
                                             query: session,
                                         })
                                         .catch(() => console.log("error navigating to conversation"));
                                     e.stopPropagation();
                                     setConfirmDelete(false);
                                     dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
+                                    dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false}});
                                 }}
                                 className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                 <HiDotsVertical color="#9BA3AF" size={18} />

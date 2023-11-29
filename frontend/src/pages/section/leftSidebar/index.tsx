@@ -53,8 +53,8 @@ const CollectionList: React.FC = () => {
     if (isEmpty(arrayCollections)) return;
     if (newCollectionActive) {
       const firstEl = first(arrayCollections);
-      dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } })
-      dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+      dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: firstEl?.uuid } });
+      dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } });
       router
         .push({
           pathname: `/`,
