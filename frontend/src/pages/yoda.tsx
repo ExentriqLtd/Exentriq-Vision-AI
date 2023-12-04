@@ -9,6 +9,8 @@ const Yoda: NextPage = () => {
     const { sessionToken } = router.query;
     const formattedSessionToken = Array.isArray(sessionToken) ? sessionToken[0] : sessionToken;
 
+    // formattedSessionToken = 'yJDYFjzJNvQdaGPXQMXTRLAswcGluonHngWboPpyXJKYIeaXYpztbTElsIDBkTqE';
+
     return (
         <div className="mx-6 w-4/5">
             <div className="w-full h-full">
