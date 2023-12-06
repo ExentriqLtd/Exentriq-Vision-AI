@@ -187,3 +187,7 @@ body {
 .mr-416 {
   margin-right: 5.16%;
 }
+
+.pointerEventsNone {
+  pointer-events: none;
+}
