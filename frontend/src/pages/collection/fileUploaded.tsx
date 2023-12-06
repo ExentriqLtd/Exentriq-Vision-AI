@@ -2,6 +2,7 @@ import React from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { HiOutlineDownload } from 'react-icons/hi'
+import { MdSummarize } from "react-icons/md";
 
 export interface FileInt {
     file: {
@@ -10,12 +11,14 @@ export interface FileInt {
         status: string;
         url: string;
         uuid: string;
+        file_id: string;
     };
-    handleCitationClick: (id: string) => void
-    dispatchVisionAI: (val: object) => void
+    handleCitationClick: (id: string) => void;
+    dispatchVisionAI: (val: object) => void;
+    dispatchSummarization: (id: string) => void;
 }
 
-const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI }: FileInt) => {
+const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI, dispatchSummarization }: FileInt) => {
     const ext = file?.filename?.split(/[#?]/)[0]?.split('.')?.pop()?.trim() || '';
     const filename = file?.filename?.replace('.' + ext, '') || '';
     return (
@@ -67,6 +70,11 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVi
                 <a href={file?.url} target="_blank" className="flex cursor-pointer justify-start">
                     <HiOutlineDownload size={24} />
                 </a>
+            </td>
+            <td className="border-b border-slate-100 p-4 text-slate-500">
+                <div onClick={() => {dispatchSummarization(file?.file_id)}} className="flex cursor-pointer justify-start">
+                    <MdSummarize size={24} />
+                </div>
             </td>
         </>
     );

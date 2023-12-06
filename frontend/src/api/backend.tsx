@@ -89,6 +89,17 @@ class BackendClient {
     };
   }
 
+  public async fetchSummarization(id: string):Promise<object> {
+    const endpoint = `api/summarization/${id}`;
+    const res = await this.get(endpoint);
+
+    const data = await res.json() as object;
+
+    console.log('DATA', data);
+
+    return data;
+  }
+
   public async fetchDocuments(): Promise<SecDocument[]> {
     const endpoint = `api/document/`;
     const res = await this.get(endpoint);

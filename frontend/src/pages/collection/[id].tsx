@@ -10,6 +10,8 @@ import { session } from "~/config";
 import { usePdfFocus } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import { useModal } from "~/hooks/utils/useModal";
+import SummarizationModal from "~/components/modals/SummarizationModal";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -24,6 +26,9 @@ const Collection: NextPage = () => {
     const [tableHeight, setTableHeight] = useState(0);
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
+    const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
+    const [summarizationResult, setSummarizationResult] = useState(null);
+
 
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
@@ -63,6 +68,21 @@ const Collection: NextPage = () => {
             })
             .catch(() => console.log("error navigating to conversation"));
     };
+
+    const dispatchSummarization = (documentID: string) => {
+        console.log('CICCICICICI', documentID);
+        console.log('LOADING');
+        backendClient.fetchSummarization(documentID)
+        .then((result: object) => {
+            console.log('STOP LOADING');
+            console.log(result);
+            setSummarizationResult(result);
+
+            toggleSummarizationModal();
+        }).catch((e) => {
+            console.log('ERROR', e);
+        })
+    }
     return (
         <>
             <div className={`${(isMobile || isTablet) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
@@ -138,12 +158,13 @@ const Collection: NextPage = () => {
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Download</th>
+                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Summarization</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y bg-white">
                                     {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: any, index: number) => (
                                         <tr key={index}>
-                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} />
+                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} dispatchSummarization={dispatchSummarization} />
                                         </tr>
                                     ))}
                                     <Waypoint onEnter={handleWaypointEnter} />
@@ -154,6 +175,11 @@ const Collection: NextPage = () => {
                 </div>
 
             </div>
+            <SummarizationModal
+                isOpen={isSummarizationModalOpen}
+                toggleModal={toggleSummarizationModal}
+                summarizationResult={summarizationResult}
+            />
         </>
     );
 };
