@@ -4,9 +4,7 @@ import Modal from "../basics/Modal";
 interface SummarizationModalProps {
   isOpen: boolean;
   toggleModal: () => void;
-  summarizationResult: {
-    values: string;
-  };
+  summarizationResult: string;
 }
 
 const SummarizationModal: React.FC<SummarizationModalProps> = ({
@@ -15,17 +13,10 @@ const SummarizationModal: React.FC<SummarizationModalProps> = ({
   summarizationResult
 }) => {
 
-  useEffect(() => {
-    if (isOpen) {
-      console.log('OPEN');
-      console.log('eehehe', summarizationResult?.values);
-    }
-  }, [isOpen]);
-
   return (
     <Modal isOpen={isOpen} toggleModal={toggleModal} title="Summarization">
       <div className="">
-        {summarizationResult?.values}
+        {summarizationResult}
       </div>
     </Modal>
   );

@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { HiOutlineDownload } from 'react-icons/hi'
-import { MdSummarize } from "react-icons/md";
+import { MdOutlineSummarize, MdSummarize } from "react-icons/md";
+import { BiLoaderAlt } from "react-icons/bi";
+import { LuListRestart } from "react-icons/lu";
+import { FaFileCircleCheck } from "react-icons/fa6";
 
 export interface FileInt {
+    collectionID: string,
     file: {
         filename: string;
         created_at: string;
@@ -12,15 +16,22 @@ export interface FileInt {
         url: string;
         uuid: string;
         file_id: string;
+        summarization_status: string;
     };
     handleCitationClick: (id: string) => void;
     dispatchVisionAI: (val: object) => void;
-    dispatchSummarization: (id: string) => void;
+    dispatchSummarization: (id: string, collectionID: string, summarization_status: string) => void;
 }
 
-const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVisionAI, dispatchSummarization }: FileInt) => {
+const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationClick, dispatchVisionAI, dispatchSummarization }: FileInt) => {
     const ext = file?.filename?.split(/[#?]/)[0]?.split('.')?.pop()?.trim() || '';
     const filename = file?.filename?.replace('.' + ext, '') || '';
+    const summarization_status = file?.summarization_status || null;
+    const [isSummarizing, setIsSummarizing] = useState(summarization_status);
+
+    useEffect(() => {
+        setIsSummarizing(summarization_status);
+    }, [summarization_status])
     return (
         <>
             <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">
@@ -72,8 +83,27 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVi
                 </a>
             </td>
             <td className="border-b border-slate-100 p-4 text-slate-500">
-                <div onClick={() => {dispatchSummarization(file?.file_id)}} className="flex cursor-pointer justify-start">
-                    <MdSummarize size={24} />
+                <div onClick={() => {
+                    if(summarization_status == null) {
+                        setIsSummarizing('IN PROGRESS');
+                    }
+                    dispatchSummarization(file?.file_id, collectionID, summarization_status);
+                }} className="flex cursor-pointer justify-start align-center gap-1">
+                    {isSummarizing == 'IN PROGRESS' ? (
+                        <BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} />
+                    ) : (
+                        summarization_status == null ? (
+                            <>
+                                <LuListRestart size={24} />
+                                Request
+                            </>
+                        ) : (
+                            <>
+                                <FaFileCircleCheck size={24} />
+                                View
+                            </>
+                        )
+                    )}
                 </div>
             </td>
         </>

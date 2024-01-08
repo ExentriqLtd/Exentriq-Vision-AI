@@ -12,6 +12,7 @@ import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 import { useModal } from "~/hooks/utils/useModal";
 import SummarizationModal from "~/components/modals/SummarizationModal";
+import { IntSummarization } from "~/types/document";
 
 const Collection: NextPage = () => {
     const router = useRouter();
@@ -27,24 +28,29 @@ const Collection: NextPage = () => {
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
     const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
-    const [summarizationResult, setSummarizationResult] = useState(null);
-
+    const [summarizationResult, setSummarizationResult] = useState('');
 
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
 
-    useEffect(() => {
-        if (!id) return;
-        //@ts-ignore
-        backendClient.getCollectionDetails(id)
+    const getCollectionDetails = (collectionID: string) => {
+        backendClient.getCollectionDetails(collectionID)
         .then(({ result }: any) => {
             setDocuments(result?.documents)
         }).catch((e) => {
             console.log('e', e)
           })
+    }
+
+    useEffect(() => {
+        if (!id) return;
+        if (typeof id === 'string') {
+            getCollectionDetails(id);
+        }
     }, [id]);
+
     const handleWaypointEnter = () => {
         setLimit(limit + 50)
     };
@@ -69,16 +75,31 @@ const Collection: NextPage = () => {
             .catch(() => console.log("error navigating to conversation"));
     };
 
-    const dispatchSummarization = (documentID: string) => {
-        console.log('CICCICICICI', documentID);
-        console.log('LOADING');
+    const dispatchSummarization = (documentID: string, collectionID: string, summarization_status: string) => {
         backendClient.fetchSummarization(documentID)
-        .then((result: object) => {
-            console.log('STOP LOADING');
-            console.log(result);
-            setSummarizationResult(result);
-
-            toggleSummarizationModal();
+        .then((result: IntSummarization) => {
+            var myTimeout;
+            if(summarization_status == 'READY') {
+                console.log('RESULT', result.summarization);
+                setSummarizationResult(result.summarization.values);
+                toggleSummarizationModal();
+            } else {
+                if(result.status == 'IN PROGRESS') {
+                    myTimeout = setTimeout(() => {
+                        dispatchSummarization(documentID, collectionID, 'IN PROGRESS');
+                    }, 5000);
+                } else if(result.status == "ERROR") {
+                    clearTimeout(myTimeout);
+                    getCollectionDetails(collectionID);
+                } else if(result.status == "READY") {
+                    clearTimeout(myTimeout);
+                    setSummarizationResult(result.summarization.values);
+                    getCollectionDetails(collectionID);
+                } else {
+                    clearTimeout(myTimeout);
+                }
+            }
+            
         }).catch((e) => {
             console.log('ERROR', e);
         })
@@ -164,7 +185,7 @@ const Collection: NextPage = () => {
                                 <tbody className="divide-y bg-white">
                                     {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: any, index: number) => (
                                         <tr key={index}>
-                                            <FileUploaded file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} dispatchSummarization={dispatchSummarization} />
+                                            <FileUploaded collectionID={id || ''} file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} dispatchSummarization={dispatchSummarization} />
                                         </tr>
                                     ))}
                                     <Waypoint onEnter={handleWaypointEnter} />

@@ -2,7 +2,7 @@ import { backendUrl, session } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { BackendCollections } from "~/types/backend/collections";
-import type { SecDocument } from "~/types/document";
+import type { IntSummarization, SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
@@ -89,11 +89,11 @@ class BackendClient {
     };
   }
 
-  public async fetchSummarization(id: string):Promise<object> {
-    const endpoint = `api/summarization/${id}`;
+  public async fetchSummarization(id: string):Promise<IntSummarization> {
+    const endpoint = `api/summarization2/${id}`;
     const res = await this.get(endpoint);
 
-    const data = await res.json() as object;
+    const data = await res.json() as IntSummarization;
 
     console.log('DATA', data);
 
