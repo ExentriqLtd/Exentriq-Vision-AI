@@ -22,11 +22,11 @@ const Collection: NextPage = () => {
     const { setPdfFocusState } = usePdfFocus();
     const { arrayCollections, isPdfViewerOpen } = stateVisionAI;
     const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
-    const [limit, setLimit] = useState(50)
-    const [documents, setDocuments] = useState<[] | null>(null)
+    const [limit, setLimit] = useState(50);
+    const [documents, setDocuments] = useState<[] | null>(null);
     const [tableHeight, setTableHeight] = useState(0);
-    const { isMobile } = useIsMobile()
-    const { isTablet } = useIsTablet()
+    const { isMobile } = useIsMobile();
+    const { isTablet } = useIsTablet();
     const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
     const [summarizationResult, setSummarizationResult] = useState('');
 
@@ -76,7 +76,15 @@ const Collection: NextPage = () => {
     };
 
     const dispatchSummarization = (documentID: string, collectionID: string, summarization_status: string) => {
-        backendClient.fetchSummarization(documentID)
+        var reprocess;
+        
+        if (summarization_status == 'ERROR') {
+            reprocess = true;
+        } else {
+            reprocess = false;
+        }
+
+        backendClient.fetchSummarization(documentID, reprocess)
         .then((result: IntSummarization) => {
             var myTimeout;
             if(summarization_status == 'READY') {
