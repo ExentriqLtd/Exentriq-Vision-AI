@@ -163,7 +163,7 @@ const CollectionList: React.FC = () => {
             <Image src="https://www.exentriq.com/AvatarService?username=Yoda" alt="Yoda" width={40} height={40} />
             Chat with Yoda
         </div>
-        <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
+        <div className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
             collection: {
               name: string | undefined;
@@ -175,7 +175,7 @@ const CollectionList: React.FC = () => {
             },
             index: React.Key | null | undefined) => {
             return (
-              <li key={index}>
+              <div key={index}>
                 <CollectionItem
                   name={collection?.name}
                   is_public={collection?.is_public}
@@ -190,10 +190,10 @@ const CollectionList: React.FC = () => {
                   collectionId={collectionId}
                   onIsPublic={onIsPublic}
                   onRename={onRename} />
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
         <div
           onClick={() => {
             setIsRename('');
