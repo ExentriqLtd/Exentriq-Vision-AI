@@ -191,3 +191,7 @@ body {
 .align-center {
   align-items: center;
 }
+
+.pointerEventsNone {
+  pointer-events: none;
+}

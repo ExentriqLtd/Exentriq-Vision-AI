@@ -19,6 +19,7 @@ const LandingPage: NextPage = () => {
   const [stateVisionAI, dispatchVisionAI] = useVisionAI()
   const { arrayFileUploaded, collectionId, goToUpload } = stateVisionAI;
   const [isUploading, setIsUploading] = useState(false);
+  const [showUploadedTable, setShowUploadedTable] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
@@ -28,6 +29,7 @@ const LandingPage: NextPage = () => {
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
+      setShowUploadedTable(true);
       files?.forEach((file) => {
         backendClient.uploadFile(file, collectionId)
           .then(({ result }: any) => {
@@ -115,7 +117,7 @@ const LandingPage: NextPage = () => {
               focus-visible:outline-indigo-600">
               Choose from folder
             </button> */}
-            {arrayFileUploaded && arrayFileUploaded.length > 0 && (
+            {arrayFileUploaded && showUploadedTable && (
               <>
                 <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} flex flex-col h-[30vh] mt-3 my-6 relative shadow-md bg-slate-50 rounded-md`}>
                   <div className="absolute inset-0 flex-grow overflow-auto bg-grid-slate-100" />

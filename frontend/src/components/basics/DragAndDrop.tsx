@@ -99,7 +99,7 @@ const DragAndDrop = ({ onUpload }: Props) => {
         onDrop={handleDrop}
       >
         <p
-          className={`text-sm ${isDragActive ? "text-sky-800" : "text-gray-400"
+          className={`text-sm pointerEventsNone ${isDragActive ? "text-sky-800" : "text-gray-400"
             }  `}
         >
           {isDragActive
