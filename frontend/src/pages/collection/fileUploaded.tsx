@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import moment from "moment";
 import { HiOutlineDownload } from 'react-icons/hi'
-import { MdOutlineSummarize, MdSummarize } from "react-icons/md";
+import { MdErrorOutline, MdOutlineSummarize, MdSummarize } from "react-icons/md";
 import { BiLoaderAlt } from "react-icons/bi";
 import { LuListRestart } from "react-icons/lu";
 import { FaFileCircleCheck } from "react-icons/fa6";
@@ -87,22 +87,28 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                     if(summarization_status == null) {
                         setIsSummarizing('IN PROGRESS');
                     }
-                    dispatchSummarization(file?.file_id, collectionID, summarization_status);
-                }} className="flex cursor-pointer justify-start align-center gap-1">
+                    dispatchSummarization(file?.file_id, collectionID, summarization_status || ''); // Fornisco una stringa vuota come valore di default
+                }} className="flex cursor-pointer justify-start align-center gap-1" style={{ color: (summarization_status === 'ERROR' ? 'red' : '') }}>
                     {isSummarizing == 'IN PROGRESS' ? (
                         <BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} />
                     ) : (
-                        summarization_status == null ? (
+                        (summarization_status == null) ? (
                             <>
                                 <LuListRestart size={24} />
                                 Request
+                            </>
+                        ) : (summarization_status === 'ERROR' ? (
+                            <>
+                                <MdErrorOutline size={24} />
+                                Restart
                             </>
                         ) : (
                             <>
                                 <FaFileCircleCheck size={24} />
                                 View
                             </>
-                        )
+                        ))
+                        
                     )}
                 </div>
             </td>

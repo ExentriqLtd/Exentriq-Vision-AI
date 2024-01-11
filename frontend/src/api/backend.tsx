@@ -89,8 +89,8 @@ class BackendClient {
     };
   }
 
-  public async fetchSummarization(id: string):Promise<IntSummarization> {
-    const endpoint = `api/summarization2/${id}`;
+  public async fetchSummarization(id: string, reprocess: boolean):Promise<IntSummarization> {
+    const endpoint = `api/summarization2/${id}?reprocess=${reprocess}`;
     const res = await this.get(endpoint);
 
     const data = await res.json() as IntSummarization;

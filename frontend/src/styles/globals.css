@@ -188,6 +188,10 @@ body {
   margin-right: 5.16%;
 }
 
+.align-center {
+  align-items: center;
+}
+
 .pointerEventsNone {
   pointer-events: none;
 }

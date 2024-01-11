@@ -29,5 +29,7 @@ export interface SecDocument extends Ticker {
 
 export interface IntSummarization {
   status: string;
-  summarization: string;
+  summarization: {
+    values: string
+  };
 }
