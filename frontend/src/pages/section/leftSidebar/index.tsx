@@ -150,7 +150,7 @@ const CollectionList: React.FC = () => {
           onChange={handleInputChange}
         />
         {isEmpty(arrayCollections) &&
-          <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
+          <div className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </div>
         }
         <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
           dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });

@@ -44,7 +44,7 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVi
                                 strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="6" />
                             </svg>
-                            <p className="px-2">File processed</p>
+                            <div className="px-2">File processed</div>
                         </>
                     ) : (
                         <>
@@ -58,7 +58,7 @@ const FileUploaded: NextPage<FileInt> = ({ file, handleCitationClick, dispatchVi
                                 strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="6" />
                             </svg>
-                            <p className="px-2">Processing...</p>
+                            <div className="px-2">Processing...</div>
                         </>
                     )}
                 </div>
