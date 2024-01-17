@@ -44,6 +44,7 @@ export const ViewPdf: React.FC<ViewPdfProps> = ({ file }) => {
           setZoomLevel={setZoomLevel}
           zoomInEnabled={zoomInEnabled}
           zoomOutEnabled={zoomOutEnabled}
+          file={file}
         />
       )}
 

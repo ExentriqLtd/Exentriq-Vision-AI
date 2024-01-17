@@ -1,11 +1,19 @@
 // PDFOptionsBar.tsx
 import { useEffect, useState } from "react";
+import { BiLoaderAlt } from "react-icons/bi";
+import { FaFileCircleCheck } from "react-icons/fa6";
 import {
   HiMiniMagnifyingGlassMinus,
   HiMiniMagnifyingGlassPlus,
 } from "react-icons/hi2";
+import { LuListRestart } from "react-icons/lu";
+import { MdErrorOutline } from "react-icons/md";
 import { PiCaretDownBold, PiCaretUpBold } from "react-icons/pi";
+import { backendClient } from "~/api/backend";
 import { zoomLevels } from "~/hooks/usePdfViewer";
+import { useModal } from "~/hooks/utils/useModal";
+import { IntSummarization, SecDocument } from "~/types/document";
+import SummarizationModal from "../modals/SummarizationModal";
 
 interface PDFOptionsBarProps {
   scrolledIndex: number;
@@ -19,6 +27,7 @@ interface PDFOptionsBarProps {
   setZoomLevel: (percent: string) => void;
   zoomInEnabled: boolean;
   zoomOutEnabled: boolean;
+  file: SecDocument;
 }
 
 export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
@@ -33,8 +42,12 @@ export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
   setZoomLevel,
   zoomInEnabled,
   zoomOutEnabled,
+  file,
 }) => {
   const [zoomPopoverOpen, setZoomPopoverOpen] = useState(false);
+  const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
+  const [summarizationResult, setSummarizationResult] = useState('');
+  const [fileDetail, setFileDetails] = useState(file);
 
   const handleZoomSelection = (zoom: string) => {
     setZoomLevel(zoom);
@@ -42,10 +55,20 @@ export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
   };
 
   const [inputValue, setInputValue] = useState(`${scrolledIndex + 1}`);
+  const [isSummarizing, setIsSummarizing] = useState(fileDetail.summarization_status);
 
   useEffect(() => {
     setInputValue(`${scrolledIndex + 1}`);
   }, [scrolledIndex]);
+
+  useEffect(() => {
+    console.log('file', file);
+    setIsSummarizing(file.summarization_status);
+  }, []);
+
+  useEffect(() => {
+    console.log('SUMMARIZING', isSummarizing);
+  }, [isSummarizing]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -64,22 +87,90 @@ export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
     goToPage(page);
   };
 
+  const getDetailFile = (fileID: string) => {
+    backendClient.getDetailFile(fileID)
+    .then(({ result }: any) => {
+      console.log('DETAIL FILE', result);
+      setFileDetails(result);
+      setIsSummarizing(result.summarization_status);
+    }).catch((e) => {
+      console.log('e.::::', e)
+    })
+  }
+
+  const dispatchSummarization = (documentID: string, collectionID: string, summarization_status: string) => {
+    var reprocess;
+    
+    if (summarization_status == 'ERROR') {
+        reprocess = true;
+    } else {
+        reprocess = false;
+    }
+
+    backendClient.fetchSummarization(documentID, reprocess)
+    .then((result: IntSummarization) => {
+        var myTimeout;
+        if(summarization_status == 'READY') {
+            console.log('RESULT', result.summarization);
+            setSummarizationResult(result.summarization.values);
+            toggleSummarizationModal();
+        } else {
+            if(result.status == 'IN PROGRESS') {
+                myTimeout = setTimeout(() => {
+                    dispatchSummarization(documentID, collectionID, 'IN PROGRESS');
+                }, 5000);
+            } else if(result.status == "ERROR") {
+                clearTimeout(myTimeout);
+                getDetailFile(fileDetail.uuid);
+            } else if(result.status == "READY") {
+                clearTimeout(myTimeout);
+                setSummarizationResult(result.summarization.values);
+                getDetailFile(fileDetail.uuid);
+            } else {
+                clearTimeout(myTimeout);
+            }
+        }
+        
+    }).catch((e) => {
+        console.log('ERROR', e);
+    })
+  }
+
   return (
     <div
       className={`flex h-[44px] w-full items-center justify-between border-b-2 `}
     >
       <div className="ml-3 flex w-1/2 items-center justify-start ">
-        {/* <div//TODO: aggiungere questa div quando abbiamo i dati
-          className={`flex items-center justify-center border-l-4 pl-2 ${
-            borderColors[file.color]
-          } `}
-        > */}
-           <div
-          className={`flex items-center justify-center border-l-4 pl-2`} >
-          {/* <div className="text font-bold">{file.ticker}</div>//TODO: aggiungere questa div quando abbiamo i dati */}
+        <div className={`flex items-center justify-center border-l-4 pl-2`} >
           <div className="ml-2">
-            {" "}
-            {/* {file.year} {file.quarter && `Q${file.quarter}`} */}
+            <div onClick={() => {
+                if(isSummarizing == null) {
+                  setIsSummarizing('IN PROGRESS');
+                } 
+                dispatchSummarization(fileDetail.file_id, fileDetail.collection_id, fileDetail.summarization_status);
+                // Faccio la summarization
+            }} className="flex cursor-pointer justify-start align-center gap-1" style={{ color: (fileDetail.summarization_status === 'ERROR' ? 'red' : '') }}>
+                {isSummarizing == 'IN PROGRESS' ? (
+                    <BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} />
+                ) : (
+                    (fileDetail.summarization_status == null) ? (
+                        <>
+                            <LuListRestart size={24} />
+                            Request
+                        </>
+                    ) : (fileDetail.summarization_status === 'ERROR' ? (
+                        <>
+                            <MdErrorOutline size={24} />
+                            Restart
+                        </>
+                    ) : (
+                        <>
+                            <FaFileCircleCheck size={24} />
+                            View
+                        </>
+                    ))
+                )}
+            </div>
           </div>
         </div>
       </div>
@@ -157,6 +248,11 @@ export const PDFOptionsBar: React.FC<PDFOptionsBarProps> = ({
           </div>
         </div>
       </div>
+      <SummarizationModal
+            isOpen={isSummarizationModalOpen}
+            toggleModal={toggleSummarizationModal}
+            summarizationResult={summarizationResult}
+        />
     </div>
   );
 };

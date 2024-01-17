@@ -11,6 +11,7 @@ export type Ticker = {
 };
 
 export interface SecDocument extends Ticker {
+  summarization_status: string;
   id: string;
   year: string;
   docType: DocumentType;

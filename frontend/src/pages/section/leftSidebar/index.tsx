@@ -148,6 +148,7 @@ const CollectionList: React.FC = () => {
           placeholder="Search..."
           value={searchTerm}
           onChange={handleInputChange}
+          autoComplete={'new-password'}
         />
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
