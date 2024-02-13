@@ -330,10 +330,10 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           <div className="flex items-center justify-center">
             <div className="my-3 w-11/12 border-[.5px]"></div>
           </div>
-          <div className="flex ">
+          <div className="flex">
             <div className="w-1/5"></div>
             <div className="w-4/5">
-              <div className="relative mb-2 mt-2 mr-416 font-nunito whitespace-pre-wrap text-gray-90 text-[18px]">
+              <div className="relative mb-2 mt-2 mr-416 font-nunito whitespace-pre-wrap text-gray-90 text-[18px] markDownContainer">
                 <Markdown>
                   {message.content}
                 </Markdown>

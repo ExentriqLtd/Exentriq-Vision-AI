@@ -41,7 +41,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   }, [isOpen, isRename, is_public]);
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Modify collection" : "Create new collection"}>
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Modify collection" : "Create new collection"} maxWidth="500px">
       <p className="mb-6 mt-2 text-sm text-gray-500">
         Enter the collection's info
       </p>
