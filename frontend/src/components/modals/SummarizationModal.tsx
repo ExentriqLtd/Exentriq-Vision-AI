@@ -16,7 +16,7 @@ const SummarizationModal: React.FC<SummarizationModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} toggleModal={toggleModal} title="Summarization" maxWidth="80vw">
-      <div className="markDownContainer font-nunito whitespace-pre-wrap text-gray-90 text-[18px]">
+      <div className="markDownContainer font-nunito text-gray-90 text-[18px]">
         <Markdown>
           {summarizationResult}
         </Markdown>

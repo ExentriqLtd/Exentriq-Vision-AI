@@ -30,7 +30,7 @@ const ShareLinkModal: React.FC<ShareLinkModalProps> = ({
         Note: this is a public page. Anyone with this link can view the
         contents of the page. This statement is for informational purposes only
         and does not serve as professional financial advice.
-      </div>
+      </p>
 
       <div className="flex items-center space-x-2">
         <input
