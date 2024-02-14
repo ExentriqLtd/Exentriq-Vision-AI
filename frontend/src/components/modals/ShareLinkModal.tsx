@@ -25,8 +25,8 @@ const ShareLinkModal: React.FC<ShareLinkModalProps> = ({
   }, [isOpen]);
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Share Conversation">
-      <div className="mb-6 mt-2 text-sm text-gray-500">
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Share Conversation" maxWidth="500px">
+      <p className="mb-6 mt-2 text-sm text-gray-500">
         Note: this is a public page. Anyone with this link can view the
         contents of the page. This statement is for informational purposes only
         and does not serve as professional financial advice.
