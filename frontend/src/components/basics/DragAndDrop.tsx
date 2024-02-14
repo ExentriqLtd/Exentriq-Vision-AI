@@ -105,7 +105,7 @@ const DragAndDrop = ({ onUpload }: Props) => {
           {isDragActive
             ? "Leave Your File Here"
             : "Drag and drop your files here"}
-        </div>
+        </p>
       </div>
     </>
   );
