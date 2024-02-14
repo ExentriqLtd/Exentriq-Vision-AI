@@ -208,6 +208,14 @@ ol, ul {
   padding-left: 20px;
 }
 
+li {
+  margin-bottom: 12px;
+}
+
+p {
+  margin-bottom: 18px;
+}
+
 .markDownContainer p {
   line-height: 30px;
 }

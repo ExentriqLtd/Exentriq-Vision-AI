@@ -47,9 +47,9 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[10px]">p. {citation.pageNumber}</div>
       </div>
-      <p className="line-clamp-4 text-[12px] font-light leading-1-2">
+      <div className="line-clamp-4 text-[12px] font-light leading-1-2">
         {citation.snippet}
-      </p>
+      </div>
     </div>
   );
 };
@@ -333,7 +333,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           <div className="flex">
             <div className="w-1/5"></div>
             <div className="w-4/5">
-              <div className="relative mb-2 mt-2 mr-416 font-nunito whitespace-pre-wrap text-gray-90 text-[18px] markDownContainer">
+              <div className="relative mb-2 mt-2 mr-416 font-nunito text-gray-90 text-[18px] markDownContainer">
                 <Markdown>
                   {message.content}
                 </Markdown>

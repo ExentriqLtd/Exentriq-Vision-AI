@@ -53,7 +53,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchVisionAI }: FileU
                                 strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="6" />
                             </svg>
-                            <p className="px-2">Failed</p>
+                            <div className="px-2">Failed</div>
                         </>
                     ) : (file?.status == 'processed') ? (
                         <>
@@ -67,7 +67,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchVisionAI }: FileU
                                 strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="6" />
                             </svg>
-                            <p className="px-2">Success</p>
+                            <div className="px-2">Success</div>
                         </>
                     ) : (
                         <>
@@ -81,7 +81,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, dispatchVisionAI }: FileU
                                 strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="6" />
                             </svg>
-                            <p className="px-2">In progress...</p>
+                            <div className="px-2">In progress...</div>
                         </>
                     )}
                 </div>

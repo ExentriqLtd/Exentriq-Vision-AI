@@ -87,7 +87,7 @@ const LandingPage: NextPage = () => {
           <>
             <DragAndDrop onUpload={handleUpload} />
             {/* <div className="my-6 w-2/3 flex flex-col items-center">
-              <p>or</p>
+              <div>or</div>
             </div>
             <button
               onClick={() =>

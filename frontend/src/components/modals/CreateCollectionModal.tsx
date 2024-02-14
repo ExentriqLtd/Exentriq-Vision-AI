@@ -44,7 +44,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
     <Modal isOpen={isOpen} toggleModal={toggleModal} title={isRename ? "Modify collection" : "Create new collection"} maxWidth="500px">
       <p className="mb-6 mt-2 text-sm text-gray-500">
         Enter the collection's info
-      </p>
+      </div>
 
       <div className="flex items-center space-x-2">
         <input
@@ -82,9 +82,9 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
               className={`absolute left-0 top-0 w-6 h-6 rounded-full shadow-md bg-white transform ${isOn ? 'hidden' : ''}`} />
           </label>
         </div>
-        <p className="pl-3 text-sm text-gray-500">
+        <div className="pl-3 text-sm text-gray-500">
           Visible to all users of the App
-        </p>
+        </div>
       </div>
     </Modal>
   );
