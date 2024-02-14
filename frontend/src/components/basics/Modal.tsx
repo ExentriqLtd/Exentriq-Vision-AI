@@ -30,7 +30,7 @@ const Modal: React.FC<ModalProps> = ({
           {children}
           <button
             onClick={toggleModal}
-            className="b absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full p-1 text-base font-medium text-gray-90 hover:bg-gray-15 "
+            className="b absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full p-1 text-base font-medium text-gray-90 hover:bg-gray-15"
           >
             <AiOutlineClose size={24} />
           </button>

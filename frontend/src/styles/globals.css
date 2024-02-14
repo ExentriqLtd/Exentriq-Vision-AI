@@ -21,6 +21,11 @@ body {
   background-color: #FFF;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+  margin-bottom: 18px;
+}
+
 .loader {
   border-top-color: #9ca3af;
   /* The color of your spinner */
@@ -213,7 +218,7 @@ li {
 }
 
 p {
-  margin-bottom: 18px;
+  margin-bottom: 12px;
 }
 
 .markDownContainer p {
