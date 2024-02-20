@@ -18,7 +18,7 @@ const Header: NextPage<HeaderInt> = ({ title, subtitle, colorSubtitlePrimary, co
         )}
         <p className={`${title ? 'mt-2' : 'my-4' } text-3xl leading-8 font-bold ${colorSubtitlePrimary ? 'color-primary-ex' : 'text-gray-600'}`}>{subtitle}</p>
         {paragraph && (
-          <p className="my-10 text-md leading-8 text-gray-600">To start a new conversation with <b>Q</b> please {collectionId ? 'upload a document you want him to study.' : 'select a collection or create one'} </p>
+          <p className="my-10 text-md leading-8 text-gray-600">To start a new conversation please {collectionId ? 'upload a document you want him to study.' : 'select a collection or create one'} </p>
         )}
       </div>
     </>

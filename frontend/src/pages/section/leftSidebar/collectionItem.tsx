@@ -59,7 +59,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
     }
 
     return (
-        <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer rounded-md border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
+        <div className={`bg-white relative p-3 w-full flex flex-wrap my-2 cursor-pointer border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
             <div className="w-4/6">
                 <div className="flex justify-between items-center w-full">
                     <p className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
@@ -241,8 +241,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                 <div className="flex items-center w-full pt-1">
                     {doc_number === doc_processing ? (
                         <>
-                            <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
-                            <p className="pl-1 text-gray-400 text-xs">{doc_number} document processed</p>
+                            <p className="text-gray-400 text-xs">{doc_number} document processed</p>
                         </>
                     ) : (
                         <>

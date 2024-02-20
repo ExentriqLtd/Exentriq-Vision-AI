@@ -130,13 +130,11 @@ const CollectionList: React.FC = () => {
         createCollection={createCollection}
       />
 
-      <div className={`${(isMobile || isTablet) ? 'w-full h-full' : 'w-1/5 bg-gray-100'} relative p-4 rounded-l-lg flex flex-col`}>
+      <div className={`${(isMobile || isTablet) ? 'w-full h-full' : 'w-1/5 bg-gray-500'} relative p-4 flex flex-col`}>
         <input type="text" name="search" id="pricsearche"
           className="
            block 
            w-full 
-           rounded-md
-           shadow-md 
            border-0
            py-1.5 
            pl-3 
@@ -152,17 +150,7 @@ const CollectionList: React.FC = () => {
         {isEmpty(arrayCollections) &&
           <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
         }
-        <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
-          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
-          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: 'true'}})
-          router.push({
-              pathname: `/yoda`,
-              query: session,
-          })
-          .catch(() => console.log("error navigating to yoda"))}}>
-            <Image src="https://www.exentriq.com/AvatarService?username=Yoda" alt="Yoda" width={40} height={40} />
-            Chat with Yoda
-        </div>
+
         <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
             collection: {

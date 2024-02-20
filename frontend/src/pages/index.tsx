@@ -79,8 +79,8 @@ const LandingPage: NextPage = () => {
           <ProgressBar />
         )}
         <Header
-          title={'Welcome to the Exentriq'}
-          subtitle={'Vision AI'}
+          title={'Welcome to the K-FLAIRS'}
+          subtitle={'Knowledge Founded, Language Model Assisted IR System'}
           collectionId={collectionId}
           colorSubtitlePrimary={true} />
         {(collectionId && goToUpload) && (
@@ -174,7 +174,6 @@ const LandingPage: NextPage = () => {
         )}
       </div>
       <div className="mt-3 w-1/3 flex flex-col items-end">
-        <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />
       </div>
     </div>
   );

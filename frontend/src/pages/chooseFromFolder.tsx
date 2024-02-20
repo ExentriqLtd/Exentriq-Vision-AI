@@ -102,7 +102,7 @@ const ChooseFromFolder: NextPage = () => {
             focus-visible:outline-offset-2 
             focus-visible:outline-indigo-600">
           <div className="flex items-center">
-            <img src={'./drive-folder.png'} className="w-10" alt="Google Drive Folder" />
+           
             <p className="px-2">Google Drive</p>
           </div>
           <button className="underline" onClick={() => handleOpenPicker()}>Open folder</button>
