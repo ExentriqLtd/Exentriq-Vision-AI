@@ -21,8 +21,9 @@ const CollectionList: React.FC = () => {
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   const [isRename, setIsRename] = useState('');
   const [is_public, SetIs_public] = useState(false);
+  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected } = stateVisionAI;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, uploadCompleted } = stateVisionAI;
 
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
@@ -30,7 +31,9 @@ const CollectionList: React.FC = () => {
   async function getCollections(value: string) {
     const collections = await backendClient.fetchCollections(value);
     if (collections && collections?.result) {
-      dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
+
+      dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } });
+
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
           setTimeout(() => {
@@ -44,6 +47,10 @@ const CollectionList: React.FC = () => {
   const toggleSidebar = () => {
     dispatchVisionAI({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
   };
+
+  useEffect(() => {
+    getCollections('').catch(() => console.error("could not fetch documents"));
+  }, [uploadCompleted]);
 
   useEffect(() => {
     getCollections('').catch(() => console.error("could not fetch documents"));

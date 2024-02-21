@@ -11,6 +11,8 @@ import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import { uuid4 } from "@sentry/utils";
+
 // import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
 // import { useModal } from "~/hooks/utils/useModal";
 
@@ -23,18 +25,28 @@ const LandingPage: NextPage = () => {
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const router = useRouter();
-  const { isMobile } = useIsMobile()
-  const { isTablet } = useIsTablet()
+  const { isMobile } = useIsMobile();
+  const { isTablet } = useIsTablet();
+
 
   const handleUpload = (files: File[]) => {
     try {
       setIsUploading(true);
       setShowUploadedTable(true);
       files?.forEach((file) => {
+        const idTemp = uuid4();
+        const fileTemp = {filename: file.name, statusUpload: 'progress', idTemp};
+
+        dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: fileTemp } });
+
         backendClient.uploadFile(file, collectionId)
           .then(({ result }: any) => {
-            const newMap = {...result, status: 'in progress'}
-            dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: newMap } });
+            if(result) {
+              const newMap = {...result, statusUpload: 'uploaded', idTemp}
+              dispatchVisionAI({ type: 'UPDATE_STATUS_UPLOAD_FILE', payload: { filesUploaded: newMap } });
+              dispatchVisionAI({ type: 'SET_UPLOAD_COMPLETED', payload: {idTemp} });
+            }
+            
           })
           .catch((e) => {
             console.log('e', e)
@@ -127,14 +139,16 @@ const LandingPage: NextPage = () => {
                         <thead>
                           <tr>
                             <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Name</th>
-                            <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Status</th>
+                            <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Upload status</th>
+                            <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left pl-8">Processing status</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y bg-white">
+                          
                           {arrayFileUploaded.map((file: FileUploadInt, index: number) => (
                             <tr key={index}>
                               {/* @ts-ignore */}
-                              <FileUploaded key={index} file={file} dispatchVisionAI={dispatchVisionAI}/>
+                              <FileUploaded key={index} file={file} statusUpload={file.statusUpload} />
                             </tr>
                           ))}
                         </tbody>

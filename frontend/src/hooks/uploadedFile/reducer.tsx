@@ -1,14 +1,16 @@
 export interface action {
     type: string;
     payload: {
-        status: string;
+        status: string,
         uuid: string,
-        lastModified: string;
-        arrayCollections: object;
-        collectionId: string;
-        name: string;
+        lastModified: string,
+        arrayCollections: object,
+        collectionId: string,
+        name: string,
         arrayCitDocs: object,
-        filesUploaded: object,
+        filesUploaded: {
+            idTemp: string,
+        },
         goToUpload: boolean,
         viewProgressActive: string,
         isPdfViewerOpen: boolean,
@@ -17,28 +19,33 @@ export interface action {
         actualEvent: object | null,
         is_public: boolean,
         isYodaSelected: boolean,
+        filename: string,
+        idTemp: string,
     };
 }
 
 export interface stateReducer {
-    filesUploaded: [];
-    arrayFileUploaded: Array<{ uuid: string; status: string }>;
-    arrayCitDocs: [];
-    collectionId: string;
-    arrayCollections: [];
-    isPdfViewerOpen: boolean;
-    viewProgressActive: string;
-    toggleMenuMobile: boolean;
-    goToUpload: boolean;
-    messageStatus: string;
-    actualEvent: object | null;
-    isYodaSelected: boolean;
+    filesUploaded: [],
+    arrayFileUploaded: Array<{ uuid?: string; statusUpload?: string, idTemp?: string, status?: string }>,
+    arrayCitDocs: [],
+    collectionId: string,
+    arrayCollections: [],
+    isPdfViewerOpen: boolean,
+    viewProgressActive: string,
+    toggleMenuMobile: boolean,
+    goToUpload: boolean,
+    messageStatus: string,
+    actualEvent: object | null,
+    isYodaSelected: boolean,
+    uploadCompleted: string,
 }
 
 interface FileItem {
-    lastModified: string;
-    uuid: string;
-    status: string;
+    lastModified: string,
+    uuid: string,
+    status: string,
+    filename: string,
+    idTemp: string,
 }
 
 interface Collection {
@@ -98,6 +105,16 @@ export const reducer = (state: stateReducer, action: action) => {
                 action.payload?.filesUploaded
             ]
             return { ...state, arrayFileUploaded: newData }
+        case 'UPDATE_STATUS_UPLOAD_FILE':
+            const fileTemp = state.arrayFileUploaded;
+            const indexTemp = fileTemp.findIndex((file) => file.idTemp === action.payload?.filesUploaded.idTemp);
+            if (indexTemp !== -1) {
+                fileTemp[indexTemp] = action.payload?.filesUploaded;
+            }
+            return {
+                ...state,
+                arrayFileUploaded: fileTemp,
+            };
         case 'UPDATE_STATUS_FILE':
             const actualArrayFile = state.arrayFileUploaded;
             const index = actualArrayFile.findIndex((file) => file.uuid === action.payload?.uuid);
@@ -108,16 +125,25 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 arrayFileUploaded: actualArrayFile,
             };
+        case 'SET_UPLOAD_COMPLETED': 
+            const uploadCompleted = action.payload?.idTemp;
+            return {
+                ...state,
+                uploadCompleted,
+            }
         case 'SET_VIEWPROGRESS_ACTIVE':
             return {
                 ...state,
                 viewProgressActive: action?.payload?.viewProgressActive
             };
         case 'SET_REMOVE_FILES':
-            const filterTemp = state?.arrayFileUploaded?.filter((i) => {
-                const fileItem = i as FileItem;
-                return fileItem.lastModified !== action.payload.lastModified;
+            const filenameToRemove = action.payload.filename;
+            const fileIdTemp = action.payload.idTemp;            
+            const filterTemp = state?.arrayFileUploaded?.filter((fileItem) => {
+                const file = fileItem as FileItem;
+                return (file.filename !== filenameToRemove && file.idTemp !== fileIdTemp);
             });
+            console.log('FLTERTEMP', filterTemp);
             return {
                 ...state,
                 arrayFileUploaded: filterTemp || [],
