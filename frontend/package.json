@@ -37,6 +37,7 @@
     "react-use-intercom": "^5.1.4",
     "react-waypoint": "^10.3.0",
     "react-window": "1.8.9",
+    "remark-gfm": "^4.0.0",
     "uuid": "^9.0.0",
     "zod": "^3.21.4"
   },

@@ -15,6 +15,7 @@ import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import Markdown from "react-markdown";
+import remarkGfm from 'remark-gfm'
 
 interface CitationDisplayProps {
   citation: Citation;
@@ -300,6 +301,20 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   }, [viewProgressActive])
   
 
+  const markdown = `A paragraph with *emphasis* and **strong importance**.
+
+> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+* Lists
+* [ ] todo
+* [x] done
+
+A table:
+
+| a | b |
+| - | - |
+`
+
   return (
     <div className="border-b pb-4">
       <div className="flex ">
@@ -334,7 +349,7 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
             <div className="w-1/5"></div>
             <div className="w-4/5">
               <div className="relative mb-2 mt-2 mr-416 font-nunito text-gray-90 text-[18px] markDownContainer">
-                <Markdown>
+                <Markdown remarkPlugins={[remarkGfm]}>
                   {message.content}
                 </Markdown>
               </div>
