@@ -2,7 +2,7 @@ import { backendUrl, session } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { BackendCollections } from "~/types/backend/collections";
-import type { SecDocument } from "~/types/document";
+import type { IntSummarization, SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
@@ -77,9 +77,7 @@ class BackendClient {
     return data.id;
   }
 
-  public async fetchConversation(
-    id: string
-  ): Promise<GetConversationReturnType> {
+  public async fetchConversation(id: string): Promise<GetConversationReturnType> {
     const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
@@ -89,6 +87,17 @@ class BackendClient {
     };
   }
 
+  public async fetchSummarization(id: string, reprocess: boolean): Promise<IntSummarization> {
+    const endpoint = `api/summarization2/${id}?reprocess=${reprocess}`;
+    const res = await this.get(endpoint);
+
+    const data = await res.json() as IntSummarization;
+
+    console.log('DATA', data);
+
+    return data;
+  }
+
   public async fetchDocuments(): Promise<SecDocument[]> {
     const endpoint = `api/document/`;
     const res = await this.get(endpoint);
@@ -96,9 +105,8 @@ class BackendClient {
     const docs = fromBackendDocumentToFrontend(data);
     return docs;
   }
-  public async getDetailFile(
-    uuid: string
-  ): Promise<NonNullable<unknown>> {
+
+  public async getDetailFile(uuid: string): Promise<NonNullable<unknown>> {
     const endpoint = `api/file/${uuid}`;
     const res = await this.get(endpoint);
 
@@ -150,41 +158,41 @@ class BackendClient {
     return data;
   }
 
-  public async createCollection({ name, is_public }: CreateCollection): Promise < string > {
-  const endpoint = "api/collections/create";
-  const payload = { session, name, is_public };
-  const res = await this.post(endpoint, payload);
+  public async createCollection({ name, is_public }: CreateCollection): Promise<string> {
+    const endpoint = "api/collections/create";
+    const payload = { session, name, is_public };
+    const res = await this.post(endpoint, payload);
 
-  const data = await res.json() as string;
-  return data;
-}
+    const data = await res.json() as string;
+    return data;
+  }
 
-  public async deleteCollection(id: string): Promise < string > {
-  const endpoint = "api/collections/delete";
-  const payload = { session, collectionId: id };
-  const res = await this.post(endpoint, payload);
+  public async deleteCollection(id: string): Promise<string> {
+    const endpoint = "api/collections/delete";
+    const payload = { session, collectionId: id };
+    const res = await this.post(endpoint, payload);
 
-  const data = await res.json() as string;
-  return data;
-}
+    const data = await res.json() as string;
+    return data;
+  }
 
-  public async renameCollection({ id, name, is_public }: RenameCollection): Promise < string > {
-  const endpoint = "api/collections/rename";
-  const payload = { session, collectionId: id, name, is_public };
-  const res = await this.post(endpoint, payload);
+  public async renameCollection({ id, name, is_public }: RenameCollection): Promise<string> {
+    const endpoint = "api/collections/rename";
+    const payload = { session, collectionId: id, name, is_public };
+    const res = await this.post(endpoint, payload);
 
-  const data = await res.json() as string;
-  return data;
-}
+    const data = await res.json() as string;
+    return data;
+  }
 
-  public async getCollectionDetails(collectionId ?: string): Promise < string > {
-  const endpoint = "api/collections/details";
-  const payload = { session, collectionId };
-  const res = await this.post(endpoint, payload);
+  public async getCollectionDetails(collectionId?: string): Promise<string> {
+    const endpoint = "api/collections/details";
+    const payload = { session, collectionId };
+    const res = await this.post(endpoint, payload);
 
-  const data = await res.json() as string;
-  return data;
-}
+    const data = await res.json() as string;
+    return data;
+  }
 }
 
 export const backendClient = new BackendClient();

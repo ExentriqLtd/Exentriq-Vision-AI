@@ -26,3 +26,10 @@ export interface SecDocument extends Ticker {
   url: string;
   username: string;
 }
+
+export interface IntSummarization {
+  status: string;
+  summarization: {
+    values: string
+  };
+}

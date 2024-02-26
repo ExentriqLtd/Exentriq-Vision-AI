@@ -62,7 +62,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
         <div className={`bg-white relative p-3 w-full flex flex-wrap my-2 cursor-pointer border-2 ${(collectionId && collectionId == id) ? "border-primary-ex" : "border-transparent"}`} onClick={openCollection}>
             <div className="w-4/6">
                 <div className="flex justify-between items-center w-full">
-                    <p className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</p>
+                    <div className="text-gray-400 text-xs">{moment(created_at).format('MMMM Do YYYY, h:mm a')}</div>
                 </div>
                 <div className="flex pt-1 justify-between items-center w-full">
                     <div className="flex gap-5 items-center">
@@ -241,12 +241,13 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                 <div className="flex items-center w-full pt-1">
                     {doc_number === doc_processing ? (
                         <>
-                            <p className="text-gray-400 text-xs">{doc_number} document processed</p>
+                            <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
+                            <div className="pl-1 text-gray-400 text-xs">{doc_number} document processed</div>
                         </>
                     ) : (
                         <>
                             <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} /></div>
-                            <p className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</p>
+                            <div className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</div>
                         </>
                     )}
 

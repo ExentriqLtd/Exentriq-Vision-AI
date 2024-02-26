@@ -7,11 +7,11 @@ interface ErrorProps {
 
 const ErrorPage = ({ statusCode }: ErrorProps): JSX.Element => {
   return (
-    <p>
+    <div>
       {statusCode
         ? `An error ${statusCode} occurred on server`
         : "An error occurred on client"}
-    </p>
+    </div>
   );
 };
 

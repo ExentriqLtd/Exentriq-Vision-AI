@@ -102,8 +102,8 @@ const ChooseFromFolder: NextPage = () => {
             focus-visible:outline-offset-2 
             focus-visible:outline-indigo-600">
           <div className="flex items-center">
-           
-            <p className="px-2">Google Drive</p>
+            <img src={'./drive-folder.png'} className="w-10" alt="Google Drive Folder" />
+            <div className="px-2">Google Drive</div>
           </div>
           <button className="underline" onClick={() => handleOpenPicker()}>Open folder</button>
         </div>
@@ -130,7 +130,7 @@ const ChooseFromFolder: NextPage = () => {
             focus-visible:outline-indigo-600">
           <div className="flex items-center">
             <img src={'./exentriq-folder.png'} className="w-10" alt="Google Drive Folder" />
-            <p className="px-2">Exentriq Document Manager Folder</p>
+            <div className="px-2">Exentriq Document Manager Folder</div>
           </div>
           <button className="underline" onClick={() => { }}>Open folder</button>
         </div> */}

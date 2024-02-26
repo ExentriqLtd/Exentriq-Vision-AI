@@ -14,6 +14,8 @@ import type { SecDocument } from "~/types/document";
 import { borderColors } from "~/utils/colors";
 import { formatDisplayDate } from "~/utils/timezone";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
+import Markdown from "react-markdown";
+import remarkGfm from 'remark-gfm'
 
 interface CitationDisplayProps {
   citation: Citation;
@@ -46,9 +48,9 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[10px]">p. {citation.pageNumber}</div>
       </div>
-      <p className="line-clamp-4 text-[12px] font-light leading-1-2">
+      <div className="line-clamp-4 text-[12px] font-light leading-1-2">
         {citation.snippet}
-      </p>
+      </div>
     </div>
   );
 };
@@ -299,6 +301,20 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
   }, [viewProgressActive])
   
 
+  const markdown = `A paragraph with *emphasis* and **strong importance**.
+
+> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
+
+* Lists
+* [ ] todo
+* [x] done
+
+A table:
+
+| a | b |
+| - | - |
+`
+
   return (
     <div className="border-b pb-4">
       <div className="flex ">
@@ -329,12 +345,14 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
           <div className="flex items-center justify-center">
             <div className="my-3 w-11/12 border-[.5px]"></div>
           </div>
-          <div className="flex ">
+          <div className="flex">
             <div className="w-1/5"></div>
             <div className="w-4/5">
-              <p className="relative mb-2 mt-2 mr-416 font-nunito whitespace-pre-wrap font-bold text-gray-90 text-[18px] lineHeight30">
-                {message.content}
-              </p>
+              <div className="relative mb-2 mt-2 mr-416 font-nunito text-gray-90 text-[18px] markDownContainer">
+                <Markdown remarkPlugins={[remarkGfm]}>
+                  {message.content}
+                </Markdown>
+              </div>
             </div>
           </div>
         </>

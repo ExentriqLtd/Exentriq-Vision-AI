@@ -21,8 +21,9 @@ const CollectionList: React.FC = () => {
   const [newCollectionActive, setNewCollectionActive] = useState(false);
   const [isRename, setIsRename] = useState('');
   const [is_public, SetIs_public] = useState(false);
+  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected } = stateVisionAI;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, uploadCompleted } = stateVisionAI;
 
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
@@ -30,7 +31,9 @@ const CollectionList: React.FC = () => {
   async function getCollections(value: string) {
     const collections = await backendClient.fetchCollections(value);
     if (collections && collections?.result) {
-      dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } })
+
+      dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } });
+
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
           setTimeout(() => {
@@ -44,6 +47,10 @@ const CollectionList: React.FC = () => {
   const toggleSidebar = () => {
     dispatchVisionAI({ type: 'SET_OPEN_MENU_MOBILE', payload: { toggleMenuMobile: !toggleMenuMobile } })
   };
+
+  useEffect(() => {
+    getCollections('').catch(() => console.error("could not fetch documents"));
+  }, [uploadCompleted]);
 
   useEffect(() => {
     getCollections('').catch(() => console.error("could not fetch documents"));
@@ -148,10 +155,20 @@ const CollectionList: React.FC = () => {
           onChange={handleInputChange}
         />
         {isEmpty(arrayCollections) &&
-          <p className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </p>
+          <div className="mt-6 text-gray-400 text-sm">There are no conversation yet you can start one <span className="color-primary-ex text-semibold underline cursor-pointer" onClick={toggleCollectionModal}>here</span> </div>
         }
-
-        <ul className="containerScroll overflow-y-auto w-full h-full pb-10">
+        {/* <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
+          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
+          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: 'true'}})
+          router.push({
+              pathname: `/yoda`,
+              query: session,
+          })
+          .catch(() => console.log("error navigating to yoda"))}}>
+            <Image src="https://www.exentriq.com/AvatarService?username=Yoda" alt="Yoda" width={40} height={40} />
+            Chat with Yoda
+        </div> */}
+        <div className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
             collection: {
               name: string | undefined;
@@ -163,7 +180,7 @@ const CollectionList: React.FC = () => {
             },
             index: React.Key | null | undefined) => {
             return (
-              <li key={index}>
+              <div key={index}>
                 <CollectionItem
                   name={collection?.name}
                   is_public={collection?.is_public}
@@ -178,10 +195,10 @@ const CollectionList: React.FC = () => {
                   collectionId={collectionId}
                   onIsPublic={onIsPublic}
                   onRename={onRename} />
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </div>
         <div
           onClick={() => {
             setIsRename('');

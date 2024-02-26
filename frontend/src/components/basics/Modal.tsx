@@ -6,6 +6,7 @@ interface ModalProps {
   toggleModal: () => void;
   title: string;
   children: React.ReactNode;
+  maxWidth: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -13,6 +14,7 @@ const Modal: React.FC<ModalProps> = ({
   toggleModal,
   title,
   children,
+  maxWidth='500px',
 }) => {
   if (!isOpen) return null;
 
@@ -23,12 +25,12 @@ const Modal: React.FC<ModalProps> = ({
           onClick={toggleModal}
           className="absolute h-full w-full bg-black opacity-50"
         ></div>
-        <div className="relative z-10 max-w-[500px] rounded bg-white p-6 shadow-xl ">
+        <div style={{maxWidth: `${maxWidth}`}}  className={`relative z-10 rounded bg-white p-6 shadow-xl`}>
           <h2 className="mb-2 text-xl font-bold">{title}</h2>
           {children}
           <button
             onClick={toggleModal}
-            className="b absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full p-1 text-base font-medium text-gray-90 hover:bg-gray-15 "
+            className="b absolute right-2 top-2 inline-flex h-7 w-7 items-center justify-center rounded-full p-1 text-base font-medium text-gray-90 hover:bg-gray-15"
           >
             <AiOutlineClose size={24} />
           </button>

@@ -67,9 +67,9 @@ const DragAndDrop = ({ onUpload }: Props) => {
                           Upload error
                         </Dialog.Title>
                         <div className="mt-2">
-                          <p className="text-sm text-gray-500">
+                          <div className="text-sm text-gray-500">
                             The file extension must be PDF, other formats are not accepted
-                          </p>
+                          </div>
                         </div>
                       </div>
                     </div>
