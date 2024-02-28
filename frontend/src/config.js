@@ -19,7 +19,7 @@ if (typeof window !== "undefined") {
     sessionToken = urlParams.get('sessionToken') || "empty";
 }
 
-export const backendUrl = 'https://art001ai.exentriq.com/';
+export const backendUrl = 'http://ais001exe.exentriq.com:30581/'; //config
 export const session = {
     username: username,
     spaceId: spaceId,
