@@ -40,8 +40,6 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
     }
 
     useEffect(() => {
-        console.log('QUESTO E DETTAGLIO', file);
-        console.log('arrayFileUploaded', arrayFileUploaded);
         if(statusUpload == 'uploaded') {
             updateStatusFile(); 
         }
@@ -52,7 +50,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">{file?.filename?.substring(0, 20)} {file?.filename?.length >= 20 && '...'}</td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                 <div className="flex flex-row items-center">
-                    {(file.statusUpload == 'progress') ? (
+                    {(file?.statusUpload == 'progress') ? (
                         <>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -85,7 +83,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
             </td>
             <td className="border-b border-slate-100 p-4 pl-8 text-slate-500">
                 <div className="flex flex-row items-center">
-                    {(file.statusUpload == 'uploaded') && (
+                    {(file?.statusUpload == 'uploaded') && (
                         <>
                             {(file?.status == 'failed') ? (
                                 <>
