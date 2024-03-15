@@ -44,7 +44,8 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
             dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: null } })
         }
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
-        dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false}});
+        dispatchVisionAI({ type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false } });
+        dispatchVisionAI({ type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false } });
         backendClient
             .createConversation(id)
             .then((newConversationId) => {
@@ -90,7 +91,8 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                     e.stopPropagation();
                                     setConfirmDelete(false);
                                     dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
-                                    dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false}});
+                                    dispatchVisionAI({ type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false } });
+                                    dispatchVisionAI({ type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false } });
                                 }}
                                 className="inline-flex w-full cursor-pointer justify-center gap-x-1.5 rounded-full bg-white p-1 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
                                 <HiDotsVertical color="#9BA3AF" size={18} />
@@ -128,6 +130,28 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 )}
                                             >
                                                 Upload
+                                            </a>
+                                        )}
+                                    </Menu.Item>
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <a
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    toggleSidebar && toggleSidebar()
+                                                    dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+                                                    router.push({
+                                                        pathname: `/prompts`,
+                                                        query: session,
+                                                    })
+                                                        .catch(() => console.log("error navigating to upload"))
+                                                }}
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                    'block px-4 py-2 text-sm'
+                                                )}
+                                            >
+                                                Prompts
                                             </a>
                                         )}
                                     </Menu.Item>
@@ -253,6 +277,10 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
 
                 </div>
             )}
+            <div onClick={(e) => e.stopPropagation()} className="w-full border-t-2 justify-between flex items-center mt-2 pt-2">
+                <p style={{ fontSize: 12 }} className="mb-0 pb-0 text-gray-700">Assistant ChatGPT</p>
+                <img src={'/logogpt.png'} className="w-5" alt="Logo ChatGPT" />
+            </div>
         </div>
     );
 };

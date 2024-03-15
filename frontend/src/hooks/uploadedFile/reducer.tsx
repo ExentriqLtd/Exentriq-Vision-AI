@@ -19,6 +19,7 @@ export interface action {
         actualEvent: object | null,
         is_public: boolean,
         isYodaSelected: boolean,
+        isPromptsSelected: boolean,
         filename: string,
         idTemp: string,
     };
@@ -37,6 +38,7 @@ export interface stateReducer {
     messageStatus: string,
     actualEvent: object | null,
     isYodaSelected: boolean,
+    isPromptsSelected: boolean,
     uploadCompleted: string,
 }
 
@@ -158,6 +160,11 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 isYodaSelected: action?.payload?.isYodaSelected
             };
+        case 'SET_PROMPTS_ACTIVE':
+            return {
+                ...state,
+                isPromptsSelected: action?.payload?.isPromptsSelected
+            };
         case 'SET_EMPTY_ARRAY_FILES':
             return {
                 ...state,
@@ -195,5 +202,6 @@ export const initialState: stateReducer = {
     messageStatus: '',
     actualEvent: null,
     isYodaSelected: false,
+    isPromptsSelected: false
 };
 

@@ -33,6 +33,7 @@ const Collection: NextPage = () => {
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false}});
+        dispatchVisionAI({type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false}});
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
 

@@ -68,6 +68,92 @@ class BackendClient {
     return res;
   }
 
+  //TODO: remove
+  private async delete2(endpoint: string, body?: object) {
+    const url = 'http://localhost:1880' + endpoint;
+    const res = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res;
+  }
+
+  private async post2(endpoint: string, body?: object) {
+    const url = 'http://localhost:1880' + endpoint;
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res;
+  }
+
+  private async get2(endpoint: string) {
+    const url = 'http://localhost:1880' + endpoint;
+    const res = await fetch(url);
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res;
+  }
+
+  private async put2(endpoint: string, body?: object) {
+    const url = 'http://localhost:1880' + endpoint;
+    const res = await fetch(url, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res;
+  }
+//TODO: remove
+
+  public async getPrompts(): Promise<string> {
+    const endpoint = "/api/prompts";
+    const res = await this.get2(endpoint);
+    const data = (await res.json());
+
+    return data;
+  }
+
+  public async editPrompts(promptsId: string | undefined, content: string): Promise<string> {
+    const endpoint = "/api/prompts/";
+    const payload = { session, promptsId, content};
+    const res = await this.put2(endpoint, payload);
+    const data = (await res.json());
+
+    return data;
+  }
+  public async insertPrompts(content: string): Promise<string> {
+    const endpoint = "/api/prompts/";
+    const payload = { session, content};
+    const res = await this.post2(endpoint, payload);
+    const data = (await res.json());
+
+    return data;
+  }
+  
+  public async deletePrompts(promptsId: string | undefined): Promise<string> {
+    const endpoint = "/api/prompts/";
+    const payload = { session, promptsId};
+    const res = await this.delete2(endpoint, payload);
+    const data = (await res.json());
+
+    return data;
+  }
   public async createConversation(collectionId: string | undefined): Promise<string> {
     const endpoint = "api/conversation/";
     const payload = { session, collectionId };
