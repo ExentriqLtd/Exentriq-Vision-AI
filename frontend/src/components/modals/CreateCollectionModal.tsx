@@ -26,6 +26,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   const [isOn, setIsOn] = useState(false);
   const [selectedValue, setSelectedValue] = useState('');
   const [dataPrompt, setDataPrompt] = useState([]);
+  const [dataAssistant, setDataAssistant] = useState([]);
   const [insertItem, setInsertItem] = useState(null);
 
   const toggleSwitch = () => {
@@ -48,6 +49,16 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
     setSelectedValue(event.target.value);
   };
 
+  const getAssistant = () => {
+    backendClient.getAssistant()
+      .then((res) => {
+        setDataAssistant(res)
+      })
+      .catch((e) => {
+        console.log('error:::getAssistant', e)
+      })
+  }
+
   const getPrompts = () => {
     backendClient.getPrompts()
       .then((res) => {
@@ -60,6 +71,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
 
   useEffect(() => {
     getPrompts()
+    getAssistant()
   }, [])
   return (
     <>
@@ -143,10 +155,11 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
             value={selectedValue}
             onChange={handleSelectChange}>
             <option selected value="">Select OpenAI Assistant</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            {(dataAssistant && dataAssistant?.length > 0) && dataAssistant.map((item: any, index: number) => {
+              if(!item.name) return <></>
+              return (
+              <option key={index} value={item.id}>{item.name}</option>
+            )})}
           </select>
         </div>
         {selectedValue && (

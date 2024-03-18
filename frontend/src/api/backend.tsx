@@ -119,7 +119,15 @@ class BackendClient {
     }
     return res;
   }
-//TODO: remove
+  //TODO: remove
+
+  public async getAssistant(): Promise<string> {
+    const endpoint = "api/openai/assistants/list";
+    const res = await this.get(endpoint);
+    const data = (await res.json());
+
+    return data.data;
+  }
 
   public async getPrompts(): Promise<string> {
     const endpoint = "/api/prompts";
