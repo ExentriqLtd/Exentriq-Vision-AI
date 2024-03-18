@@ -39,9 +39,11 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
     is_public && setIsOn(is_public);
     if (isString(isRename) && isRename !== '') {
       setValue(isRename)
+      setSelectedValue('')
     } else {
       setValue('')
       setIsOn(false);
+      setSelectedValue('')
     }
   }, [isOpen, isRename, is_public]);
 
