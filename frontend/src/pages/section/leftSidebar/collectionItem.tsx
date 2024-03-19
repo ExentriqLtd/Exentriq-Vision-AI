@@ -133,7 +133,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                             </a>
                                         )}
                                     </Menu.Item>
-                                    <Menu.Item>
+                                    {/* <Menu.Item>
                                         {({ active }) => (
                                             <a
                                                 onClick={(e) => {
@@ -154,7 +154,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                                                 Prompts
                                             </a>
                                         )}
-                                    </Menu.Item>
+                                    </Menu.Item> */}
                                     <Menu.Item>
                                         {({ active }) => (
                                             <a
@@ -277,10 +277,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
 
                 </div>
             )}
-            <div onClick={(e) => e.stopPropagation()} className="w-full border-t-2 justify-between flex items-center mt-2 pt-2">
-                <p style={{ fontSize: 12 }} className="mb-0 pb-0 text-gray-700">Assistant ChatGPT</p>
-                <img src={'/logogpt.png'} className="w-5" alt="Logo ChatGPT" />
-            </div>
         </div>
     );
 };

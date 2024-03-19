@@ -17,6 +17,8 @@ import useIsMobile from "~/hooks/utils/useIsMobile";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 import { v4 as uuidv4 } from "uuid";
+import AssistantsModal from "~/components/modals/AssistantsModal";
+import AssistantViewer from "~/components/assistant-viewer/AssistantViewer";
 
 
 export default function Conversation() {
@@ -30,13 +32,14 @@ export default function Conversation() {
 
   const { isOpen: isShareModalOpen, toggleModal: toggleShareModal } =
     useModal();
-
+  const { isOpen: isAssistantModalOpen, toggleModal: toggleAssistantModal } =
+    useModal();
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateVisionAI;
+  const { isPdfViewerOpen, arrayCitDocs, isAssistantChatOpen, messageStatus, actualEvent } = stateVisionAI;
 
   const [conversationId, setConversationId] = useState<string | null>(null);
   const [isMessagePending, setIsMessagePending] = useState(false);
@@ -181,10 +184,30 @@ export default function Conversation() {
     <div className={`${(isMobile || isTablet || session.embed) ? 'w-full' : 'mx-6 w-4/5'}`}>
       <div className={`flex ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
         <div className={`flex  ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
-          <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
+          <div style={{ display: (isPdfViewerOpen || isAssistantChatOpen) ? 'none' : 'block' }} className="w-full">
 
-            {(isMobile || isTablet)
-              ? (
+            <div className="flex h-[80px] w-full items-center justify-between">
+              <div className="flex w-full items-center justify-end p-2">
+                <button
+                  onClick={toggleAssistantModal}
+                  className="
+                    block 
+                    rounded-sm 
+                    bg-primary-ex 
+                    px-3.5 
+                    py-2.5 
+                    mr-2.5
+                    text-center 
+                    text-sm 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600">
+                  Assistant
+                </button>
                 <button
                   onClick={() => {
                     router.push({
@@ -194,38 +217,6 @@ export default function Conversation() {
                       .catch(() => console.log("error navigating to conversation"))
                   }}
                   className="
-                    block 
-                    absolute
-                    top-2
-                    right-2
-                    rounded-sm 
-                    bg-primary-ex 
-                    px-2 
-                    py-2 
-                    text-center 
-                    text-xs 
-                    text-white 
-                    shadow-md 
-                    hover:bg-primary-ex 
-                    focus-visible:outline 
-                    focus-visible:outline-2 
-                    focus-visible:outline-offset-2 
-                    focus-visible:outline-indigo-600">
-                  Collection detail
-                </button>
-              )
-              : (
-                <div className="flex h-[80px] w-full items-center justify-between">
-                  <div className="flex w-full items-center justify-end p-2">
-                    <button
-                      onClick={() => {
-                        router.push({
-                          pathname: `/collection/${id}`,
-                          query: session,
-                        })
-                          .catch(() => console.log("error navigating to conversation"))
-                      }}
-                      className="
                         block 
                         rounded-sm 
                         bg-primary-ex 
@@ -240,11 +231,10 @@ export default function Conversation() {
                         focus-visible:outline-2 
                         focus-visible:outline-offset-2 
                         focus-visible:outline-indigo-600">
-                      Collection detail
-                    </button>
-                  </div>
-                </div>
-              )}
+                  Collection detail
+                </button>
+              </div>
+            </div>
 
             <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
@@ -276,11 +266,17 @@ export default function Conversation() {
               </button>
             </div>
           </div>
+          <div style={{ display: isAssistantChatOpen ? 'block' : 'none' }} className="w-full">
+          <AssistantViewer/>
+          </div>
           <div style={{ display: isPdfViewerOpen ? 'block' : 'none' }} className="w-full">
             {/* @ts-ignore */}
             <DisplayMultiplePdfs pdfs={selectedDocuments} collectionId={id} backToDetail={backToDetail} />
           </div>
         </div>
+        <AssistantsModal
+          isOpen={isAssistantModalOpen}
+          toggleModal={toggleAssistantModal} />
         <ShareLinkModal
           isOpen={isShareModalOpen}
           toggleModal={toggleShareModal}
