@@ -10,6 +10,9 @@ import { VisionAIProvider } from "~/hooks/uploadedFile/VisionAIProvider";
 import { PdfFocusProvider } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
+import { session } from "src/config";
+import { useEffect } from "react";
+import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
@@ -23,7 +26,9 @@ const MyApp: AppType = ({ Component, pageProps }) => {
           <VisionAIProvider>
             <div className={`${(!isMobile || !isTablet) && 'flex flex-row'} h-[100vh]`}>
               <Layout>
-                <CollectionList />
+                {!session.embed &&
+                  <CollectionList />
+                }
                 <Component {...pageProps} />
               </Layout>
             </div>

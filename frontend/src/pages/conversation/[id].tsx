@@ -178,9 +178,9 @@ export default function Conversation() {
   }, []);
 
   return (
-    <div className={`${(isMobile || isTablet) ? 'w-full' : 'mx-6 w-4/5'}`}>
-      <div className={`flex ${(isMobile || isTablet) ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
-        <div className={`flex  ${(isMobile || isTablet) ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
+    <div className={`${(isMobile || isTablet || session.embed) ? 'w-full' : 'mx-6 w-4/5'}`}>
+      <div className={`flex ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
+        <div className={`flex  ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
           <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
 
             {(isMobile || isTablet)

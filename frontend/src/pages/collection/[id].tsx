@@ -21,7 +21,7 @@ const Collection: NextPage = () => {
     const [stateVisionAI, dispatchVisionAI] = useVisionAI()
     const { setPdfFocusState } = usePdfFocus();
     const { arrayCollections, isPdfViewerOpen } = stateVisionAI;
-    const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0]
+    const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0];
     const [limit, setLimit] = useState(50);
     const [documents, setDocuments] = useState<[] | null>(null);
     const [tableHeight, setTableHeight] = useState(0);
@@ -36,6 +36,12 @@ const Collection: NextPage = () => {
         dispatchVisionAI({type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false}});
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
+
+    useEffect(() => {
+        if(session.embedConvId && session.embed) {
+          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: session.embedConvId } });
+        }
+    }, [session.embedConvId])
 
     const getCollectionDetails = (collectionID: string) => {
         backendClient.getCollectionDetails(collectionID)
@@ -116,10 +122,10 @@ const Collection: NextPage = () => {
     }
     return (
         <>
-            <div className={`${(isMobile || isTablet) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
-                <div className={`${(!isMobile || !isTablet) && 'flex flex-row'} items-center justify-between`}>
-                    <Header subtitle={`${selectedCollection?.name}`} paragraph={false} />
-                    <div className={`${(isMobile || isTablet) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
+            <div className={`${(isMobile || isTablet || session.embed) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
+                <div className={`${(!isMobile || !isTablet || session.embed) && 'flex flex-row'} items-center justify-between`}>
+                    <Header subtitle={`${!session.embed ? selectedCollection?.name : ''}`} paragraph={false} />
+                    <div className={`${(isMobile || isTablet || session.embed) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <button
                             onClick={() => {
                                 router
@@ -148,35 +154,37 @@ const Collection: NextPage = () => {
                             focus-visible:outline-indigo-600`}>
                             Go to conversation
                         </button>
-                        <button
-                            onClick={() => {
-                                dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
-                                router
-                                    .push({
-                                        pathname: `/`,
-                                        query: session,
-                                    })
-                                    .catch(() => console.log("error navigating to conversation"))
-                            }}
-                            className={`
-                            block 
-                            rounded-sm 
-                            bg-primary-ex 
-                            ${(isMobile || isTablet) ? (
-                                    "px-2 py-2 text-xs"
-                                ) : (
-                                    "px-3.5 py-2.5 text-sm"
-                                )}
-                            text-center 
-                            text-white 
-                            shadow-md 
-                            hover:bg-primary-ex 
-                            focus-visible:outline 
-                            focus-visible:outline-2 
-                            focus-visible:outline-offset-2 
-                            focus-visible:outline-indigo-600`}>
-                            Go to upload
-                        </button>
+                        {!session.embed &&
+                            <button
+                                onClick={() => {
+                                    dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                    router
+                                        .push({
+                                            pathname: `/`,
+                                            query: session,
+                                        })
+                                        .catch(() => console.log("error navigating to conversation"))
+                                }}
+                                className={`
+                                block 
+                                rounded-sm 
+                                bg-primary-ex 
+                                ${(isMobile || isTablet) ? (
+                                        "px-2 py-2 text-xs"
+                                    ) : (
+                                        "px-3.5 py-2.5 text-sm"
+                                    )}
+                                text-center 
+                                text-white 
+                                shadow-md 
+                                hover:bg-primary-ex 
+                                focus-visible:outline 
+                                focus-visible:outline-2 
+                                focus-visible:outline-offset-2 
+                                focus-visible:outline-indigo-600`}>
+                                Go to upload
+                            </button>
+                        }
                     </div>
                 </div>
                 <div className={`${(!isMobile || !isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
