@@ -110,7 +110,7 @@ export default function Conversation() {
 
     const messageEndpoint =
       backendUrl + `api/conversation/${conversationId}/message`;
-    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
+    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}&engine=${session.engine || ''}`;
     // console.log('URL----', url);
     const events = new EventSource(url);
     dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
