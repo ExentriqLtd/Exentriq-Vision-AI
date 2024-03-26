@@ -84,6 +84,15 @@ class BackendClient {
     return data;
   }
 
+  public async fetchAgent(collectionId: string | undefined, prompt: string): Promise<string> {
+    const endpoint = "api/agent/";
+    const payload = { session, collection_id: collectionId, prompt };
+    const res = await this.post(endpoint, payload);
+    const data = (await res.json());
+    return data;
+  }
+
+  
   // public async editPrompts(promptsId: string | undefined, content: string): Promise<string> {
   //   const endpoint = "/api/prompts/";
   //   const payload = { session, promptsId, content};

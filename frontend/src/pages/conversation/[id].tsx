@@ -276,6 +276,7 @@ export default function Conversation() {
         </div>
         <AssistantsModal
           isOpen={isAssistantModalOpen}
+          id={id}
           toggleModal={toggleAssistantModal} />
         <ShareLinkModal
           isOpen={isShareModalOpen}

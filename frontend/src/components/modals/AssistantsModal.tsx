@@ -5,12 +5,14 @@ import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 
 interface AssistantsModalProps {
   isOpen: boolean;
+  id: string;
   toggleModal: () => void;
 }
 
 const AssistantsModal: React.FC<AssistantsModalProps> = ({
   isOpen,
   toggleModal,
+  id,
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [dataPrompt, setDataPrompt] = useState([]);
@@ -34,6 +36,16 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
       })
   }
 
+  const fetchAgent = (prompt: string) => {
+    backendClient.fetchAgent(id, prompt)
+      .then((res) => {
+        console.log('res:::', res)
+      })
+      .catch((e) => {
+        console.log('error:::getPrompts', e)
+      })
+  }
+
   useEffect(() => {
     getPrompts()
   }, [])
@@ -48,6 +60,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
               onClick={() => {
                 toggleModal();
                 dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true } })
+                fetchAgent(item.content)
               }}
               className="
                 block 
