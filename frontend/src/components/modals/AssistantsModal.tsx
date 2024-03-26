@@ -39,7 +39,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   }, [])
 
   return (
-    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Assistants" maxWidth="90vw">
+    <Modal isOpen={isOpen} toggleModal={toggleModal} title="Agents" maxWidth="90vw">
       <div className="overflow-y-auto max-h-[calc(90vh-1rem)]">
         {(dataPrompt && dataPrompt?.length > 0) && dataPrompt.map((item: any, index: number) => (
           <div className="flex flex-row items-center justify-between border-b border-slate-100 p-4 gap-3">
