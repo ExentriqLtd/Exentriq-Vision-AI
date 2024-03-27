@@ -27,11 +27,15 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
+  
   useEffect(() => {
+
     if (isOpen) {
       inputRef.current?.select();
     }
-    is_public && setIsOn(is_public);
+
+    setIsOn(is_public);
+
     if (isString(isRename) && isRename !== '') {
       setValue(isRename)
     } else {
