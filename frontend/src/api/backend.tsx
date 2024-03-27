@@ -111,7 +111,7 @@ class BackendClient {
   //   return data;
   // }
   public async createConversation(collectionId: string | undefined): Promise<string> {
-    const endpoint = "api/conversation/";
+    const endpoint = "api/conversation_dev/";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as CreateConversationPayload;
@@ -120,7 +120,7 @@ class BackendClient {
   }
 
   public async fetchConversation(id: string): Promise<GetConversationReturnType> {
-    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
+    const endpoint = `api/conversation_dev/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {
@@ -166,7 +166,7 @@ class BackendClient {
 
 
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
-    const endpoint = `api/collections/upload`;
+    const endpoint = `api/collections/upload_dev`;
     console.log('collectionId', collectionId);
     const payload = {
       collectionId,
@@ -201,7 +201,7 @@ class BackendClient {
   }
 
   public async createCollection({ name, is_public }: CreateCollection): Promise<string> {
-    const endpoint = "api/collections/create";
+    const endpoint = "api/collections/create_dev";
     const payload = { session, name, is_public };
     const res = await this.post(endpoint, payload);
 
@@ -210,7 +210,7 @@ class BackendClient {
   }
 
   public async deleteCollection(id: string): Promise<string> {
-    const endpoint = "api/collections/delete";
+    const endpoint = "api/collections/delete_dev";
     const payload = { session, collectionId: id };
     const res = await this.post(endpoint, payload);
 
