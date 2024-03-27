@@ -13,9 +13,6 @@ import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 import { uuid4 } from "@sentry/utils";
 
-// import CreateCollectionModal from "~/components/modals/CreateCollectionModal";
-// import { useModal } from "~/hooks/utils/useModal";
-
 const LandingPage: NextPage = () => {
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI()
