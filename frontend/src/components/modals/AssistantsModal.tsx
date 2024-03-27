@@ -42,7 +42,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
         console.log('res:::', res)
       })
       .catch((e) => {
-        console.log('error:::getPrompts', e)
+        console.log('error:::fetchAgent', e)
       })
   }
 
@@ -60,7 +60,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
               onClick={() => {
                 toggleModal();
                 dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true } })
-                fetchAgent(item.content)
+                fetchAgent(item.name)
               }}
               className="
                 block 

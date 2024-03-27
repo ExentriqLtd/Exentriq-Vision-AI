@@ -78,7 +78,7 @@ class BackendClient {
 
   public async fetchAgent(collectionId: string | undefined, prompt: string): Promise<string> {
     const endpoint = "api/agent/";
-    const payload = { session, collection_id: collectionId, prompt };
+    const payload = { session, collection_id: collectionId, agent: prompt };
     const res = await this.post(endpoint, payload);
     const data = (await res.json());
     return data;
