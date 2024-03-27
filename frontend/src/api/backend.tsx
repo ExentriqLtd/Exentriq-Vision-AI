@@ -77,7 +77,7 @@ class BackendClient {
   }
 
   public async getPrompts(): Promise<string> {
-    const endpoint = "api/prompts";
+    const endpoint = "api/agents";
     const res = await this.get(endpoint);
     const data = (await res.json());
 
