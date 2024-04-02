@@ -92,11 +92,6 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
       const executeRes = await backendClient.executeAgent(conversationId, agentName);
       console.log('res:::', executeRes);
       dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: executeRes } });
-      // Avvia il polling dello stato dell'agente solo se non è già in corso
-      // const agent = dataAgents.find(agent => agent.uuid === agentId);
-      // if (agent && agent.status !== 'IN PROGRESS') {
-      //   checkAgentStatus(agentId);
-      // }
     } catch (error) {
       console.log('error:::executeAgent', error);
     }
