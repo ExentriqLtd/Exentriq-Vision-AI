@@ -15,6 +15,7 @@ export interface action {
         viewProgressActive: string,
         isPdfViewerOpen: boolean,
         isAssistantChatOpen: boolean,
+        assistantResults: object,
         toggleMenuMobile: boolean,
         messageStatus: string,
         actualEvent: object | null,
@@ -34,6 +35,7 @@ export interface stateReducer {
     arrayCollections: [],
     isPdfViewerOpen: boolean,
     isAssistantChatOpen: boolean,
+    assistantResults: object,
     viewProgressActive: string,
     toggleMenuMobile: boolean,
     goToUpload: boolean,
@@ -189,7 +191,8 @@ export const reducer = (state: stateReducer, action: action) => {
         case 'SET_ASSISTANT_VIEWER':
             return {
                 ...state,
-                isAssistantChatOpen: action.payload.isAssistantChatOpen
+                isAssistantChatOpen: action.payload.isAssistantChatOpen,
+                assistantResults: action.payload.assistantResults,
             };
         default:
             return state;
@@ -205,6 +208,7 @@ export const initialState: stateReducer = {
     goToUpload: false,
     isPdfViewerOpen: false,
     isAssistantChatOpen: false,
+    assistantResults: {},
     viewProgressActive: '',
     toggleMenuMobile: false,
     messageStatus: '',

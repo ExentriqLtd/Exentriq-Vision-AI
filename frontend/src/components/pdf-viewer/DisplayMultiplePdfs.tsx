@@ -49,7 +49,8 @@ export const DisplayMultiplePdfs: React.FC<DisplayMultiplePdfsProps> = ({
                     query: session,
                   }).catch(() => console.log("error navigating to collection"))
               }
-              dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } })
+              dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: false } });
+              dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: false, assistantResults: {} } });
             }}>
               <AiOutlineCloseCircle size={22} />
             </i>

@@ -14,30 +14,30 @@ const Prompts: NextPage = () => {
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet();
   const [tableHeight, setTableHeight] = useState(0);
-  const [dataPrompt, setDataPrompt] = useState([]);
+  const [dataAgents, setDataAgents] = useState([]);
   const [editItem, setEditItem] = useState(null);
   const [deleteItem, setDeleteItem] = useState(null);
   const [insertItem, setInsertItem] = useState(null);
 
-  const getPrompts = () => {
-    backendClient.getPrompts()
+  const getAgents = () => {
+    backendClient.getAgents()
       .then((res) => {
-        setDataPrompt(res)
+        setDataAgents(res)
       })
       .catch((e) => {
-        console.log('error:::getPrompts', e)
+        console.log('error:::getAgents', e)
       })
   }
 
   useEffect(() => {
-    getPrompts()
+    getAgents()
     setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
   }, [])
 
   return (
     <>
       {editItem && (
-        <Modal isOpen={editItem} toggleModal={() => { getPrompts(); setEditItem(null) }} title="Edit prompt" maxWidth="500px">
+        <Modal isOpen={editItem} toggleModal={() => { getAgents(); setEditItem(null) }} title="Edit prompt" maxWidth="500px">
           <div className="flex items-center space-x-2">
             <textarea
               style={{ minHeight: 200, minWidth: 400 }}
@@ -51,7 +51,7 @@ const Prompts: NextPage = () => {
               onClick={() => {
                 backendClient.editPrompts(editItem.uuid, editItem.content)
                   .then(() => {
-                    getPrompts();
+                    getAgents();
                     setEditItem(null)
                   })
                   .catch((e) => {
@@ -66,7 +66,7 @@ const Prompts: NextPage = () => {
         </Modal>
       )}
       {insertItem && (
-        <Modal isOpen={insertItem} toggleModal={() => { getPrompts(); setInsertItem(null) }} title="Add prompt" maxWidth="500px">
+        <Modal isOpen={insertItem} toggleModal={() => { getAgents(); setInsertItem(null) }} title="Add prompt" maxWidth="500px">
           <div className="flex items-center space-x-2">
             <textarea
               style={{ minHeight: 200, minWidth: 400 }}
@@ -80,7 +80,7 @@ const Prompts: NextPage = () => {
               onClick={() => {
                 backendClient.insertPrompts(insertItem.content)
                   .then(() => {
-                    getPrompts();
+                    getAgents();
                     setInsertItem(null)
                   })
                   .catch((e) => {
@@ -95,7 +95,7 @@ const Prompts: NextPage = () => {
         </Modal>
       )}
       {deleteItem && (
-        <Modal isOpen={deleteItem} toggleModal={() => { getPrompts(); setDeleteItem(null) }} title="Delete prompt" maxWidth="500px">
+        <Modal isOpen={deleteItem} toggleModal={() => { getAgents(); setDeleteItem(null) }} title="Delete prompt" maxWidth="500px">
           <div
             className={'block px-4 py-2 text-gray-900 text-sm border-t text-center'}
           >
@@ -105,7 +105,7 @@ const Prompts: NextPage = () => {
                 onClick={(e) => {
                   backendClient.deletePrompts(deleteItem.uuid)
                     .then(() => {
-                      getPrompts();
+                      getAgents();
                       setDeleteItem(null)
                     })
                     .catch((e) => {
@@ -119,7 +119,7 @@ const Prompts: NextPage = () => {
               </button>
               <button
                 onClick={(e) => {
-                  getPrompts();
+                  getAgents();
                   setDeleteItem(null)
                 }}
                 type="button"
@@ -172,7 +172,7 @@ const Prompts: NextPage = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y bg-white">
-                  {(dataPrompt && dataPrompt?.length > 0) && dataPrompt.map((item: any, index: number) => (
+                  {(dataAgents && dataAgents?.length > 0) && dataAgents.map((item: any, index: number) => (
                     <tr key={index}>
                       <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">{item.content}</td>
                       <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">{formatDate(item.created_at)}</td>

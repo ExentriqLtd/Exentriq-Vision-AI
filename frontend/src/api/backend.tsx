@@ -43,6 +43,14 @@ export interface RenameCollection {
   is_public: boolean;
   id: string;
 }
+
+export interface AgentItem {
+  content: string;
+  created_at: string;
+  name: string;
+  uuid: string;
+  status: string,
+}
 class BackendClient {
   private async get(endpoint: string) {
     const url = backendUrl + endpoint;
@@ -68,19 +76,26 @@ class BackendClient {
     return res;
   }
 
-  public async getPrompts(): Promise<string> {
+  public async getAgents(): Promise<AgentItem[]> {
     const endpoint = "api/agents";
     const res = await this.get(endpoint);
-    const data = (await res.json());
-
+    const data = await res.json();
     return data;
   }
 
-  public async fetchAgent(collectionId: string | undefined, prompt: string): Promise<string> {
+  public async executeAgent(collectionId: string | undefined, prompt: string): Promise<string> {
     const endpoint = "api/agent/";
     const payload = { session, collection_id: collectionId, agent: prompt };
     const res = await this.post(endpoint, payload);
     const data = (await res.json());
+    return data;
+  }
+
+  public async checkAgentStatus(agentId:string, collectionId: string): Promise<any> {
+    const endpoint = `api/agents/${agentId}/${collectionId}`;
+    const res = await this.get(endpoint);
+    const data = await res.json();
+    console.log('checkAgentStatus--->', data);
     return data;
   }
 
@@ -111,7 +126,7 @@ class BackendClient {
   //   return data;
   // }
   public async createConversation(collectionId: string | undefined): Promise<string> {
-    const endpoint = "api/conversation_dev/";
+    const endpoint = "api/conversation/";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as CreateConversationPayload;
@@ -120,7 +135,7 @@ class BackendClient {
   }
 
   public async fetchConversation(id: string): Promise<GetConversationReturnType> {
-    const endpoint = `api/conversation_dev/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
+    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {

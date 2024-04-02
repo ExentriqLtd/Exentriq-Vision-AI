@@ -41,7 +41,7 @@ export default function Conversation() {
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
   const { isPdfViewerOpen, arrayCitDocs, isAssistantChatOpen, messageStatus, actualEvent } = stateVisionAI;
 
-  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | ''>('');
   const [isMessagePending, setIsMessagePending] = useState(false);
   const [userMessage, setUserMessage] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<SecDocument[]>([]);
@@ -252,7 +252,7 @@ export default function Conversation() {
               <textarea
                 ref={textFocusRef}
                 rows={1}
-                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
+                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none border-0"
                 placeholder={"Start typing your question..."}
                 value={userMessage}
                 onChange={handleTextChange}
@@ -276,7 +276,7 @@ export default function Conversation() {
         </div>
         <AssistantsModal
           isOpen={isAssistantModalOpen}
-          id={id}
+          conversationId={conversationId}
           toggleModal={toggleAssistantModal} />
         <ShareLinkModal
           isOpen={isShareModalOpen}

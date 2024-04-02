@@ -45,6 +45,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
         }
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
         dispatchVisionAI({ type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false } });
+        dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: false, assistantResults: {}}})
         dispatchVisionAI({ type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false } });
         backendClient
             .createConversation(id)
