@@ -250,6 +250,15 @@ class BackendClient {
     const data = await res.json() as string;
     return data;
   }
+
+  public async sendAgentForm(action: string | undefined, formData: any): Promise<string> {
+    console.log(formData);
+    const endpoint = `api${action}`; //TODO: quale deve essere il link dell'action?
+    const payload = { session, data: formData };
+    const res = await this.post(endpoint, payload);
+    const data = (await res.json());
+    return data;
+  }
 }
 
 export const backendClient = new BackendClient();

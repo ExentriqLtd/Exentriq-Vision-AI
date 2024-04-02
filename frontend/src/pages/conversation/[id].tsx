@@ -266,8 +266,8 @@ export default function Conversation() {
               </button>
             </div>
           </div>
-          <div style={{ display: isAssistantChatOpen ? 'block' : 'none' }} className="w-full">
-          <AssistantViewer/>
+          <div style={{ display: isAssistantChatOpen ? 'block' : 'none' }} className="w-full h-full">
+            <AssistantViewer/>
           </div>
           <div style={{ display: isPdfViewerOpen ? 'block' : 'none' }} className="w-full">
             {/* @ts-ignore */}
