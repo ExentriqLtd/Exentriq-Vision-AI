@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import Modal from "../basics/Modal";
 import { backendClient, AgentItem } from "~/api/backend";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
+import { BiLoaderAlt } from "react-icons/bi";
 
 interface AssistantsModalProps {
   isOpen: boolean;
@@ -80,7 +81,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
         console.log('Error polling agent status:', error);
         clearInterval(intervalId);
       }
-    }, 5000);
+    }, 1000);
 
     setPollingAgents((prevPollingAgents) => [...prevPollingAgents, intervalId]);
   };
@@ -132,7 +133,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                       Open
                     </button>
                   ) : (
-                    <span>In Progress</span>
+                    <BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} />
                   )}
                 </>
               )}
