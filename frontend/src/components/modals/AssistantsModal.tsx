@@ -74,7 +74,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
           );
         }
 
-        if (agentStatusRes.status === 'SUCCESS' || agentStatusRes.status === 'ERROR' || agentStatusRes.status === '') {
+        if (agentStatusRes.status === 'SUCCESS' || agentStatusRes.status === 'ERROR' || agentStatusRes.status === null) {
           clearInterval(intervalId);
         }
       } catch (error) {
@@ -89,9 +89,18 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
 
   const executeAgent = async (agentName: string, agentId: string) => {
     try {
-      const executeRes = await backendClient.executeAgent(conversationId, agentName);
-      console.log('res:::', executeRes);
-      dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: executeRes } });
+      backendClient.executeAgent(conversationId, agentName).then((res) => {
+        console.log('execute,res', res);
+        //TODO: Solo quando è pronto già devo aprirlo. 
+        dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: res } });
+      });
+      /* Imposto lo stato in IN PROGRESS per quell'agente, ma in teoria dovrebbe farlo l'execute agent qui sopra o il check andrà sempre in null (come succede ora che sta in errore) */
+      setDataAgents(prevAgents =>
+        prevAgents.map(prevAgent =>
+          prevAgent.uuid === agentId ? { ...prevAgent, status: 'IN PROGRESS' } : prevAgent
+        )
+      );
+      checkAgentStatus(agentId);
     } catch (error) {
       console.log('error:::executeAgent', error);
     }
@@ -108,7 +117,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
               <div className="text-slate-500">{item.name}</div>
               {item.status !== 'START' && (
                 <>
-                  {item.status === '' ? (
+                  {item.status === null ? (
                     <button
                       onClick={() => {
                         executeAgent(item.name, item.uuid);
