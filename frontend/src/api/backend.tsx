@@ -83,9 +83,9 @@ class BackendClient {
     return data;
   }
 
-  public async executeAgent(collectionId: string | undefined, prompt: string): Promise<string> {
+  public async executeAgent(collectionId: string | undefined, prompt: string, reprocess: boolean): Promise<string> {
     const endpoint = "api/agent/";
-    const payload = { session, collection_id: collectionId, agent: prompt };
+    const payload = { session, collection_id: collectionId, agent: prompt, reprocess: reprocess };
     const res = await this.post(endpoint, payload);
     const data = (await res.json());
     return data;

@@ -87,12 +87,13 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   };
   
 
-  const executeAgent = async (agentName: string, agentId: string) => {
+  const executeAgent = async (agentName: string, agentId: string, reprocess: boolean, openResult: boolean) => {
     try {
-      backendClient.executeAgent(conversationId, agentName).then((res) => {
+      backendClient.executeAgent(conversationId, agentName, reprocess).then((res) => {
         console.log('execute,res', res);
-        //TODO: Solo quando è pronto già devo aprirlo. 
-        dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: res } });
+        if(openResult) {
+          dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: res } });
+        }
       });
       /* Imposto lo stato in IN PROGRESS per quell'agente, ma in teoria dovrebbe farlo l'execute agent qui sopra o il check andrà sempre in null (come succede ora che sta in errore) */
       setDataAgents(prevAgents =>
@@ -120,7 +121,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                   {item.status === null ? (
                     <button
                       onClick={() => {
-                        executeAgent(item.name, item.uuid);
+                        executeAgent(item.name, item.uuid, false, false);
                       }}
                       className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
@@ -130,14 +131,25 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                     <button
                       onClick={() => {
                         toggleModal();
-                        executeAgent(item.name, item.uuid);
+                        executeAgent(item.name, item.uuid, false, true);
                       }}
                       className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Open
                     </button>
-                  ) : (
+                  ) : item.status === 'IN PROGRESS' ? (
                     <BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} />
+                  ) : item.status === 'ERROR' ? (
+                    <button
+                      onClick={() => {
+                        executeAgent(item.name, item.uuid, true, false);
+                      }}
+                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      Reprocess
+                    </button>
+                  ) : (
+                    <div className="none"></div>
                   )}
                 </>
               )}
