@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { backendClient } from "~/api/backend";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
+import toast from 'react-hot-toast';
 
 interface AssistantViewerProps {}
 
@@ -24,7 +25,7 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
 
   useEffect(() => {
     if (isAssistantChatOpen && assistantResults) {
-      setDynamicForm(assistantResults.data);
+      setDynamicForm(assistantResults.data_res ? assistantResults.data_res : assistantResults.data);
     }
   }, [isAssistantChatOpen, assistantResults]);
 
@@ -53,7 +54,15 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
       
       // Invia una richiesta POST con i dati del form
       backendClient.sendAgentForm(dynamicForm.action, dynamicForm).then((res) => {
-        console.log('RES', res);
+        console.log('RES SEND AGENT', res);
+        if(res.status == 'SUCCESS') {
+          toast.success('Modifica inviata con successo.', {
+            position: 'top-right',
+          })
+        } else {
+          /*TODO: se va in errore andrebbe messo un message di motivazione */
+          toast.error(res.status)
+        }
       })
       .catch((e) => {
         console.log('e', e)
@@ -104,7 +113,7 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
                             name={col.label}
                             id={col.label}
                             autoComplete={col.input}
-                            className="rounded color-primary-ex"
+                            className="color-primary-ex form-checkbox focus:ring-offset-0 focus:outline-none focus:ring-0 border-2 w-[25px] h-[25px]"
                             checked={col.value as boolean}
                             onChange={(e) =>
                               handleInputChange(
@@ -122,7 +131,39 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
                           </label>
                         </div>
                       </>
-                    ) : (
+                      ) : col.input === "calendar" ? (
+                        <>
+                          <label
+                            htmlFor={col.input}
+                            className="relative font-nunito text-gray-90 text-[18px]"
+                          >
+                            {col.label}
+                          </label>
+                          <div className="mt-2">
+                            <input
+                              type={"date"}
+                              name={col.label}
+                              id={col.label}
+                              autoComplete={col.input}
+                              className="rounded form-input"
+                              onChange={(e) =>
+                                handleInputChange(
+                                  indexRow,
+                                  index,
+                                  e.target.value // Accedi al valore dalla proprietà value dell'evento
+                                  )
+                              }
+                            />
+                          </div>
+                          <div className="">TODO: value non può essere una stringa nel caso di una data, ma dovrebbe essere una data. Se serve una stringa descrittiva va aggiunto all'oggetto una chiave apposita. Al momento la value è: {col.value}</div>
+                        </> 
+                      ) : col.input === "members" ? (
+                        <>
+                          <div className="">
+                            Come fare la struttura dei membri?
+                          </div>
+                        </> 
+                      ) : (
                       <>
                         <label
                           htmlFor={col.input}
@@ -136,7 +177,7 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
                             name={col.label}
                             id={col.label}
                             autoComplete={"none"}
-                            className="block w-full rounded-md border-gray-300 shadow-sm"
+                            className="block w-full rounded-md border-gray-300 shadow-sm form-input"
                             value={col.value as string}
                             onChange={(e) =>
                               handleInputChange(indexRow, index, e.target.value)

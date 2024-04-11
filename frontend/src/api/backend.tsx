@@ -34,6 +34,10 @@ interface GetCollectionsReturnType {
     username: string;
   };
 }
+
+interface getStatusResult {
+  status: string;
+}
 export interface CreateCollection {
   name: string;
   is_public: boolean;
@@ -251,9 +255,9 @@ class BackendClient {
     return data;
   }
 
-  public async sendAgentForm(action: string | undefined, formData: any): Promise<string> {
+  public async sendAgentForm(action: string | undefined, formData: any): Promise<getStatusResult> {
     console.log(formData);
-    const endpoint = `api${action}`; //TODO: quale deve essere il link dell'action?
+    const endpoint = `api${action}`;
     const payload = { session, data: formData };
     const res = await this.post(endpoint, payload);
     const data = (await res.json());
