@@ -114,7 +114,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
           <div>Loading agents...</div>
         ) : (
           dataAgents.map((item: AgentItem) => (
-            <div key={item.uuid} className="flex flex-row items-center justify-between border-b border-slate-100 p-4 gap-3 w-[50vw]">
+            <div key={item.uuid} className="flex flex-row items-center justify-between border-b border-slate-100 p-2 gap-3 w-[50vw]">
               <div className="text-slate-500">{item.name}</div>
               {item.status !== 'START' && (
                 <>
@@ -123,7 +123,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                       onClick={() => {
                         executeAgent(item.name, item.uuid, false, false);
                       }}
-                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 ml-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Execute
                     </button>
@@ -133,7 +133,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                         toggleModal();
                         executeAgent(item.name, item.uuid, false, true);
                       }}
-                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 ml-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Open
                     </button>
@@ -144,7 +144,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
                       onClick={() => {
                         executeAgent(item.name, item.uuid, true, false);
                       }}
-                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 mr-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                      className="block rounded-sm bg-primary-ex px-3.5 py-2.5 ml-2.5 text-center text-sm text-white shadow-md hover:bg-primary-ex focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
                       Reprocess
                     </button>
