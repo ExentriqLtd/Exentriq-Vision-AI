@@ -60,11 +60,11 @@ const LandingPage: NextPage = () => {
     setIsLoadingConversation(true);
     backendClient
       .createConversation(collectionId)
-      .then((newConversationId) => {
+      .then((result) => {
         setIsLoadingConversation(false);
         router
           .push({
-            pathname: `/conversation/${newConversationId}`,
+            pathname: `/conversation/${result.id}`,
             query: session,
           })
           .catch(() => console.log("error navigating to conversation"));

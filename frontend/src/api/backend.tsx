@@ -7,12 +7,16 @@ import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
   id: string;
+  agents: [];
+  documents: BackendDocument[];
+  updated_at: string;
 }
 
 interface GetConversationPayload {
   result: {
     documents: BackendDocument[];
     messages: Message[];
+    agents: [];
   };
   id: string;
   messages: Message[];
@@ -22,6 +26,7 @@ interface GetConversationPayload {
 interface GetConversationReturnType {
   messages: Message[];
   documents: SecDocument[];
+  agents: [];
 }
 
 interface GetCollectionsReturnType {
@@ -54,6 +59,7 @@ export interface AgentItem {
   name: string;
   uuid: string;
   status: string,
+  description: string;
 }
 class BackendClient {
   private async get(endpoint: string) {
@@ -81,7 +87,7 @@ class BackendClient {
   }
 
   public async getAgents(): Promise<AgentItem[]> {
-    const endpoint = "api/agents";
+    const endpoint = `api/agents?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
     const data = await res.json();
     return data;
@@ -129,13 +135,13 @@ class BackendClient {
 
   //   return data;
   // }
-  public async createConversation(collectionId: string | undefined): Promise<string> {
+  public async createConversation(collectionId: string | undefined): Promise<CreateConversationPayload> {
     const endpoint = "api/conversation/";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as CreateConversationPayload;
 
-    return data.id;
+    return data;
   }
 
   public async fetchConversation(id: string): Promise<GetConversationReturnType> {
@@ -145,6 +151,7 @@ class BackendClient {
     return {
       messages: data?.result?.messages,
       documents: fromBackendDocumentToFrontend(data?.result?.documents),
+      agents: data?.result?.agents,
     };
   }
 
@@ -153,9 +160,6 @@ class BackendClient {
     const res = await this.get(endpoint);
 
     const data = await res.json() as IntSummarization;
-
-    console.log('DATA', data);
-
     return data;
   }
 

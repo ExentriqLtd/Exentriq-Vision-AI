@@ -49,10 +49,11 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
         dispatchVisionAI({ type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false } });
         backendClient
             .createConversation(id)
-            .then((newConversationId) => {
+            .then((result) => {
+                console.log('Mh', result);
                 router
                     .push({
-                        pathname: `/conversation/${newConversationId}`,
+                        pathname: `/conversation/${result.id}`,
                         query: session,
                     })
                     .catch(() => console.log("error navigating to conversation"));

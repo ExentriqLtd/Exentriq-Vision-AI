@@ -114,8 +114,11 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
           <div>Loading agents...</div>
         ) : (
           dataAgents.map((item: AgentItem) => (
-            <div key={item.uuid} className="flex flex-row items-center justify-between border-b border-slate-100 p-2 gap-3 w-[50vw]">
-              <div className="text-slate-500">{item.name}</div>
+            <div key={item.uuid} className="flex flex-row items-center justify-between border-b border-slate-100 py-2 gap-3 w-[50vw]">
+              <div className="flex flex-col">
+                <div className="font-semibold">{item.name}</div>
+                <div className="text-slate-500 mt-2 text-[14px]">{item.description}</div>
+              </div>
               {item.status !== 'START' && (
                 <>
                   {item.status === null ? (

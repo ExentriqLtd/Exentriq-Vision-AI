@@ -45,6 +45,7 @@ export default function Conversation() {
   const [isMessagePending, setIsMessagePending] = useState(false);
   const [userMessage, setUserMessage] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<SecDocument[]>([]);
+  const [availableAgentOnSpaceId, setAvailableAgentOnSpaceId] = useState(false);
 
   const { messages, userSendMessage, systemSendMessage, setMessages, setErrorMessage } =
     useMessages(conversationId || "");
@@ -61,18 +62,10 @@ export default function Conversation() {
   useEffect(() => {
     const fetchConversation = async (id: string) => {
       const result = await backendClient.fetchConversation(id);
-      // const testErrorUid = ['bda33fc6-7a42-11ee-9083-e2a70e41aa24', 'cb12b194-7a44-11ee-b72d-e2a70e41aa24'];
+      if(result.agents.length > 0) {
+        setAvailableAgentOnSpaceId(true);
+      }
 
-      // //@ts-ignore
-      // const newMessages: Message[] = result.messages.map((item: Message) => {
-      //   if (testErrorUid.includes(item.uuid)) {
-      //     item.errorUi = true
-      //   }
-      //   return item
-      // });
-      // if (newMessages) {
-      //   setMessages(newMessages);
-      // }
       if (result.messages) {
         setMessages(result.messages);
       }
@@ -188,7 +181,8 @@ export default function Conversation() {
 
             <div className="flex h-[80px] w-full items-center justify-between">
               <div className="flex w-full items-center justify-end p-2">
-                <button
+                {availableAgentOnSpaceId && (
+                  <button
                   onClick={toggleAssistantModal}
                   className="
                     block 
@@ -208,6 +202,7 @@ export default function Conversation() {
                     focus-visible:outline-indigo-600">
                   Agents
                 </button>
+                )}
                 <button
                   onClick={() => {
                     router.push({
