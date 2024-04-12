@@ -241,3 +241,8 @@ p {
   padding: 10px 16px;
   border: 1px solid #d0d7de;
 }
+
+.agentErrorBox {
+  background-color: #f3565d;
+  color: #FFF;
+}

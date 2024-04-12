@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { backendClient } from "~/api/backend";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import toast from 'react-hot-toast';
+import { MdErrorOutline } from "react-icons/md";
 
 interface AssistantViewerProps {}
 
@@ -107,6 +108,12 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
                   <div key={index} className={`col-span-${index + 1} p-2`}>
                     {col.input === "checkbox" ? (
                       <>
+                        {col.value === "ND" && col.motivation && (
+                            <div className="text-sm flex align-center gap-2 text-red-500 agentErrorBox p-2 mb-2">
+                              <MdErrorOutline size={24} />
+                              {col.motivation}
+                            </div>
+                        )}
                        <div className="inputCheckBoxContainer flex flex-row gap-3 items-center">
                           <input
                             type={"checkbox"}
@@ -132,12 +139,8 @@ export const AssistantViewer: React.FC<AssistantViewerProps> = ({}) => {
                             }`}
                           >
                             {col.label}
-                            {col.value === "ND" && col.motivation && (
-                              <span className="text-sm block text-red-500">{col.motivation}</span>
-                            )}
                           </label>
                         </div>
-
                       </>
                       ) : col.input === "calendar" ? (
                         <>
