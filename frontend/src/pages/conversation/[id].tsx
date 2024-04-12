@@ -181,7 +181,7 @@ export default function Conversation() {
 
             <div className="flex h-[80px] w-full items-center justify-between">
               <div className="flex w-full items-center justify-end p-2">
-                {availableAgentOnSpaceId && (
+                {availableAgentOnSpaceId  || session.engine == 'openai' && (
                   <button
                   onClick={toggleAssistantModal}
                   className="

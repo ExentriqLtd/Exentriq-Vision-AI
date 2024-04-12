@@ -53,6 +53,7 @@ const CollectionList: React.FC = () => {
   }, [uploadCompleted]);
 
   useEffect(() => {
+    console.log('COLLECTION LIST');
     getCollections('').catch(() => console.error("could not fetch documents"));
   }, []);
 

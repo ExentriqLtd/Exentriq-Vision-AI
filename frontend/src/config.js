@@ -21,7 +21,7 @@ if (typeof window !== "undefined") {
     spaceId = urlParams.get('spaceId') || "-1";
     username = urlParams.get('username') || "unknown";
     sessionToken = urlParams.get('sessionToken') || "empty";
-    embed =  urlParams.get('embed') || false;
+    embed =  urlParams.get('embed') == "true";
     engine = urlParams.get('engine') || '';
 
     var idMatch = completeUrl.match(/\/conversation\/([a-f\d-]+)\?/i);
