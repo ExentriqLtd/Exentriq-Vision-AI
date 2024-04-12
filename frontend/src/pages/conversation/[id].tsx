@@ -247,7 +247,7 @@ export default function Conversation() {
               <textarea
                 ref={textFocusRef}
                 rows={1}
-                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none border-0 focus:outline-none focus:ring-offset-0 focus:outline-none focus:ring-0" // Aggiunta della classe focus:outline-none
+                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none border-0 focus:outline-none focus:ring-offset-0 focus:ring-0"
                 placeholder={"Start typing your question..."}
                 value={userMessage}
                 onChange={handleTextChange}
