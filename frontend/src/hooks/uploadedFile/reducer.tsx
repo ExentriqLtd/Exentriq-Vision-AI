@@ -14,11 +14,14 @@ export interface action {
         goToUpload: boolean,
         viewProgressActive: string,
         isPdfViewerOpen: boolean,
+        isAssistantChatOpen: boolean,
+        assistantResults: object,
         toggleMenuMobile: boolean,
         messageStatus: string,
         actualEvent: object | null,
         is_public: boolean,
         isYodaSelected: boolean,
+        isPromptsSelected: boolean,
         filename: string,
         idTemp: string,
     };
@@ -31,12 +34,15 @@ export interface stateReducer {
     collectionId: string,
     arrayCollections: [],
     isPdfViewerOpen: boolean,
+    isAssistantChatOpen: boolean,
+    assistantResults: object,
     viewProgressActive: string,
     toggleMenuMobile: boolean,
     goToUpload: boolean,
     messageStatus: string,
     actualEvent: object | null,
     isYodaSelected: boolean,
+    isPromptsSelected: boolean,
     uploadCompleted: string,
 }
 
@@ -158,6 +164,11 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 isYodaSelected: action?.payload?.isYodaSelected
             };
+        case 'SET_PROMPTS_ACTIVE':
+            return {
+                ...state,
+                isPromptsSelected: action?.payload?.isPromptsSelected
+            };
         case 'SET_EMPTY_ARRAY_FILES':
             return {
                 ...state,
@@ -177,6 +188,12 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 isPdfViewerOpen: action.payload.isPdfViewerOpen
             };
+        case 'SET_ASSISTANT_VIEWER':
+            return {
+                ...state,
+                isAssistantChatOpen: action.payload.isAssistantChatOpen,
+                assistantResults: action.payload.assistantResults,
+            };
         default:
             return state;
     }
@@ -190,10 +207,14 @@ export const initialState: stateReducer = {
     collectionId: '',
     goToUpload: false,
     isPdfViewerOpen: false,
+    isAssistantChatOpen: false,
+    assistantResults: {},
     viewProgressActive: '',
     toggleMenuMobile: false,
     messageStatus: '',
     actualEvent: null,
     isYodaSelected: false,
+    isPromptsSelected: false,
+    uploadCompleted: ''
 };
 

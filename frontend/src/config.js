@@ -11,6 +11,7 @@ let username;
 let sessionToken;
 let embed;
 let embedConvId;
+let engine;
 
 if (typeof window !== "undefined") {
     const queryString = window.location.search;
@@ -20,7 +21,8 @@ if (typeof window !== "undefined") {
     spaceId = urlParams.get('spaceId') || "-1";
     username = urlParams.get('username') || "unknown";
     sessionToken = urlParams.get('sessionToken') || "empty";
-    embed =  urlParams.get('embed') || false;
+    embed =  urlParams.get('embed') == "true";
+    engine = urlParams.get('engine') || '';
 
     var idMatch = completeUrl.match(/\/conversation\/([a-f\d-]+)\?/i);
     embedConvId = idMatch ? idMatch[1] : null;
@@ -32,6 +34,7 @@ export const session = {
     spaceId: spaceId,
     sessionToken: sessionToken,
     embed: embed,
-    embedConvId: embedConvId
+    embedConvId: embedConvId,
+    engine: engine,
 }
 

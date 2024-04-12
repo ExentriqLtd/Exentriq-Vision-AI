@@ -300,21 +300,6 @@ const AssistantDisplay: React.FC<AssistantDisplayProps> = ({
     }
   }, [viewProgressActive])
   
-
-  const markdown = `A paragraph with *emphasis* and **strong importance**.
-
-> A block quote with ~strikethrough~ and a URL: https://reactjs.org.
-
-* Lists
-* [ ] todo
-* [x] done
-
-A table:
-
-| a | b |
-| - | - |
-`
-
   return (
     <div className="border-b pb-4">
       <div className="flex ">

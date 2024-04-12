@@ -35,3 +35,15 @@ export const formatDisplayDate = (dateToDisplay: Date) => {
   );
   return formattedTime;
 };
+
+export const formatDate = (dataString: string) => {
+  const data = new Date();
+
+  const d = String(data.getDate()).padStart(2, '0');
+  const m = String(data.getMonth() + 1).padStart(2, '0'); // I mesi partono da 0
+  const y = data.getFullYear();
+
+  const dataFormatted = `${d}-${m}-${y}`;
+  return dataFormatted
+}
+

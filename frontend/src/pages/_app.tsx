@@ -13,6 +13,7 @@ import useIsTablet from "~/hooks/utils/useIsTablet";
 import { session } from "src/config";
 import { useEffect } from "react";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
+import { Toaster } from "react-hot-toast";
 
 ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
@@ -30,6 +31,7 @@ const MyApp: AppType = ({ Component, pageProps }) => {
                   <CollectionList />
                 }
                 <Component {...pageProps} />
+                <Toaster />
               </Layout>
             </div>
           </VisionAIProvider>

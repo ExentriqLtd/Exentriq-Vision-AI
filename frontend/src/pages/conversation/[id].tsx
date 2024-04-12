@@ -17,6 +17,8 @@ import useIsMobile from "~/hooks/utils/useIsMobile";
 import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 import { v4 as uuidv4 } from "uuid";
+import AssistantsModal from "~/components/modals/AssistantsModal";
+import AssistantViewer from "~/components/assistant-viewer/AssistantViewer";
 
 
 export default function Conversation() {
@@ -30,18 +32,20 @@ export default function Conversation() {
 
   const { isOpen: isShareModalOpen, toggleModal: toggleShareModal } =
     useModal();
-
+  const { isOpen: isAssistantModalOpen, toggleModal: toggleAssistantModal } =
+    useModal();
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet()
   // const [isPdfViewerOpen, setPdfViewer] = useState(false);
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { isPdfViewerOpen, arrayCitDocs, messageStatus, actualEvent } = stateVisionAI;
+  const { isPdfViewerOpen, arrayCitDocs, isAssistantChatOpen, messageStatus, actualEvent } = stateVisionAI;
 
-  const [conversationId, setConversationId] = useState<string | null>(null);
+  const [conversationId, setConversationId] = useState<string | ''>('');
   const [isMessagePending, setIsMessagePending] = useState(false);
   const [userMessage, setUserMessage] = useState("");
   const [selectedDocuments, setSelectedDocuments] = useState<SecDocument[]>([]);
+  const [availableAgentOnSpaceId, setAvailableAgentOnSpaceId] = useState(false);
 
   const { messages, userSendMessage, systemSendMessage, setMessages, setErrorMessage } =
     useMessages(conversationId || "");
@@ -58,18 +62,10 @@ export default function Conversation() {
   useEffect(() => {
     const fetchConversation = async (id: string) => {
       const result = await backendClient.fetchConversation(id);
-      // const testErrorUid = ['bda33fc6-7a42-11ee-9083-e2a70e41aa24', 'cb12b194-7a44-11ee-b72d-e2a70e41aa24'];
+      if(result.agents.length > 0) {
+        setAvailableAgentOnSpaceId(true);
+      }
 
-      // //@ts-ignore
-      // const newMessages: Message[] = result.messages.map((item: Message) => {
-      //   if (testErrorUid.includes(item.uuid)) {
-      //     item.errorUi = true
-      //   }
-      //   return item
-      // });
-      // if (newMessages) {
-      //   setMessages(newMessages);
-      // }
       if (result.messages) {
         setMessages(result.messages);
       }
@@ -106,8 +102,8 @@ export default function Conversation() {
     setUserMessage("");
 
     const messageEndpoint =
-      backendUrl + `api/conversation/${conversationId}/message`;
-    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}`;
+      backendUrl + `api/conversation_dev/${conversationId}/message`;
+    const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}&engine=${session.engine || ''}`;
     // console.log('URL----', url);
     const events = new EventSource(url);
     dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
@@ -181,10 +177,32 @@ export default function Conversation() {
     <div className={`${(isMobile || isTablet || session.embed) ? 'w-full' : 'mx-6 w-4/5'}`}>
       <div className={`flex ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} items-center w-full`}>
         <div className={`flex  ${(isMobile || isTablet || session.embed) ? 'h-full' : 'h-[100vh]'} flex-col items-center bg-white w-full`}>
-          <div style={{ display: isPdfViewerOpen ? 'none' : 'block' }} className="w-full">
+          <div style={{ display: (isPdfViewerOpen || isAssistantChatOpen) ? 'none' : 'block' }} className="w-full">
 
-            {(isMobile || isTablet)
-              ? (
+            <div className="flex h-[80px] w-full items-center justify-between">
+              <div className="flex w-full items-center justify-end p-2">
+                {availableAgentOnSpaceId  && session.engine == 'openai' && (
+                  <button
+                  onClick={toggleAssistantModal}
+                  className="
+                    block 
+                    rounded-sm 
+                    bg-primary-ex 
+                    px-3.5 
+                    py-2.5 
+                    mr-2.5
+                    text-center 
+                    text-sm 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600">
+                  Agents
+                </button>
+                )}
                 <button
                   onClick={() => {
                     router.push({
@@ -194,38 +212,6 @@ export default function Conversation() {
                       .catch(() => console.log("error navigating to conversation"))
                   }}
                   className="
-                    block 
-                    absolute
-                    top-2
-                    right-2
-                    rounded-sm 
-                    bg-primary-ex 
-                    px-2 
-                    py-2 
-                    text-center 
-                    text-xs 
-                    text-white 
-                    shadow-md 
-                    hover:bg-primary-ex 
-                    focus-visible:outline 
-                    focus-visible:outline-2 
-                    focus-visible:outline-offset-2 
-                    focus-visible:outline-indigo-600">
-                  Collection detail
-                </button>
-              )
-              : (
-                <div className="flex h-[80px] w-full items-center justify-between">
-                  <div className="flex w-full items-center justify-end p-2">
-                    <button
-                      onClick={() => {
-                        router.push({
-                          pathname: `/collection/${id}`,
-                          query: session,
-                        })
-                          .catch(() => console.log("error navigating to conversation"))
-                      }}
-                      className="
                         block 
                         rounded-sm 
                         bg-primary-ex 
@@ -240,11 +226,10 @@ export default function Conversation() {
                         focus-visible:outline-2 
                         focus-visible:outline-offset-2 
                         focus-visible:outline-indigo-600">
-                      Collection detail
-                    </button>
-                  </div>
-                </div>
-              )}
+                  Collection detail
+                </button>
+              </div>
+            </div>
 
             <div className="flex border h-[100vh] max-h-[calc(100vh-150px)] flex-grow flex-col overflow-scroll w-full">
               <RenderConversations
@@ -262,7 +247,7 @@ export default function Conversation() {
               <textarea
                 ref={textFocusRef}
                 rows={1}
-                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none"
+                className="box-border w-full flex-grow resize-none overflow-hidden rounded px-5 py-3 pr-10 text-gray-90 placeholder-gray-60 outline-none border-0 focus:outline-none focus:ring-offset-0 focus:ring-0"
                 placeholder={"Start typing your question..."}
                 value={userMessage}
                 onChange={handleTextChange}
@@ -276,11 +261,18 @@ export default function Conversation() {
               </button>
             </div>
           </div>
+          <div style={{ display: isAssistantChatOpen ? 'block' : 'none' }} className="w-full h-full">
+            <AssistantViewer/>
+          </div>
           <div style={{ display: isPdfViewerOpen ? 'block' : 'none' }} className="w-full">
             {/* @ts-ignore */}
             <DisplayMultiplePdfs pdfs={selectedDocuments} collectionId={id} backToDetail={backToDetail} />
           </div>
         </div>
+        <AssistantsModal
+          isOpen={isAssistantModalOpen}
+          conversationId={conversationId}
+          toggleModal={toggleAssistantModal} />
         <ShareLinkModal
           isOpen={isShareModalOpen}
           toggleModal={toggleShareModal}

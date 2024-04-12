@@ -7,12 +7,16 @@ import { fromBackendDocumentToFrontend } from "./utils/documents";
 
 interface CreateConversationPayload {
   id: string;
+  agents: [];
+  documents: BackendDocument[];
+  updated_at: string;
 }
 
 interface GetConversationPayload {
   result: {
     documents: BackendDocument[];
     messages: Message[];
+    agents: [];
   };
   id: string;
   messages: Message[];
@@ -22,6 +26,7 @@ interface GetConversationPayload {
 interface GetConversationReturnType {
   messages: Message[];
   documents: SecDocument[];
+  agents: [];
 }
 
 interface GetCollectionsReturnType {
@@ -34,6 +39,10 @@ interface GetCollectionsReturnType {
     username: string;
   };
 }
+
+interface getStatusResult {
+  status: string;
+}
 export interface CreateCollection {
   name: string;
   is_public: boolean;
@@ -42,6 +51,15 @@ export interface RenameCollection {
   name: string;
   is_public: boolean;
   id: string;
+}
+
+export interface AgentItem {
+  content: string;
+  created_at: string;
+  name: string;
+  uuid: string;
+  status: string,
+  description: string;
 }
 class BackendClient {
   private async get(endpoint: string) {
@@ -68,22 +86,72 @@ class BackendClient {
     return res;
   }
 
-  public async createConversation(collectionId: string | undefined): Promise<string> {
+  public async getAgents(): Promise<AgentItem[]> {
+    const endpoint = `api/agents?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
+    const res = await this.get(endpoint);
+    const data = await res.json();
+    return data;
+  }
+
+  public async executeAgent(collectionId: string | undefined, prompt: string, reprocess: boolean): Promise<string> {
+    const endpoint = "api/agent/";
+    const payload = { session, collection_id: collectionId, agent: prompt, reprocess: reprocess };
+    const res = await this.post(endpoint, payload);
+    const data = (await res.json());
+    return data;
+  }
+
+  public async checkAgentStatus(agentId:string, collectionId: string): Promise<any> {
+    const endpoint = `api/agents/${agentId}/${collectionId}`;
+    const res = await this.get(endpoint);
+    const data = await res.json();
+    console.log('checkAgentStatus--->', data);
+    return data;
+  }
+
+  
+  // public async editPrompts(promptsId: string | undefined, content: string): Promise<string> {
+  //   const endpoint = "/api/prompts/";
+  //   const payload = { session, promptsId, content};
+  //   const res = await this.put(endpoint, payload);
+  //   const data = (await res.json());
+
+  //   return data;
+  // }
+  // public async insertPrompts(content: string): Promise<string> {
+  //   const endpoint = "/api/prompts/";
+  //   const payload = { session, content};
+  //   const res = await this.post(endpoint, payload);
+  //   const data = (await res.json());
+
+  //   return data;
+  // }
+  
+  // public async deletePrompts(promptsId: string | undefined): Promise<string> {
+  //   const endpoint = "/api/prompts/";
+  //   const payload = { session, promptsId};
+  //   const res = await this.delete(endpoint, payload);
+  //   const data = (await res.json());
+
+  //   return data;
+  // }
+  public async createConversation(collectionId: string | undefined): Promise<CreateConversationPayload> {
     const endpoint = "api/conversation/";
     const payload = { session, collectionId };
     const res = await this.post(endpoint, payload);
     const data = (await res.json()) as CreateConversationPayload;
 
-    return data.id;
+    return data;
   }
 
   public async fetchConversation(id: string): Promise<GetConversationReturnType> {
-    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}`;
+    const endpoint = `api/conversation/${id}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
     const data = (await res.json()) as GetConversationPayload;
     return {
       messages: data?.result?.messages,
       documents: fromBackendDocumentToFrontend(data?.result?.documents),
+      agents: data?.result?.agents,
     };
   }
 
@@ -92,9 +160,6 @@ class BackendClient {
     const res = await this.get(endpoint);
 
     const data = await res.json() as IntSummarization;
-
-    console.log('DATA', data);
-
     return data;
   }
 
@@ -124,7 +189,7 @@ class BackendClient {
 
 
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
-    const endpoint = `api/collections/upload`;
+    const endpoint = `api/collections/upload_dev`;
     console.log('collectionId', collectionId);
     const payload = {
       collectionId,
@@ -159,7 +224,7 @@ class BackendClient {
   }
 
   public async createCollection({ name, is_public }: CreateCollection): Promise<string> {
-    const endpoint = "api/collections/create";
+    const endpoint = "api/collections/create_dev";
     const payload = { session, name, is_public };
     const res = await this.post(endpoint, payload);
 
@@ -168,7 +233,7 @@ class BackendClient {
   }
 
   public async deleteCollection(id: string): Promise<string> {
-    const endpoint = "api/collections/delete";
+    const endpoint = "api/collections/delete_dev";
     const payload = { session, collectionId: id };
     const res = await this.post(endpoint, payload);
 
@@ -191,6 +256,15 @@ class BackendClient {
     const res = await this.post(endpoint, payload);
 
     const data = await res.json() as string;
+    return data;
+  }
+
+  public async sendAgentForm(action: string | undefined, formData: any): Promise<getStatusResult> {
+    console.log(formData);
+    const endpoint = `api${action}`;
+    const payload = { session, data: formData };
+    const res = await this.post(endpoint, payload);
+    const data = (await res.json());
     return data;
   }
 }
