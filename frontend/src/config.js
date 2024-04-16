@@ -9,9 +9,9 @@ if (env.NEXT_PUBLIC_CODESPACES === 'true' && env.NEXT_PUBLIC_CODESPACE_NAME) {
 export const backendUrl = 'https://art001ai.exentriq.com/';
 
 export let session = {
-    username: '',
-    spaceId: '',
-    sessionToken: '',
+    username: 'unknown',
+    spaceId: '-1',
+    sessionToken: 'empty',
     embed: false,
     embedConvId: '',
     engine: '',
@@ -28,9 +28,9 @@ export async function getUrlParams() {
 
     // Aggiorna i valori di sessione con quelli ottenuti dall'URL
     session = {
-        username: urlParams.get('username') || '',
-        spaceId: urlParams.get('spaceId') || '',
-        sessionToken: urlParams.get('sessionToken') || '',
+        username: urlParams.get('username') || 'unknown',
+        spaceId: urlParams.get('spaceId') || '-1',
+        sessionToken: urlParams.get('sessionToken') || 'empty',
         embed: urlParams.get('embed') === 'true',
         embedConvId: embedConvId,
         engine: urlParams.get('engine') || ''
