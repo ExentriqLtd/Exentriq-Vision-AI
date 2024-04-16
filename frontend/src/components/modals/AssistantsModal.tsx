@@ -19,6 +19,7 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   const [dataAgents, setDataAgents] = useState<AgentItem[]>([]);
   const [loadingAgents, setLoadingAgents] = useState(false); 
   const [pollingAgents, setPollingAgents] = useState<NodeJS.Timeout[]>([]); 
+  //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
 
   useEffect(() => {

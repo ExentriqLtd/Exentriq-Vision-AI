@@ -10,16 +10,34 @@ import { VisionAIProvider } from "~/hooks/uploadedFile/VisionAIProvider";
 import { PdfFocusProvider } from "~/context/pdf";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
-import { session } from "src/config";
-import { useEffect } from "react";
-import { useVisionAI } from "~/hooks/uploadedFile/useVisionAI";
+import { getUrlParams, session } from "src/config";
+import { useEffect, useState } from "react";
 import { Toaster } from "react-hot-toast";
+import { AppProps } from 'next/app';
+import { BiLoaderAlt } from "react-icons/bi";
 
-ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+// ReactGA.initialize(GOOGLE_ANALYTICS_ID);
 
-const MyApp: AppType = ({ Component, pageProps }) => {
-  const { isMobile } = useIsMobile()
-  const { isTablet } = useIsTablet()
+const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
+  const { isMobile } = useIsMobile();
+  const { isTablet } = useIsTablet();
+
+  const [urlParamsLoaded, setUrlParamsLoaded] = useState(false);
+
+    useEffect(() => {
+        // Chiama la funzione asincrona getUrlParams per ottenere i valori dall'URL
+        getUrlParams().then(() => {
+        // Imposta lo stato a true per indicare che i parametri URL sono stati caricati
+        console.log('embedConvId', session.embedConvId);
+          setUrlParamsLoaded(true);
+        });
+    }, []);
+
+    // Se i parametri URL non sono ancora stati caricati, visualizza uno spinner o un messaggio di caricamento
+    if (!urlParamsLoaded) {
+        return <div className="flex h-[100vh] w-[100vw] items-center justify-center"><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={48} /></div>;
+    }
+
   return (
     <>
       <IntercomProvider appId={INTERCOM_ID}>
