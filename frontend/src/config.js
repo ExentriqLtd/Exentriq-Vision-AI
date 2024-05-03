@@ -6,7 +6,7 @@ if (env.NEXT_PUBLIC_CODESPACES === 'true' && env.NEXT_PUBLIC_CODESPACE_NAME) {
         console.warn(`It looks like you're running on a Github codespace. You may want to set the NEXT_PUBLIC_BACKEND_URL environment variable to ${suggestedUrl}`);
     }
 }
-export const backendUrl = 'https://art001ai.exentriq.com/';
+export const backendUrl = 'https://art001ai.exentriq.com/v2/';
 
 export let session = {
     username: 'unknown',

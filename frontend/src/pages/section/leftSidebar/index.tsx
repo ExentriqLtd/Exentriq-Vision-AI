@@ -23,14 +23,16 @@ const CollectionList: React.FC = () => {
   const [is_public, SetIs_public] = useState(false);
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, isPromptsSelected, uploadCompleted } = stateVisionAI;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, uploadCompleted } = stateVisionAI;
 
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
 
   async function getCollections(value: string) {
     const collections = await backendClient.fetchCollections(value);
-    if (collections && collections?.result) {
+    if (collections && collections?.result.length > 0) {
+
+      console.log('collections', collections);
 
       dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } });
 
@@ -53,7 +55,6 @@ const CollectionList: React.FC = () => {
   }, [uploadCompleted]);
 
   useEffect(() => {
-    console.log('COLLECTION LIST');
     getCollections('').catch(() => console.error("could not fetch documents"));
   }, []);
 
@@ -162,7 +163,7 @@ const CollectionList: React.FC = () => {
         }
         <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
           dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
-          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: true}})
+          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: 'true'}})
           router.push({
               pathname: `/yoda`,
               query: session,
@@ -171,16 +172,6 @@ const CollectionList: React.FC = () => {
             <Image src="https://www.exentriq.com/AvatarService?username=Yoda" alt="Yoda" width={40} height={40} />
             Chat with Yoda
         </div>
-        {/* <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isPromptsSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
-          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
-          dispatchVisionAI({type: 'SET_PROMPTS_ACTIVE', payload: {isPromptsSelected: true}})
-          router.push({
-              pathname: `/prompts`,
-              query: session,
-          })
-          .catch(() => console.log("error navigating to yoda"))}}>
-            Prompts
-        </div> */}
         <div className="containerScroll overflow-y-auto w-full h-full pb-10">
           {arrayCollections.map((
             collection: {

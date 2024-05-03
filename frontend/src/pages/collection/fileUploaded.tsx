@@ -6,6 +6,7 @@ import { MdErrorOutline, MdOutlineSummarize, MdSummarize } from "react-icons/md"
 import { BiLoaderAlt } from "react-icons/bi";
 import { LuListRestart } from "react-icons/lu";
 import { FaFileCircleCheck } from "react-icons/fa6";
+import { session } from "~/config";
 
 export interface FileInt {
     collectionID: string,
@@ -78,7 +79,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                 </div>
             </td>
             <td className="border-b border-slate-100 p-4 text-slate-500">
-                <a href={file?.url} target="_blank" className="flex cursor-pointer justify-start">
+                <a href={`${file?.url}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`} target="_blank" className="flex cursor-pointer justify-start">
                     <HiOutlineDownload size={24} />
                 </a>
             </td>

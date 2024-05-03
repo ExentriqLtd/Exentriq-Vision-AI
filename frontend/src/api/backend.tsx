@@ -1,7 +1,6 @@
 import { backendUrl, session } from "~/config";
 import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
-import type { BackendCollections } from "~/types/backend/collections";
 import type { IntSummarization, SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
 
@@ -35,10 +34,17 @@ interface GetCollectionsReturnType {
     uuid: string;
     created_at: string;
     name: string;
-    spaceId: string;
+    space_id: string;
     username: string;
-  };
+    doc_number: number | null;
+    doc_processing: number | null;
+    is_public: boolean;
+    search_name: string;
+    asst_id: string | null;
+    thread_id: string | null;
+  }[];
 }
+
 
 interface getStatusResult {
   status: string;
@@ -156,7 +162,7 @@ class BackendClient {
   }
 
   public async fetchSummarization(id: string, reprocess: boolean): Promise<IntSummarization> {
-    const endpoint = `api/summarization2/${id}?reprocess=${reprocess}`;
+    const endpoint = `api/summarization2/${id}?reprocess=${reprocess}&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
 
     const data = await res.json() as IntSummarization;
@@ -172,7 +178,7 @@ class BackendClient {
   }
 
   public async getDetailFile(uuid: string): Promise<NonNullable<unknown>> {
-    const endpoint = `api/file/${uuid}`;
+    const endpoint = `api/file/${uuid}?&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
 
     const data = await res.json() as object;
@@ -183,14 +189,13 @@ class BackendClient {
     const endpoint = `api/collections/list`;
     const payload = { session, query: value };
     const res = await this.post(endpoint, payload);
-    const data = (await res.json()) as BackendCollections[];
+    const data = (await res.json()) as GetCollectionsReturnType[];
     return data;
   }
 
 
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload_dev`;
-    console.log('collectionId', collectionId);
     const payload = {
       collectionId,
       session
@@ -198,7 +203,6 @@ class BackendClient {
     const fileName: string | undefined = file?.name
     const data = new FormData();
     data.append('file', file, fileName);
-
     data.append('data', JSON.stringify(payload));
     const url = backendUrl + endpoint;
     const res = await fetch(url, {
@@ -212,7 +216,6 @@ class BackendClient {
 
   public async uploadFileFromDrive(collectionId: string): Promise<object> {
     const endpoint = `api/collections/uploadFromDrive`;
-    console.log('collectionId', collectionId);
     const payload = {
       collectionId,
       session
