@@ -76,7 +76,7 @@ const CreateCollectionModal: React.FC<CreateCollectionModal> = ({
             <input
               type="checkbox"
               id="toggle"
-              className="w-0 h-0 opacity-0"
+              className="w-12 h-6 opacity-0"
               checked={isOn}
               onChange={toggleSwitch}
             />
