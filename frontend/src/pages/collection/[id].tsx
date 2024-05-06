@@ -96,7 +96,6 @@ const Collection: NextPage = () => {
         .then((result: IntSummarization) => {
             var myTimeout;
             if(summarization_status == 'READY') {
-                console.log('RESULT', result.summarization);
                 setSummarizationResult(result.summarization.values);
                 toggleSummarizationModal();
             } else {

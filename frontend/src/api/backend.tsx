@@ -111,7 +111,6 @@ class BackendClient {
     const endpoint = `api/agents/${agentId}/${collectionId}`;
     const res = await this.get(endpoint);
     const data = await res.json();
-    console.log('checkAgentStatus--->', data);
     return data;
   }
 
@@ -263,7 +262,6 @@ class BackendClient {
   }
 
   public async sendAgentForm(action: string | undefined, formData: any): Promise<getStatusResult> {
-    console.log(formData);
     const endpoint = `api${action}`;
     const payload = { session, data: formData };
     const res = await this.post(endpoint, payload);

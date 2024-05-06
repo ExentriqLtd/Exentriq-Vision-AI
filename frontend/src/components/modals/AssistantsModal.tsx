@@ -39,7 +39,6 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   useEffect(() => {
     dataAgents.forEach((agent: AgentItem) => {
       if (agent.status === 'START') {
-        console.log('If status start UseEffect');
         checkAgentStatus(agent.uuid);
       }
     });
@@ -61,11 +60,9 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   };
 
   const checkAgentStatus = (agentId: string) => {
-    console.log('checkAgentStatus', agentId, dataAgents);
     const intervalId = setInterval(async () => {
       try {
         const agentStatusRes = await backendClient.checkAgentStatus(agentId, conversationId);
-        console.log('agentStatusRes', agentStatusRes);
 
         if(agentStatusRes !== 'IN PROGRESS') {
             setDataAgents((prevAgents) =>
@@ -91,7 +88,6 @@ const AssistantsModal: React.FC<AssistantsModalProps> = ({
   const executeAgent = async (agentName: string, agentId: string, reprocess: boolean, openResult: boolean) => {
     try {
       backendClient.executeAgent(conversationId, agentName, reprocess).then((res) => {
-        console.log('execute,res', res);
         if(openResult) {
           dispatchVisionAI({ type: 'SET_ASSISTANT_VIEWER', payload: { isAssistantChatOpen: true, assistantResults: res } });
         }

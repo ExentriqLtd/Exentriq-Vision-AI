@@ -50,7 +50,6 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
         backendClient
             .createConversation(id)
             .then((result) => {
-                console.log('Mh', result);
                 router
                     .push({
                         pathname: `/conversation/${result.id}`,

@@ -28,7 +28,6 @@ const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
         // Chiama la funzione asincrona getUrlParams per ottenere i valori dall'URL
         getUrlParams().then(() => {
         // Imposta lo stato a true per indicare che i parametri URL sono stati caricati
-        console.log('embedConvId', session.embedConvId);
           setUrlParamsLoaded(true);
         });
     }, []);

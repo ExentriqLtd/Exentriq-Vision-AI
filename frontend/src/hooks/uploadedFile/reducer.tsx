@@ -149,7 +149,6 @@ export const reducer = (state: stateReducer, action: action) => {
                 const file = fileItem as FileItem;
                 return (file.filename !== filenameToRemove && file.idTemp !== fileIdTemp);
             });
-            console.log('FLTERTEMP', filterTemp);
             return {
                 ...state,
                 arrayFileUploaded: filterTemp || [],

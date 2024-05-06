@@ -32,8 +32,6 @@ const CollectionList: React.FC = () => {
     const collections = await backendClient.fetchCollections(value);
     if (collections && collections?.result.length > 0) {
 
-      console.log('collections', collections);
-
       dispatchVisionAI({ type: 'SET_ARRAY_COLLECTION', payload: { arrayCollections: collections?.result } });
 
       collections?.result?.map((item: any) => {
@@ -110,7 +108,6 @@ const CollectionList: React.FC = () => {
   }
   const handleSearchDebounced = _.debounce((value) => {
     if (value.length >= 3) {
-      console.log('Eseguire la ricerca per:', value);
       getCollections(value);
     }
 
