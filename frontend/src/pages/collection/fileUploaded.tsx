@@ -7,6 +7,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import { LuListRestart } from "react-icons/lu";
 import { FaFileCircleCheck } from "react-icons/fa6";
 import { session } from "~/config";
+import { backendClient } from "~/api/backend";
 
 export interface FileInt {
     collectionID: string,
@@ -29,10 +30,34 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
     const filename = file?.filename?.replace('.' + ext, '') || '';
     const summarization_status = file?.summarization_status || null;
     const [isSummarizing, setIsSummarizing] = useState(summarization_status);
+    const [fileStatus, setFileStatus] = useState(file?.status);
 
     useEffect(() => {
         setIsSummarizing(summarization_status);
-    }, [summarization_status])
+    }, [summarization_status]);
+
+    const updateStatusFile = () => {
+        if(!file.uuid) return;
+        backendClient.getDetailFile(file.uuid)
+          .then(({ result }: any) => {
+            if (result?.status !== 'processed') {
+                setTimeout(() => {
+                    updateStatusFile();
+                }, 1000);
+            } else {
+                setFileStatus(result?.status);
+            }
+          }).catch((e) => {
+            console.log('e.::::', e)
+          })
+    }
+
+    useEffect(() => {
+        if(fileStatus == 'processing') {
+            updateStatusFile(); 
+        }
+    },[file.status])
+
     return (
         <>
             <td className="border-b border-slate-100 max-w-md p-4 text-slate-500">
@@ -47,7 +72,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
             <td className="border-b border-slate-100 p-4 text-slate-500">{moment(file?.created_at).format('MMMM Do YYYY, h:mm a')}</td>
             <td className="border-b border-slate-100 p-4 text-slate-500">
                 <div className="flex flex-row items-center">
-                    {file?.status == 'processed' ? (
+                    {fileStatus == 'processed' ? (
                         <>
                             <svg xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"

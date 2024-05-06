@@ -49,7 +49,7 @@ const Collection: NextPage = () => {
             setDocuments(result?.documents)
         }).catch((e) => {
             console.log('e', e)
-          })
+        })
     }
 
     useEffect(() => {

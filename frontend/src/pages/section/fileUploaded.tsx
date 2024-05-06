@@ -26,7 +26,6 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
         if(!file.uuid) return;
         backendClient.getDetailFile(file.uuid)
           .then(({ result }: any) => {
-            console.log('GetDetailFile', result);
             if (result?.status !== 'processed') {
                 setTimeout(() => {
                     updateStatusFile();
