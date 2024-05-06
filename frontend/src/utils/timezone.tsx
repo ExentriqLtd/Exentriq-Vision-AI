@@ -21,20 +21,30 @@ export const formatDisplayDate = (dateToDisplay: Date) => {
   // Get user's timezone
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  // Create an options object for formatting the time.
-  const options: Intl.DateTimeFormatOptions = {
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true,
+  // Create an options object for formatting the date without time.
+  const dateFormatOptions: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
     timeZone: userTimezone, // use the user's timezone
   };
 
-  // Convert the date to the desired format.
-  const formattedTime = new Intl.DateTimeFormat("en-US", options).format(
-    datetime
-  );
-  return formattedTime;
+  // Create an options object for formatting the time.
+  const timeFormatOptions: Intl.DateTimeFormatOptions = {
+    hour: "2-digit",
+    minute: "2-digit",
+    // second: "2-digit",
+    hour12: false,
+    timeZone: userTimezone, // use the user's timezone
+  };
+
+  // Convert the date to the desired format for date and time separately.
+  const formattedDate = new Intl.DateTimeFormat("en-US", dateFormatOptions).format(datetime);
+  const formattedTime = new Intl.DateTimeFormat("en-US", timeFormatOptions).format(datetime);
+
+  return { formattedDate, formattedTime };
 };
+
 
 export const formatDate = (dataString: string) => {
   const data = new Date();

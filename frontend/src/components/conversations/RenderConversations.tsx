@@ -40,15 +40,15 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
       }
     >
       <div className="flex items-center">
-        <div className="mr-1 text-xs font-bold text-black">
+        {/* <div className="mr-1 text-xs font-bold text-black">
           {citation.ticker}{" "}
+        </div> */}
+        <div className="mr-2 text-[14px] font-bold text-black">
+          {citation.displayDate}
         </div>
-        <div className="mr-2 text-xs font-bold text-black">
-          ({citation.displayDate})
-        </div>
-        <div className="text-[10px]">p. {citation.pageNumber}</div>
+        <div className="text-[12px]">p. {citation.pageNumber}</div>
       </div>
-      <div className="line-clamp-4 text-[12px] font-light leading-1-2">
+      <div className="line-clamp-4 text-[14px] font-light leading-1-2">
         {citation.snippet}
       </div>
     </div>
@@ -201,13 +201,18 @@ interface UserDisplayProps {
 const UserDisplay: React.FC<UserDisplayProps> = ({ message, showLoading }) => {
   return (
     <>
-      <div className="flex bg-gray-00 pb-4">
-        <div className="mt-4 w-1/5 flex-grow text-right font-nunito text-gray-60">
-          <div className="flex items-center justify-center text-[16px] lineHeight30">
-            {formatDisplayDate(message.created_at)}
+      <div className="flex bg-gray-00 pb-4 pt-4 items-center">
+        <div className="w-1/5 flex-grow text-right font-nunito text-gray-60">
+          <div className="flex flex-col items-center justify-center">
+            <div className="lineHeight20 text-[14px] font-semibold">
+              {formatDisplayDate(message.created_at).formattedDate}
+            </div>
+            <div className="lineHeight20 text-[14px]">
+              {formatDisplayDate(message.created_at).formattedTime}
+            </div>
           </div>
         </div>
-        <div className="mt-4 w-4/5 pr-3 font-nunito font-bold text-gray-90 text-[18px] lineHeight30">
+        <div className="w-4/5 pr-3 font-nunito font-bold text-gray-90 text-[18px] lineHeight30">
           {message.content}
         </div>
       </div>

@@ -29,7 +29,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
             console.log('GetDetailFile', result);
             if (result?.status !== 'processed') {
                 setTimeout(() => {
-                    updateStatusFile()
+                    updateStatusFile();
                 }, TIMER);
             } else {
                 dispatchVisionAI({ type: 'UPDATE_STATUS_FILE', payload: { uuid: result.uuid, status: result.status } });

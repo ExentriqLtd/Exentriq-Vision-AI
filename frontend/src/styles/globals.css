@@ -185,6 +185,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 30px;
 }
 
+.lineHeight20 {
+  line-height: 20px;
+}
+
 .customBoxShadow {
   box-shadow: 0 1px 30px rgb(0 0 0 / 0.05);
 }
