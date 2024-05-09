@@ -33,7 +33,7 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
 
   return (
     <div
-      className={`mx-1.5 mb-2 min-h-[25px] min-w-[160px] cursor-pointer rounded border-l-8 bg-gray-00 p-1 hover:bg-gray-15  ${borderColors['color-green-300']
+      className={`mx-1.5 mb-2 min-h-[25px] min-w-[160px] cursor-pointer rounded border-l-8 bg-gray-00 p-2 hover:bg-gray-15  ${borderColors['color-green-300']
         }`}
       onClick={() =>
         handleCitationClick(citation.documentId, citation.pageNumber)
@@ -48,7 +48,7 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[12px]">p. {citation.pageNumber}</div>
       </div>
-      <div className="line-clamp-4 text-[14px] font-light leading-1-2">
+      <div className="line-clamp-4 text-[14px] font-light leading-1-2 mt-2">
         {citation.snippet}
       </div>
     </div>
