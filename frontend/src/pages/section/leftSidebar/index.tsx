@@ -160,7 +160,7 @@ const CollectionList: React.FC = () => {
         }
         <div className={`bg-white shadow-md relative p-3 w-full flex flex-wrap my-2 cursor-pointer items-center gap-2 rounded-md border-2 ${(isYodaSelected) ? "border-primary-ex" : "border-transparent"}`} onClick={() => {
           dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: '' } });
-          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: 'true'}})
+          dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: {isYodaSelected: true}});
           router.push({
               pathname: `/yoda`,
               query: session,
