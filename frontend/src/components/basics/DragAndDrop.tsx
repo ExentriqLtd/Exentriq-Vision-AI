@@ -9,11 +9,11 @@ type Props = {
 
 const DragAndDrop = ({ onUpload }: Props) => {
   const [isDragActive, setIsDragActive] = useState<boolean>(false);
-  const [open, setOpen] = useState(false)
-  const cancelButtonRef = useRef(null)
-  const { isMobile } = useIsMobile()
-  const { isTablet } = useIsTablet()
-  
+  const [open, setOpen] = useState(false);
+  const cancelButtonRef = useRef(null);
+  const { isMobile } = useIsMobile();
+  const { isTablet } = useIsTablet();
+
   const handleDragEnter = () => {
     setIsDragActive(true);
   };
@@ -26,16 +26,30 @@ const DragAndDrop = ({ onUpload }: Props) => {
     e.preventDefault();
     setIsDragActive(false);
     const files = Array.from(e.dataTransfer.files);
-    files?.map((file) => {
-      if (file?.type !== 'application/pdf') return setOpen(true);
+    handleFileUpload(files);
+  };
+
+  const handleFileUpload = (files: File[]) => {
+    files?.forEach((file) => {
+      if (file?.type !== "application/pdf") return setOpen(true);
       onUpload([file]);
-    })
+    });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    handleFileUpload(files);
   };
 
   return (
     <>
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-10" initialFocus={cancelButtonRef} onClose={setOpen}>
+        <Dialog
+          as="div"
+          className="relative z-10"
+          initialFocus={cancelButtonRef}
+          onClose={setOpen}
+        >
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -63,12 +77,16 @@ const DragAndDrop = ({ onUpload }: Props) => {
                   <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
                     <div className="sm:flex sm:items-start">
                       <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                        <Dialog.Title
+                          as="h3"
+                          className="text-base font-semibold leading-6 text-gray-900"
+                        >
                           Upload error
                         </Dialog.Title>
                         <div className="mt-2">
                           <div className="text-sm text-gray-500">
-                            The file extension must be PDF, other formats are not accepted
+                            The file extension must be PDF, other formats are
+                            not accepted
                           </div>
                         </div>
                       </div>
@@ -91,21 +109,53 @@ const DragAndDrop = ({ onUpload }: Props) => {
         </Dialog>
       </Transition.Root>
       <div
-        className={`flex justify-center items-center ${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} h-48 border-2 border-dashed rounded-lg p-5
-        ${isDragActive ? "bg-sky-50 border-sky-400" : "border-gray-300"}`}
+        className={`flex justify-center items-center ${
+          isMobile || isTablet ? "w-full" : "w-2/3"
+        } h-48 border-2 border-dashed rounded-lg p-5 ${
+          isDragActive ? "bg-sky-50 border-sky-400" : "border-gray-300"
+        }`}
         onDragEnter={handleDragEnter}
         onDragLeave={handleDragLeave}
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
       >
         <p
-          className={`text-sm pointerEventsNone ${isDragActive ? "text-sky-800" : "text-gray-400"
-            }  `}
+          className={`text-sm pointerEventsNone ${
+            isDragActive ? "text-sky-800" : "text-gray-400"
+          }  `}
         >
           {isDragActive
             ? "Leave Your File Here"
             : "Drag and drop your files here"}
         </p>
+      </div>
+      <div className="mt-4">
+        <label
+          htmlFor="file-upload"
+          className="
+                  mb-2
+                    block 
+                    rounded-sm 
+                    bg-primary-ex 
+                    px-3.5 py-2.5 text-sm w-2/3
+                    text-center 
+                    text-white 
+                    shadow-md 
+                    hover:bg-primary-ex 
+                    focus-visible:outline 
+                    focus-visible:outline-2 
+                    focus-visible:outline-offset-2 
+                    focus-visible:outline-indigo-600"
+        >
+          Upload from file
+          <input
+            id="file-upload"
+            type="file"
+            className="hidden"
+            accept="application/pdf"
+            onChange={handleFileChange}
+          />
+        </label>
       </div>
     </>
   );
