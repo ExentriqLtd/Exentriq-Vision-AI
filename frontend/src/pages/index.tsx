@@ -89,7 +89,7 @@ const LandingPage: NextPage = () => {
         )}
         <Header
           title={'Welcome to the Exentriq'}
-          subtitle={'Vision AI'}
+          subtitle={'Smart AI'}
           collectionId={collectionId}
           colorSubtitlePrimary={true} />
         {(collectionId && goToUpload) && (
