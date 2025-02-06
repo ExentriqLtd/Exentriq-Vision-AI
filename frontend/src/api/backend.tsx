@@ -34,7 +34,7 @@ interface GetCollectionsReturnType {
     uuid: string;
     created_at: string;
     name: string;
-    space_id: string;
+    spaceId: string;
     username: string;
     doc_number: number | null;
     doc_processing: number | null;
@@ -44,7 +44,6 @@ interface GetCollectionsReturnType {
     thread_id: string | null;
   }[];
 }
-
 
 interface getStatusResult {
   status: string;
@@ -69,8 +68,11 @@ export interface AgentItem {
 }
 class BackendClient {
   private async get(endpoint: string) {
-    const url = backendUrl + endpoint;
-    const res = await fetch(url);
+    const url = backendUrl(session.spaceId) + endpoint;
+    const res = await fetch(url, {
+	   	 method: "GET",
+	     headers: { "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" }
+    });
 
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`);
@@ -79,10 +81,13 @@ class BackendClient {
   }
 
   private async post(endpoint: string, body?: object) {
-    const url = backendUrl + endpoint;
+    const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+      	"Content-Type": "application/json", 
+      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
+      },
       body: JSON.stringify(body),
     });
 
@@ -111,6 +116,7 @@ class BackendClient {
     const endpoint = `api/agents/${agentId}/${collectionId}`;
     const res = await this.get(endpoint);
     const data = await res.json();
+    console.log('checkAgentStatus--->', data);
     return data;
   }
 
@@ -195,6 +201,7 @@ class BackendClient {
 
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload_dev`;
+    console.log('collectionId', collectionId);
     const payload = {
       collectionId,
       session
@@ -202,9 +209,13 @@ class BackendClient {
     const fileName: string | undefined = file?.name
     const data = new FormData();
     data.append('file', file, fileName);
+
     data.append('data', JSON.stringify(payload));
-    const url = backendUrl + endpoint;
+    const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
+	  headers: { 
+      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
+      },  
       method: "POST",
       body: data,
     });
@@ -215,6 +226,7 @@ class BackendClient {
 
   public async uploadFileFromDrive(collectionId: string): Promise<object> {
     const endpoint = `api/collections/uploadFromDrive`;
+    console.log('collectionId', collectionId);
     const payload = {
       collectionId,
       session
@@ -262,6 +274,7 @@ class BackendClient {
   }
 
   public async sendAgentForm(action: string | undefined, formData: any): Promise<getStatusResult> {
+    console.log(formData);
     const endpoint = `api${action}`;
     const payload = { session, data: formData };
     const res = await this.post(endpoint, payload);

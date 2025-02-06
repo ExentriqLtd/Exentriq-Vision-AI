@@ -95,20 +95,23 @@ export default function Conversation() {
     if (!userMessage || !conversationId) {
       return;
     }
+    // console.log('userMessage:::.', userMessage)
     setIsMessagePending(true);
     const id = uuidv4()
     userSendMessage(userMessage, id);
     setUserMessage("");
 
     const messageEndpoint =
-      backendUrl + `api/conversation_dev/${conversationId}/message`;
+      backendUrl(session.spaceId) + `api/conversation_dev/${conversationId}/message`;
     const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}&engine=${session.engine || ''}`;
+    // console.log('URL----', url);
     const events = new EventSource(url);
     dispatchVisionAI({ type: 'SET_ACTUAL_EVENT', payload: { actualEvent: events } })
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
     events.onmessage = (event: MessageEvent) => {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-argument
       const parsedData: Message = JSON.parse(event.data);
+      // console.log("0...parsedData:::", parsedData)
       systemSendMessage(parsedData);
 
       if (
