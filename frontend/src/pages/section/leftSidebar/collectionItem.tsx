@@ -272,7 +272,7 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                     ) : (
                         <>
                             <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} /></div>
-                            <div className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</div>
+                            <div className="pl-1 text-gray-400 text-xs">{doc_processing || 0} out of {doc_number} document processed</div>
                         </>
                     )}
 
