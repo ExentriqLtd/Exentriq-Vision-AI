@@ -70,8 +70,8 @@ class BackendClient {
   private async get(endpoint: string) {
     const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
-	   	 method: "GET",
-	     headers: { "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" }
+      method: "GET",
+      headers: { "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" }
     });
 
     if (!res.ok) {
@@ -84,9 +84,9 @@ class BackendClient {
     const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
       method: "POST",
-      headers: { 
-      	"Content-Type": "application/json", 
-      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk="
       },
       body: JSON.stringify(body),
     });
@@ -112,7 +112,7 @@ class BackendClient {
     return data;
   }
 
-  public async checkAgentStatus(agentId:string, collectionId: string): Promise<any> {
+  public async checkAgentStatus(agentId: string, collectionId: string): Promise<any> {
     const endpoint = `api/agents/${agentId}/${collectionId}`;
     const res = await this.get(endpoint);
     const data = await res.json();
@@ -120,7 +120,7 @@ class BackendClient {
     return data;
   }
 
-  
+
   // public async editPrompts(promptsId: string | undefined, content: string): Promise<string> {
   //   const endpoint = "/api/prompts/";
   //   const payload = { session, promptsId, content};
@@ -137,7 +137,7 @@ class BackendClient {
 
   //   return data;
   // }
-  
+
   // public async deletePrompts(promptsId: string | undefined): Promise<string> {
   //   const endpoint = "/api/prompts/";
   //   const payload = { session, promptsId};
@@ -198,30 +198,47 @@ class BackendClient {
     return data;
   }
 
-
-  public async uploadFile(file: Blob, collectionId: string): Promise<object> {
-    const endpoint = `api/collections/upload_dev`;
+  public async uploadFile(file: File, collectionId: string): Promise<object> {
+    const endpoint = `api/collections/upload_dev_2`;
     console.log('collectionId', collectionId);
-    const payload = {
-      collectionId,
-      session
-    }
-    const fileName: string | undefined = file?.name
-    const data = new FormData();
-    data.append('file', file, fileName);
 
-    data.append('data', JSON.stringify(payload));
-    const url = backendUrl(session.spaceId) + endpoint;
+    const fileContentBase64 = await this.convertFileToBase64(file);
+
+    const payload = [{
+      filename: file.name,
+      content: fileContentBase64,
+      collectionId
+    }];
+
+    console.log(payload);
+
+    const url = `${backendUrl(session.spaceId)}${endpoint}?spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine}`;
+    
     const res = await fetch(url, {
-	  headers: { 
-      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
-      },  
+      headers: {
+        "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=",
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
       method: "POST",
-      body: data,
+      body: JSON.stringify(payload),
     });
 
-    const dataResult = await res.json() as object;
+    const dataResult = await res.json();
     return dataResult;
+  }
+
+  // Funzione helper per convertire il file in Base64
+  private async convertFileToBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const base64String = (reader.result as string).split(',')[1]; // Rimuove il prefisso `data:...;base64,`
+            resolve(base64String);
+        };
+        reader.onerror = (error) => reject(error);
+    });
   }
 
   public async uploadFileFromDrive(collectionId: string): Promise<object> {
