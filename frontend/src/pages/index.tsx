@@ -16,7 +16,7 @@ import { uuid4 } from "@sentry/utils";
 const LandingPage: NextPage = () => {
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI()
-  const { arrayFileUploaded, collectionId, goToUpload } = stateVisionAI;
+  const { arrayFileUploaded, collectionId, vers, goToUpload } = stateVisionAI;
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadedTable, setShowUploadedTable] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
@@ -38,7 +38,7 @@ const LandingPage: NextPage = () => {
             dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: fileTemp } });
 
             try {
-                const result = await backendClient.uploadFile(file, collectionId);
+                const result = await backendClient.uploadFile(file, collectionId, vers);
                 
                 if (result) {
                     const newMap = { ...result, statusUpload: 'uploaded', idTemp };

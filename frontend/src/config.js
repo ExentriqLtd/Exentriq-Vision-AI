@@ -21,7 +21,7 @@ export async function getUrlParams() {
 }
 
 export function backendUrl(spaceId){
-	console.log(spaceId);
+	// console.log(spaceId);
 	if(spaceId == "96767"){
 		return 'https://cmp001stg.exentriq.com/v2/';
 	};
