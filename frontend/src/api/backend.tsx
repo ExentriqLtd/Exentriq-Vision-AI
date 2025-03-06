@@ -223,41 +223,37 @@ class BackendClient {
     return dataResult;
   }
 
-  public async uploadFileNew(file: File, collectionId: string): Promise<object> {
+  public async uploadFileNew(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload_dev_2`;
     console.log('collectionId', collectionId);
+    const payload = {
+      collectionId,
+      session,
+    }
+    const fileName: string | undefined = file?.name
+    const data = new FormData();
+    data.append('file', file, fileName);
 
-    const fileContentBase64 = await this.convertFileToBase64(file);
-
-    const payload = [{
-      filename: file.name,
-      content: fileContentBase64,
-      collectionId
-    }];
-
-    console.log(payload);
-
-    const url = `${backendUrl(session.spaceId)}${endpoint}?spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine}`;
-    
+    data.append('data', JSON.stringify(payload));
+    const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
-      headers: {
-        "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=",
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
+	  headers: { 
+      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
+      },  
       method: "POST",
-      body: JSON.stringify(payload),
+      body: data,
     });
 
-    const dataResult = await res.json();
+    const dataResult = await res.json() as object;
     return dataResult;
   }
+
 
   public async uploadFile(file: File | Blob, collectionId: string, version: number): Promise<object> {
     if (version === 1) {
       return this.uploadFileOld(file as Blob, collectionId);
     } else {
-      return this.uploadFileNew(file as File, collectionId);
+      return this.uploadFileNew(file as Blob, collectionId);
     }
   }
 

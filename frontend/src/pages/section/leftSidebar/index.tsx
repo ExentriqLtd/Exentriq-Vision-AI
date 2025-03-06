@@ -36,9 +36,11 @@ const CollectionList: React.FC = () => {
 
       collections?.result?.map((item: any) => {
         if (item?.doc_number !== item?.doc_processing) {
-          setTimeout(() => {
-            getCollections(value)
-          }, 1000);
+          if(item?.doc_number !== (item?.doc_processing + item?.doc_error)){
+            setTimeout(() => {
+              getCollections(value)
+            }, 1000);
+          }
         }
       })
     }
@@ -175,6 +177,7 @@ const CollectionList: React.FC = () => {
               name: string | undefined;
               is_public: boolean;
               doc_number: number;
+              doc_error: number;
               doc_processing: number;
               created_at: string | undefined;
               uuid: string | undefined;
@@ -186,6 +189,7 @@ const CollectionList: React.FC = () => {
                   name={collection?.name}
                   is_public={collection?.is_public}
                   doc_number={collection?.doc_number}
+                  doc_error={collection?.doc_error}
                   doc_processing={collection?.doc_processing}
                   created_at={collection?.created_at}
                   actualEvent={actualEvent}

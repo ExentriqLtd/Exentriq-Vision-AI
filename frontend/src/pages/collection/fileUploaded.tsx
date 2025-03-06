@@ -88,6 +88,20 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                             </svg>
                             <div className="px-2">File processed</div>
                         </>
+                    ) : fileStatus == 'error' ? (  
+                    <>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-6 color-error-ex h-6"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round">
+                            <circle cx="12" cy="12" r="6" />
+                        </svg>
+                        <div className="px-2">Processing error</div>
+                    </>
                     ) : (
                         <>
                             <svg xmlns="http://www.w3.org/2000/svg"

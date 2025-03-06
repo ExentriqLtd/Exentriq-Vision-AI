@@ -56,6 +56,11 @@ h1, h2, h3, h4, h5, h6 {
 .color-primary-ex {
   color: #1bbc9b;
 }
+
+.color-error-ex {
+  color: #f3565d;
+}
+
 .containerScroll{
   /* hide scrollbar for IE, Edge and Firefox */
   -ms-overflow-style: none;
