@@ -14,7 +14,7 @@ export async function getUrlParams() {
         username: urlParams.get('username') || 'unknown',
         spaceId: urlParams.get('spaceId') || '-1',
         sessionToken: urlParams.get('sessionToken') || 'empty',
-        ocr: urlParams.get('ocr') || 'empty',
+        ocr: urlParams.get('ocr') || '1',
         embed: urlParams.get('embed') === 'true',
         embedConvId: embedConvId,
         engine: urlParams.get('engine') || ''
@@ -40,7 +40,7 @@ export let session = {
     username: 'unknown',
     spaceId: '-1',
     sessionToken: 'empty',
-    ocr: 'empty',
+    ocr: '1',
     embed: false,
     embedConvId: '',
     engine: '',
