@@ -45,7 +45,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
             if (result?.status !== 'processed') {
                 setTimeout(() => {
                     updateStatusFile();
-                }, 1000);
+                }, 5000);
             } else {
                 setFileStatus(result?.status);
             }

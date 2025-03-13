@@ -39,7 +39,7 @@ const CollectionList: React.FC = () => {
           if(item?.doc_number !== (item?.doc_processing + item?.doc_error)){
             setTimeout(() => {
               getCollections(value)
-            }, 1000);
+            }, 10000);
           }
         }
       })

@@ -15,7 +15,7 @@ export interface FileUploadInt {
     statusUpload: string,
 }
 
-const TIMER = 1000
+const TIMER = 5000
 
 const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploadInt) => {
     //@ts-ignore
@@ -26,7 +26,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
         if(!file.uuid) return;
         backendClient.getDetailFile(file.uuid)
           .then(({ result }: any) => {
-            if (result?.status !== 'processed') {
+            if (result?.status !== 'processed' && result?.status !== 'error') {
                 setTimeout(() => {
                     updateStatusFile();
                 }, TIMER);
@@ -84,7 +84,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
                 <div className="flex flex-row items-center">
                     {(file?.statusUpload == 'uploaded') && (
                         <>
-                            {(file?.status == 'failed') ? (
+                            {(file?.status == 'failed' || file?.status == 'error') ? (
                                 <>
                                     <svg xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 24 24"
