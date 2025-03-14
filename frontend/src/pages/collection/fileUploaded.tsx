@@ -125,6 +125,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                 </a>
             </td>
             <td className="border-b border-slate-100 p-4 text-slate-500">
+                {fileStatus !== 'error' && (  
                 <div onClick={() => {
                     if(summarization_status == null) {
                         setIsSummarizing('IN PROGRESS');
@@ -153,6 +154,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                         
                     )}
                 </div>
+                )}
             </td>
         </>
     );
