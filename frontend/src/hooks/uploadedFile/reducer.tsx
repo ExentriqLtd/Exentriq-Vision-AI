@@ -6,7 +6,6 @@ export interface action {
         lastModified: string,
         arrayCollections: object,
         collectionId: string,
-        vers: number,
         name: string,
         arrayCitDocs: object,
         filesUploaded: {
@@ -33,7 +32,6 @@ export interface stateReducer {
     arrayFileUploaded: Array<{ uuid?: string; statusUpload?: string, idTemp?: string, status?: string }>,
     arrayCitDocs: [],
     collectionId: string,
-    vers: number,
     arrayCollections: [],
     isPdfViewerOpen: boolean,
     isAssistantChatOpen: boolean,
@@ -160,7 +158,6 @@ export const reducer = (state: stateReducer, action: action) => {
             return {
                 ...state,
                 collectionId: action?.payload?.collectionId,
-                vers: vers || 2
             };
         case 'SET_YODA_ACTIVE':
             return {
@@ -208,7 +205,6 @@ export const initialState: stateReducer = {
     arrayCollections: [],
     arrayCitDocs: [],
     collectionId: '',
-    vers: 2,
     goToUpload: false,
     isPdfViewerOpen: false,
     isAssistantChatOpen: false,
