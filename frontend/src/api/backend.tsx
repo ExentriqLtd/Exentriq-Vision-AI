@@ -198,32 +198,7 @@ class BackendClient {
     return data;
   }
 
-  public async uploadFileOld(file: Blob, collectionId: string): Promise<object> {
-    const endpoint = `api/collections/upload_dev`;
-    console.log('collectionId', collectionId);
-    const payload = {
-      collectionId,
-      session
-    }
-    const fileName: string | undefined = file?.name
-    const data = new FormData();
-    data.append('file', file, fileName);
-
-    data.append('data', JSON.stringify(payload));
-    const url = backendUrl(session.spaceId) + endpoint;
-    const res = await fetch(url, {
-	  headers: { 
-      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
-      },  
-      method: "POST",
-      body: data,
-    });
-
-    const dataResult = await res.json() as object;
-    return dataResult;
-  }
-
-  public async uploadFileNew(file: Blob, collectionId: string): Promise<object> {
+  public async uploadFile(file: Blob, collectionId: string): Promise<object> {
     const endpoint = `api/collections/upload_dev_2`;
     console.log('collectionId', collectionId);
     const payload = {
@@ -246,15 +221,6 @@ class BackendClient {
 
     const dataResult = await res.json() as object;
     return dataResult;
-  }
-
-
-  public async uploadFile(file: File | Blob, collectionId: string, version: number): Promise<object> {
-    if (version === 1) {
-      return this.uploadFileOld(file as Blob, collectionId);
-    } else {
-      return this.uploadFileNew(file as Blob, collectionId);
-    }
   }
 
   // Funzione helper per convertire il file in Base64
