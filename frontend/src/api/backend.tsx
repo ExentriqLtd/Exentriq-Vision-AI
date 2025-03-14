@@ -223,19 +223,6 @@ class BackendClient {
     return dataResult;
   }
 
-  // Funzione helper per convertire il file in Base64
-  private async convertFileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => {
-            const base64String = (reader.result as string).split(',')[1]; // Rimuove il prefisso `data:...;base64,`
-            resolve(base64String);
-        };
-        reader.onerror = (error) => reject(error);
-    });
-  }
-
   public async uploadFileFromDrive(collectionId: string): Promise<object> {
     const endpoint = `api/collections/uploadFromDrive`;
     console.log('collectionId', collectionId);
