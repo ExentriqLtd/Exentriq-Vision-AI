@@ -32,7 +32,6 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
     const [isSummarizing, setIsSummarizing] = useState(summarization_status);
     const [fileStatus, setFileStatus] = useState(file?.status);
 
-    console.log('file,', file);
 
     useEffect(() => {
         setIsSummarizing(summarization_status);

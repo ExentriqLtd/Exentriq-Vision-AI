@@ -3,6 +3,8 @@ import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { IntSummarization, SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
+import toast from "react-hot-toast";
+import { HiCheckCircle, HiXCircle, HiX } from 'react-icons/hi';
 
 interface CreateConversationPayload {
   id: string;
@@ -166,11 +168,54 @@ class BackendClient {
     };
   }
 
-  public async fetchSummarization(id: string, reprocess: boolean): Promise<IntSummarization> {
+  public async fetchSummarization(
+    id: string,
+    reprocess: boolean,
+    summarization_status: string,
+    router: any,
+    collectionID: string,
+  ): Promise<IntSummarization> {
     const endpoint = `api/summarization2/${id}?reprocess=${reprocess}&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
-
     const data = await res.json() as IntSummarization;
+
+    if (data.status === "ERROR" && (summarization_status !== 'READY' && summarization_status !== 'ERROR')) {
+      toast.custom((t) => (
+        <button onClick={() => {
+          router.push({
+            pathname: `/collection/${collectionID}`,
+            query: session,
+          })
+            .catch(() => console.log("error navigating to conversation"))
+
+          toast.dismiss(t.id)
+        }}>
+          <div className="flex items-center gap-3 p-4 bg-red-100 border border-red-400 rounded-lg shadow-md">
+            <HiXCircle className="text-red-600 w-6 h-6" />
+            <span className="text-red-800 font-medium">The document summary <b>failed</b></span>
+          </div>
+        </button>
+
+      ), { duration: 100000 });
+    } else if (data.status === "READY" && (summarization_status !== 'READY' && summarization_status !== 'ERROR')) {
+      toast.custom((t) => (
+        <button onClick={() => {
+          router.push({
+            pathname: `/collection/${collectionID}`,
+            query: session,
+          })
+            .catch(() => console.log("error navigating to conversation"))
+
+          toast.dismiss(t.id)
+        }}>
+          <div className="flex items-center gap-3 p-4 bg-green-100 border border-green-400 rounded-lg shadow-md">
+            <HiCheckCircle className="text-green-600 w-6 h-6" />
+            <span className="text-green-800 font-medium">The document summary has been completed <b>successfully</b></span>
+          </div>
+        </button>
+      ), { duration: 100000 });
+    }
+
     return data;
   }
 
