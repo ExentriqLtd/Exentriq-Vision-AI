@@ -196,7 +196,7 @@ class BackendClient {
           </div>
         </button>
 
-      ), { duration: 100000 });
+      ), { duration: 10000 });
     } else if (data.status === "READY" && (summarization_status !== 'READY' && summarization_status !== 'ERROR')) {
       toast.custom((t) => (
         <button onClick={() => {
@@ -213,7 +213,7 @@ class BackendClient {
             <span className="text-green-800 font-medium">The document summary has been completed <b>successfully</b></span>
           </div>
         </button>
-      ), { duration: 100000 });
+      ), { duration: 10000 });
     }
 
     return data;
