@@ -70,8 +70,11 @@ const CollectionList: React.FC = () => {
           query: session,
         })
         .catch(() => console.log("error navigating to conversation"))
+        setTimeout(() => {
+          setNewCollectionActive(false);
+        }, 1000);
     }
-  }, [arrayCollections])
+  }, [arrayCollections, newCollectionActive])
 
 
   const { isOpen: isCollectionModalOpen, toggleModal: toggleCollectionModal } = useModal();
