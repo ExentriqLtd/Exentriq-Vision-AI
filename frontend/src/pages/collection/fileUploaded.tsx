@@ -41,7 +41,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
         if(!file.uuid) return;
         backendClient.getDetailFile(file.uuid)
           .then(({ result }: any) => {
-            if (result?.status !== 'processed') {
+            if (result?.status !== 'processed' &&  result?.status !== 'error') {
                 setTimeout(() => {
                     updateStatusFile();
                 }, 5000);
