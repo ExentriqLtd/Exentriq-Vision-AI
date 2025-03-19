@@ -1,5 +1,6 @@
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useRef, useState } from "react";
+import { session } from "~/config";
 import useIsMobile from "~/hooks/utils/useIsMobile";
 import useIsTablet from "~/hooks/utils/useIsTablet";
 
@@ -13,6 +14,7 @@ const DragAndDrop = ({ onUpload }: Props) => {
   const cancelButtonRef = useRef(null);
   const { isMobile } = useIsMobile();
   const { isTablet } = useIsTablet();
+  const activeOcr = session.ocr || '1';
 
   const handleDragEnter = () => {
     setIsDragActive(true);
@@ -31,8 +33,21 @@ const DragAndDrop = ({ onUpload }: Props) => {
 
   const handleFileUpload = (files: File[]) => {
     files?.forEach((file) => {
-      if (file?.type !== "application/pdf") return setOpen(true);
-      onUpload([file]);
+      if(activeOcr == '1'){
+        if (file?.type !== "application/pdf") return setOpen(true);
+        onUpload([file]);
+      } else if (activeOcr == '0') {
+        const allowedFileTypes = [
+          "image/png", "image/jpeg", "image/jpg", "application/pdf", "text/plain",
+          "audio/wav", "audio/x-wav", "video/mp4", "text/html", "audio/ogg",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "application/vnd.ms-excel"
+        ];
+        
+        if (!allowedFileTypes.includes(file?.type)) return setOpen(true);
+        onUpload([file]);
+      }
     });
   };
 
