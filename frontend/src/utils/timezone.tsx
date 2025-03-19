@@ -4,41 +4,42 @@ export const getDateWithUTCOffset = () => {
   const utcDate = new Date(now.getTime() + offsetInMilliseconds);
   return utcDate;
 };
+export const formatDisplayDate = (dateToDisplay: string | Date) => {
+  // Converti la stringa o l'oggetto Date in un oggetto Date
+  const datetime = new Date(dateToDisplay);
 
-export const formatDisplayDate = (dateToDisplay: Date) => {
-  // Create a regular expression to match the time portion up to the milliseconds.
-  const regex = /(\d{2}:\d{2}:\d{2}\.\d{3})\d*/;
+  if (isNaN(datetime.getTime())) {
+    return { formattedDate: "Invalid date", formattedTime: "" };
+  }
 
-  // Extract the time portion up to the milliseconds.
-  const matchedDateTimeString = String(dateToDisplay).replace(regex, "$1");
+  // Controlla se la data è in formato UTC (ISO 8601 con "Z")  
+  const isUTCFormat = typeof dateToDisplay === "string" && dateToDisplay.endsWith("Z");
 
-  // Create a new Date object from the matched string.
-  const datetime = new Date(matchedDateTimeString);
-
-  // Convert it to the local time
-  datetime.setMinutes(datetime.getMinutes() - datetime.getTimezoneOffset());
+  // Se la data NON è in UTC, aggiungi un'ora
+  if (!isUTCFormat) {
+    datetime.setHours(datetime.getHours() + 1);
+  }
 
   // Get user's timezone
   const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-  // Create an options object for formatting the date without time.
+  // Opzioni per il formato della data
   const dateFormatOptions: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    timeZone: userTimezone, // use the user's timezone
+    timeZone: userTimezone,
   };
 
-  // Create an options object for formatting the time.
+  // Opzioni per il formato dell'ora
   const timeFormatOptions: Intl.DateTimeFormatOptions = {
     hour: "2-digit",
     minute: "2-digit",
-    // second: "2-digit",
     hour12: false,
-    timeZone: userTimezone, // use the user's timezone
+    timeZone: userTimezone,
   };
 
-  // Convert the date to the desired format for date and time separately.
+  // Converti la data nei formati desiderati
   const formattedDate = new Intl.DateTimeFormat("en-US", dateFormatOptions).format(datetime);
   const formattedTime = new Intl.DateTimeFormat("en-US", timeFormatOptions).format(datetime);
 
