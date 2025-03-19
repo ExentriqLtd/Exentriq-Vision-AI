@@ -40,31 +40,34 @@ const config = {
     ignoreDuringBuilds: true,
   },
 };
-export default withSentryConfig(config, {
-// For all available options, see:
-// https://github.com/getsentry/sentry-webpack-plugin#options
 
-// Suppresses source map uploading logs during build
-silent: true,
+export default config;
 
-org: "llama-test",
-project: "javascript-nextjs",
-}, {
-// For all available options, see:
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
+// export default withSentryConfig(config, {
+// // For all available options, see:
+// // https://github.com/getsentry/sentry-webpack-plugin#options
 
-// Upload a larger set of source maps for prettier stack traces (increases build time)
-widenClientFileUpload: true,
+// // Suppresses source map uploading logs during build
+// silent: true,
 
-// Transpiles SDK to be compatible with IE11 (increases bundle size)
-transpileClientSDK: true,
+// org: "llama-test",
+// project: "javascript-nextjs",
+// }, {
+// // For all available options, see:
+// // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
 
-// Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
-tunnelRoute: "/monitoring",
+// // Upload a larger set of source maps for prettier stack traces (increases build time)
+// widenClientFileUpload: true,
 
-// Hides source maps from generated client bundles
-hideSourceMaps: true,
+// // Transpiles SDK to be compatible with IE11 (increases bundle size)
+// transpileClientSDK: true,
 
-// Automatically tree-shake Sentry logger statements to reduce bundle size
-disableLogger: true,
-});
+// // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
+// // tunnelRoute: "/monitoring",
+
+// // Hides source maps from generated client bundles
+// hideSourceMaps: true,
+
+// // Automatically tree-shake Sentry logger statements to reduce bundle size
+// disableLogger: true,
+// });
