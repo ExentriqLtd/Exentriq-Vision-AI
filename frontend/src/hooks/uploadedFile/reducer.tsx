@@ -125,13 +125,13 @@ export const reducer = (state: stateReducer, action: action) => {
             const actualArrayFile = state.arrayFileUploaded;
             const index = actualArrayFile.findIndex((file) => file.uuid === action.payload?.uuid);
             if (index !== -1) {
-                actualArrayFile[index] = {...actualArrayFile[index], uuid: action.payload?.uuid || '', status: action.payload?.status || '' };
+                actualArrayFile[index] = { ...actualArrayFile[index], uuid: action.payload?.uuid || '', status: action.payload?.status || '' };
             }
             return {
                 ...state,
                 arrayFileUploaded: actualArrayFile,
             };
-        case 'SET_UPLOAD_COMPLETED': 
+        case 'SET_UPLOAD_COMPLETED':
             const uploadCompleted = action.payload?.idTemp;
             return {
                 ...state,
@@ -144,7 +144,7 @@ export const reducer = (state: stateReducer, action: action) => {
             };
         case 'SET_REMOVE_FILES':
             const filenameToRemove = action.payload.filename;
-            const fileIdTemp = action.payload.idTemp;            
+            const fileIdTemp = action.payload.idTemp;
             const filterTemp = state?.arrayFileUploaded?.filter((fileItem) => {
                 const file = fileItem as FileItem;
                 return (file.filename !== filenameToRemove && file.idTemp !== fileIdTemp);
@@ -154,9 +154,10 @@ export const reducer = (state: stateReducer, action: action) => {
                 arrayFileUploaded: filterTemp || [],
             };
         case 'SET_COLLECTION_ACTIVE':
+            const vers = state.arrayCollections.find(item => item.uuid === action?.payload?.collectionId)?.vers;
             return {
                 ...state,
-                collectionId: action?.payload?.collectionId
+                collectionId: action?.payload?.collectionId,
             };
         case 'SET_YODA_ACTIVE':
             return {

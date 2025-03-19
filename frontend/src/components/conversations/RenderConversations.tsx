@@ -25,6 +25,8 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
   const { isPdfViewerOpen } = stateVisionAI;
+  var citationSnippet = citation.snippet.replace(/(```|-----)/g, '');
+
 
   const handleCitationClick = (documentId: string, pageNumber: number) => {
     dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
@@ -48,8 +50,8 @@ const CitationDisplay: React.FC<CitationDisplayProps> = ({ citation }) => {
         </div>
         <div className="text-[12px]">p. {citation.pageNumber}</div>
       </div>
-      <div className="line-clamp-4 text-[14px] font-light leading-1-2 mt-2">
-        {citation.snippet}
+      <div className={`line-clamp-4 text-[14px] font-light leading-1-2 ${citationSnippet ? 'mt-2' : ''}`}>
+        {citationSnippet}
       </div>
     </div>
   );

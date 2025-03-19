@@ -3,6 +3,8 @@ import type { Message } from "~/types/conversation";
 import type { BackendDocument } from "~/types/backend/document";
 import type { IntSummarization, SecDocument } from "~/types/document";
 import { fromBackendDocumentToFrontend } from "./utils/documents";
+import toast from "react-hot-toast";
+import { HiCheckCircle, HiXCircle, HiX } from 'react-icons/hi';
 
 interface CreateConversationPayload {
   id: string;
@@ -70,8 +72,8 @@ class BackendClient {
   private async get(endpoint: string) {
     const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
-	   	 method: "GET",
-	     headers: { "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" }
+      method: "GET",
+      headers: { "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" }
     });
 
     if (!res.ok) {
@@ -84,9 +86,9 @@ class BackendClient {
     const url = backendUrl(session.spaceId) + endpoint;
     const res = await fetch(url, {
       method: "POST",
-      headers: { 
-      	"Content-Type": "application/json", 
-      	"Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk=" 
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Basic bWV0aXM6UEBzc3cwcmQ5OTk="
       },
       body: JSON.stringify(body),
     });
@@ -112,7 +114,7 @@ class BackendClient {
     return data;
   }
 
-  public async checkAgentStatus(agentId:string, collectionId: string): Promise<any> {
+  public async checkAgentStatus(agentId: string, collectionId: string): Promise<any> {
     const endpoint = `api/agents/${agentId}/${collectionId}`;
     const res = await this.get(endpoint);
     const data = await res.json();
@@ -120,7 +122,7 @@ class BackendClient {
     return data;
   }
 
-  
+
   // public async editPrompts(promptsId: string | undefined, content: string): Promise<string> {
   //   const endpoint = "/api/prompts/";
   //   const payload = { session, promptsId, content};
@@ -137,7 +139,7 @@ class BackendClient {
 
   //   return data;
   // }
-  
+
   // public async deletePrompts(promptsId: string | undefined): Promise<string> {
   //   const endpoint = "/api/prompts/";
   //   const payload = { session, promptsId};
@@ -166,11 +168,54 @@ class BackendClient {
     };
   }
 
-  public async fetchSummarization(id: string, reprocess: boolean): Promise<IntSummarization> {
+  public async fetchSummarization(
+    id: string,
+    reprocess: boolean,
+    summarization_status: string,
+    router: any,
+    collectionID: string,
+  ): Promise<IntSummarization> {
     const endpoint = `api/summarization2/${id}?reprocess=${reprocess}&spaceId=${session.spaceId || '-1'}&username=${session.username || 'unknown'}&sessionToken=${session.sessionToken || 'empty'}&engine=${session.engine || ''}`;
     const res = await this.get(endpoint);
-
     const data = await res.json() as IntSummarization;
+
+    if (data.status === "ERROR" && (summarization_status !== 'READY' && summarization_status !== 'ERROR')) {
+      toast.custom((t) => (
+        <button onClick={() => {
+          router.push({
+            pathname: `/collection/${collectionID}`,
+            query: session,
+          })
+            .catch(() => console.log("error navigating to conversation"))
+
+          toast.dismiss(t.id)
+        }}>
+          <div className="flex items-center gap-3 p-4 bg-red-100 border border-red-400 rounded-lg shadow-md">
+            <HiXCircle className="text-red-600 w-6 h-6" />
+            <span className="text-red-800 font-medium">The document summary <b>failed</b></span>
+          </div>
+        </button>
+
+      ), { duration: 10000 });
+    } else if (data.status === "READY" && (summarization_status !== 'READY' && summarization_status !== 'ERROR')) {
+      toast.custom((t) => (
+        <button onClick={() => {
+          router.push({
+            pathname: `/collection/${collectionID}`,
+            query: session,
+          })
+            .catch(() => console.log("error navigating to conversation"))
+
+          toast.dismiss(t.id)
+        }}>
+          <div className="flex items-center gap-3 p-4 bg-green-100 border border-green-400 rounded-lg shadow-md">
+            <HiCheckCircle className="text-green-600 w-6 h-6" />
+            <span className="text-green-800 font-medium">The document summary has been completed <b>successfully</b></span>
+          </div>
+        </button>
+      ), { duration: 10000 });
+    }
+
     return data;
   }
 
@@ -198,13 +243,12 @@ class BackendClient {
     return data;
   }
 
-
   public async uploadFile(file: Blob, collectionId: string): Promise<object> {
-    const endpoint = `api/collections/upload_dev`;
+    const endpoint = `api/collections/upload_dev_2`;
     console.log('collectionId', collectionId);
     const payload = {
       collectionId,
-      session
+      session,
     }
     const fileName: string | undefined = file?.name
     const data = new FormData();

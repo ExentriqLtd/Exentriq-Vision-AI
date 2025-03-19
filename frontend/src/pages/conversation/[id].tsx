@@ -102,7 +102,7 @@ export default function Conversation() {
     setUserMessage("");
 
     const messageEndpoint =
-      backendUrl(session.spaceId) + `api/conversation_dev/${conversationId}/message`;
+      backendUrl(session.spaceId) + `api/conversation_dev_2/${conversationId}/message`;
     const url = messageEndpoint + `?user_message=${encodeURI(userMessage)}&spaceId=${session.spaceId}&username=${session.username}&sessionToken=${session.sessionToken}&engine=${session.engine || ''}`;
     // console.log('URL----', url);
     const events = new EventSource(url);

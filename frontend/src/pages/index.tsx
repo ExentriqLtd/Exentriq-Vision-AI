@@ -16,7 +16,7 @@ import { uuid4 } from "@sentry/utils";
 const LandingPage: NextPage = () => {
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI()
-  const { arrayFileUploaded, collectionId, goToUpload } = stateVisionAI;
+  const { arrayFileUploaded, collectionId, vers, goToUpload } = stateVisionAI;
   const [isUploading, setIsUploading] = useState(false);
   const [showUploadedTable, setShowUploadedTable] = useState(false);
   const [isLoadingConversation, setIsLoadingConversation] = useState(false);
@@ -26,33 +26,33 @@ const LandingPage: NextPage = () => {
   const { isTablet } = useIsTablet();
 
 
-  const handleUpload = (files: File[]) => {
+  const handleUpload = async (files: File[]) => {
     try {
-      setIsUploading(true);
-      setShowUploadedTable(true);
-      files?.forEach((file) => {
-        const idTemp = uuid4();
-        const fileTemp = {filename: file.name, statusUpload: 'progress', idTemp};
+        setIsUploading(true);
+        setShowUploadedTable(true);
 
-        dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: fileTemp } });
+        for (const file of files) {
+            const idTemp = uuid4();
+            const fileTemp = { filename: file.name, statusUpload: 'progress', idTemp };
 
-        backendClient.uploadFile(file, collectionId)
-          .then(({ result }: any) => {
-            if(result) {
-              const newMap = {...result, statusUpload: 'uploaded', idTemp}
-              dispatchVisionAI({ type: 'UPDATE_STATUS_UPLOAD_FILE', payload: { filesUploaded: newMap } });
-              dispatchVisionAI({ type: 'SET_UPLOAD_COMPLETED', payload: {idTemp} });
+            dispatchVisionAI({ type: 'SET_ARRAY_FILES', payload: { filesUploaded: fileTemp } });
+
+            try {
+                const result = await backendClient.uploadFile(file, collectionId, vers);
+                
+                if (result) {
+                    const newMap = { ...result, statusUpload: 'uploaded', idTemp };
+                    dispatchVisionAI({ type: 'UPDATE_STATUS_UPLOAD_FILE', payload: { filesUploaded: newMap } });
+                    dispatchVisionAI({ type: 'SET_UPLOAD_COMPLETED', payload: { idTemp } });
+                }
+            } catch (e) {
+                console.error('Error uploading file:', e);
             }
-            
-          })
-          .catch((e) => {
-            console.log('e', e)
-          })
-      })
+        }
     } catch (error) {
-      console.log(error);
+        console.error('Upload process failed:', error);
     } finally {
-      setIsUploading(false);
+        setIsUploading(false);
     }
   };
 

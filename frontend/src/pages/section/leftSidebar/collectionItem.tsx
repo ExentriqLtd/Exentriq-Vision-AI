@@ -18,6 +18,7 @@ interface CollectionItemInt {
     created_at?: string;
     id?: string;
     doc_number: number;
+    doc_error: number;
     doc_processing: number;
     is_public: boolean;
     key?: string;
@@ -30,7 +31,7 @@ interface CollectionItemInt {
     actualEvent?: EventSource;
 }
 
-const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, is_public, toggleModal, toggleSidebar, doc_number, onRename, onIsPublic, dispatchVisionAI, collectionId, doc_processing }: CollectionItemInt) => {
+const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, created_at, id, is_public, toggleModal, toggleSidebar, doc_number, onRename, onIsPublic, dispatchVisionAI, collectionId, doc_processing, doc_error }: CollectionItemInt) => {
     const router = useRouter()
     const { isMobile } = useIsMobile()
     const { isTablet } = useIsTablet()
@@ -269,10 +270,21 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                             <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
                             <div className="pl-1 text-gray-400 text-xs">{doc_number} document processed</div>
                         </>
+                    ) : (doc_number === doc_processing + doc_error) ? (
+                        <div>
+                            <div className="flex items-center w-full pt-1">
+                                <div className="text-sm bg-primary-ex p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
+                                <div className="pl-1 text-gray-400 text-xs">{doc_number - doc_error} document processed</div>
+                            </div>
+                            <div className="flex items-center w-full pt-1">
+                                <div className="text-sm agentErrorBox p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
+                                <div className="pl-1 text-gray-400 text-xs">{doc_error} document error</div>
+                            </div>
+                        </div>
                     ) : (
                         <>
                             <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} /></div>
-                            <div className="pl-1 text-gray-400 text-xs">{doc_processing} out of {doc_number} document processed</div>
+                            <div className="pl-1 text-gray-400 text-xs">{doc_processing || 0} out of {doc_number} document processed</div>
                         </>
                     )}
 

@@ -92,7 +92,7 @@ const Collection: NextPage = () => {
             reprocess = false;
         }
 
-        backendClient.fetchSummarization(documentID, reprocess)
+        backendClient.fetchSummarization(documentID, reprocess, summarization_status, router, collectionID)
         .then((result: IntSummarization) => {
             var myTimeout;
             if(summarization_status == 'READY') {

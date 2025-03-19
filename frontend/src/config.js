@@ -14,6 +14,7 @@ export async function getUrlParams() {
         username: urlParams.get('username') || 'unknown',
         spaceId: urlParams.get('spaceId') || '-1',
         sessionToken: urlParams.get('sessionToken') || 'empty',
+        ocr: urlParams.get('ocr') || '1',
         embed: urlParams.get('embed') === 'true',
         embedConvId: embedConvId,
         engine: urlParams.get('engine') || ''
@@ -21,7 +22,7 @@ export async function getUrlParams() {
 }
 
 export function backendUrl(spaceId){
-	console.log(spaceId);
+	// console.log(spaceId);
 	if(spaceId == "96767"){
 		return 'https://cmp001stg.exentriq.com/v2/';
 	};
@@ -39,6 +40,7 @@ export let session = {
     username: 'unknown',
     spaceId: '-1',
     sessionToken: 'empty',
+    ocr: '1',
     embed: false,
     embedConvId: '',
     engine: '',
