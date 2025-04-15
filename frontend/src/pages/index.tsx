@@ -181,7 +181,9 @@ const LandingPage: NextPage = () => {
             {isUploading && (
               <progress value={uploadProgress} max="100"></progress> //TODO: Vediamo dove riusciamo a mettere la progress di upload. Magari sotto il form? In un posto che abbia senso. La chiamata però è da controllare se sia istantanea o meno provando magari a caricare files più pesanti?
             )}
-            {session.embed && (
+          </>
+        )}
+        {session.embed && (
               <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} flex flex-col mt-3 my-6 relative`}>
 
               <button
@@ -214,8 +216,6 @@ const LandingPage: NextPage = () => {
             </button>
             </div>
             )}
-          </>
-        )}
       </div>
       <div className="mt-3 w-1/3 flex flex-col items-end">
         <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />
