@@ -14,6 +14,19 @@ import { useModal } from "~/hooks/utils/useModal";
 import SummarizationModal from "~/components/modals/SummarizationModal";
 import { IntSummarization } from "~/types/document";
 
+function useDebouncedValue(value: string, delay: number) {
+    const [debounced, setDebounced] = useState(value);
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebounced(value);
+        }, delay);
+
+        return () => clearTimeout(handler);
+    }, [value, delay]);
+
+    return debounced;
+}
 const Collection: NextPage = () => {
     const router = useRouter();
     const { id } = router.query;
@@ -29,6 +42,9 @@ const Collection: NextPage = () => {
     const { isTablet } = useIsTablet();
     const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
     const [summarizationResult, setSummarizationResult] = useState('');
+    const [query, setQuery] = useState('');
+    const [filteredDocuments, setFilteredDocuments] = useState(documents || []);
+    const debouncedQuery = useDebouncedValue(query, 300); 
 
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
@@ -36,6 +52,18 @@ const Collection: NextPage = () => {
         dispatchVisionAI({type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false}});
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
+
+    useEffect(() => {
+        if (documents && debouncedQuery) {
+            const filtered = documents.filter((doc) =>
+                doc.filename?.toLowerCase().includes(debouncedQuery.toLowerCase())
+            );
+            setFilteredDocuments(filtered);
+        } else {
+            setFilteredDocuments(documents);
+        }
+    }, [debouncedQuery, documents]);
+
 
     useEffect(() => {
         if(session.embedConvId && session.embed) {
@@ -119,12 +147,19 @@ const Collection: NextPage = () => {
             console.log('ERROR', e);
         })
     }
+    const filesToShow = filteredDocuments && filteredDocuments.length > 0 && filteredDocuments;
     return (
         <>
             <div className={`${(isMobile || isTablet || session.embed) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
                 <div className={`${(!isMobile || !isTablet || session.embed) && 'flex flex-row'} items-center justify-between`}>
                     <Header subtitle={`${!session.embed ? selectedCollection?.name : ''}`} paragraph={false} />
                     <div className={`${(isMobile || isTablet || session.embed) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
+                        <input
+                            type="text"
+                            placeholder="Search..."
+                            className="border-b p-2 border-0"
+                            onChange={e => setQuery(e.target.value)}
+                        />
                         <button
                             onClick={() => {
                                 router
@@ -153,7 +188,7 @@ const Collection: NextPage = () => {
                             focus-visible:outline-indigo-600`}>
                             Go to conversation
                         </button>
-                        {!session.embed &&
+                        
                             <button
                                 onClick={() => {
                                     dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
@@ -183,7 +218,7 @@ const Collection: NextPage = () => {
                                 focus-visible:outline-indigo-600`}>
                                 Go to upload
                             </button>
-                        }
+                        
                     </div>
                 </div>
                 <div className={`${(!isMobile || !isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
@@ -200,15 +235,21 @@ const Collection: NextPage = () => {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y bg-white">
-                                    {(documents && documents?.length > 0) && documents.slice(0, limit + 1).map((file: any, index: number) => (
+                                    {filesToShow ? filesToShow.slice(0, limit + 1).map((file: any, index: number) => (
                                         <tr key={index}>
                                             <FileUploaded collectionID={id || ''} file={file} handleCitationClick={handleCitationClick} dispatchVisionAI={dispatchVisionAI} dispatchSummarization={dispatchSummarization} />
                                         </tr>
-                                    ))}
+                                    )) : (
+                                        <tr>
+                                            <td colSpan={5} className="text-center py-4 text-gray-500 italic">
+                                                Nessun risultato trovato
+                                            </td>
+                                        </tr>
+                                    )}
                                     <Waypoint onEnter={handleWaypointEnter} />
                                 </tbody>
                             </table>
-                        </div> 
+                        </div>
                     </div>
                 </div>
 

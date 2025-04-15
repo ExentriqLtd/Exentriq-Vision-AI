@@ -282,10 +282,16 @@ const CollectionItem: NextPage<CollectionItemInt> = ({ name, actualEvent, create
                             </div>
                         </div>
                     ) : (
-                        <>
+                        <div>
+                              <div className="flex items-center w-full pt-1">
                             <div className=""><BiLoaderAlt className="animate-spin" color="#1bbc9b" size={22} /></div>
                             <div className="pl-1 text-gray-400 text-xs">{doc_processing || 0} out of {doc_number} document processed</div>
-                        </>
+                            </div>
+                             <div className="flex items-center w-full pt-1">
+                                <div className="text-sm agentErrorBox p-1 rounded-full"><HiMiniDocumentCheck color="#fff" size={12} /></div>
+                                <div className="pl-1 text-gray-400 text-xs">{doc_error} document error</div>
+                            </div>
+                        </div>
                     )}
 
                 </div>
