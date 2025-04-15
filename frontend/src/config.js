@@ -16,7 +16,7 @@ export async function getUrlParams() {
         sessionToken: urlParams.get('sessionToken') || 'empty',
         ocr: urlParams.get('ocr') || '1',
         embed: urlParams.get('embed') === 'true',
-        embedConvId: embedConvId,
+        embedConvId: urlParams.get('embedConvId') || embedConvId,
         engine: urlParams.get('engine') || ''
     };
 }

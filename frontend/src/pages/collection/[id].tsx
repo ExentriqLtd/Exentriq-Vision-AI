@@ -188,7 +188,7 @@ const Collection: NextPage = () => {
                             focus-visible:outline-indigo-600`}>
                             Go to conversation
                         </button>
-                        {!session.embed &&
+                        
                             <button
                                 onClick={() => {
                                     dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
@@ -218,7 +218,7 @@ const Collection: NextPage = () => {
                                 focus-visible:outline-indigo-600`}>
                                 Go to upload
                             </button>
-                        }
+                        
                     </div>
                 </div>
                 <div className={`${(!isMobile || !isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>

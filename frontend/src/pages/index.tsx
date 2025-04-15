@@ -183,6 +183,39 @@ const LandingPage: NextPage = () => {
             )}
           </>
         )}
+        {session.embed && (
+              <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-2/3'} flex flex-col mt-3 my-6 relative`}>
+
+              <button
+                onClick={() => {
+                    router
+                        .push({
+                            pathname: `/collection/${collectionId}`,
+                            query: session,
+                        })
+                        .catch(() => console.log("error navigating to collection"));
+                }}
+                className={`
+                block 
+                rounded-sm 
+                bg-primary-ex 
+                ${(isMobile || isTablet) ? (
+                        "px-2 py-2 text-xs"
+                    ) : (
+                        "px-3.5 py-2.5 text-sm"
+                    )}
+                text-center 
+                text-white 
+                shadow-md 
+                hover:bg-primary-ex 
+                focus-visible:outline 
+                focus-visible:outline-2 
+                focus-visible:outline-offset-2 
+                focus-visible:outline-indigo-600`}>
+                Go to collection detail
+            </button>
+            </div>
+            )}
       </div>
       <div className="mt-3 w-1/3 flex flex-col items-end">
         <img src={'./bot-img.png'} className="w-80" alt="Google Drive Folder" />
