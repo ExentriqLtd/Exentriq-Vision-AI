@@ -23,7 +23,7 @@ const CollectionList: React.FC = () => {
   const [is_public, SetIs_public] = useState(false);
   //@ts-ignore
   const [stateVisionAI, dispatchVisionAI] = useVisionAI();
-  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, uploadCompleted } = stateVisionAI;
+  const { collectionId, arrayCollections, actualEvent, toggleMenuMobile, isYodaSelected, startStop } = stateVisionAI;
 
   const [searchTerm, setSearchTerm] = useState('');
   const router = useRouter()
@@ -51,8 +51,10 @@ const CollectionList: React.FC = () => {
   };
 
   useEffect(() => {
-    getCollections('').catch(() => console.error("could not fetch documents"));
-  }, [uploadCompleted]);
+    if(startStop){
+      getCollections('').catch(() => console.error("could not fetch documents"));
+    }
+  }, [startStop]);
 
   useEffect(() => {
     getCollections('').catch(() => console.error("could not fetch documents"));

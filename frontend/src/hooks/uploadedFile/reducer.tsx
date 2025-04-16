@@ -24,6 +24,7 @@ export interface action {
         isPromptsSelected: boolean,
         filename: string,
         idTemp: string,
+        startStop: boolean,
     };
 }
 
@@ -44,6 +45,7 @@ export interface stateReducer {
     isYodaSelected: boolean,
     isPromptsSelected: boolean,
     uploadCompleted: string,
+    startStop: boolean
 }
 
 interface FileItem {
@@ -137,6 +139,11 @@ export const reducer = (state: stateReducer, action: action) => {
                 ...state,
                 uploadCompleted,
             }
+        case 'SET_COLLECTION_START_STOP_LIST':
+            return {
+                ...state,
+                startStop: action.payload.startStop,
+            }
         case 'SET_VIEWPROGRESS_ACTIVE':
             return {
                 ...state,
@@ -215,6 +222,7 @@ export const initialState: stateReducer = {
     actualEvent: null,
     isYodaSelected: false,
     isPromptsSelected: false,
-    uploadCompleted: ''
+    uploadCompleted: '',
+    startStop: false
 };
 

@@ -46,6 +46,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
                     updateStatusFile();
                 }, 5000);
             } else {
+                dispatchVisionAI({ type: 'SET_COLLECTION_START_STOP_LIST', payload: { startStop: false } });
                 setFileStatus(result?.status);
             }
           }).catch((e) => {
@@ -55,6 +56,7 @@ const FileUploaded: NextPage<FileInt> = ({ collectionID, file, handleCitationCli
 
     useEffect(() => {
         if(fileStatus == 'processing') {
+            dispatchVisionAI({ type: 'SET_COLLECTION_START_STOP_LIST', payload: { startStop: true } });
             updateStatusFile(); 
         }
     },[file.status])
