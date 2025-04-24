@@ -38,18 +38,20 @@ const Collection: NextPage = () => {
     const [limit, setLimit] = useState(50);
     const [documents, setDocuments] = useState<[] | null>(null);
     const [tableHeight, setTableHeight] = useState(0);
+    const [orderActive, setOrderActive] = useState(false);
+    const [orderAsc, setOrderAsc] = useState(true); // true = A-Z, false = Z-A
     const { isMobile } = useIsMobile();
     const { isTablet } = useIsTablet();
     const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
     const [summarizationResult, setSummarizationResult] = useState('');
     const [query, setQuery] = useState('');
     const [filteredDocuments, setFilteredDocuments] = useState(documents || []);
-    const debouncedQuery = useDebouncedValue(query, 300); 
+    const debouncedQuery = useDebouncedValue(query, 300);
 
     useEffect(() => {
         dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: id } });
-        dispatchVisionAI({type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false}});
-        dispatchVisionAI({type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false}});
+        dispatchVisionAI({ type: 'SET_YODA_ACTIVE', payload: { isYodaSelected: false } });
+        dispatchVisionAI({ type: 'SET_PROMPTS_ACTIVE', payload: { isPromptsSelected: false } });
         setTableHeight(document.getElementsByClassName('getTableHeight')[0]?.clientHeight || 0);
     }, [id])
 
@@ -66,18 +68,18 @@ const Collection: NextPage = () => {
 
 
     useEffect(() => {
-        if(session.embedConvId && session.embed) {
-          dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: session.embedConvId } });
+        if (session.embedConvId && session.embed) {
+            dispatchVisionAI({ type: 'SET_COLLECTION_ACTIVE', payload: { collectionId: session.embedConvId } });
         }
     }, [session.embedConvId])
 
     const getCollectionDetails = (collectionID: string) => {
         backendClient.getCollectionDetails(collectionID)
-        .then(({ result }: any) => {
-            setDocuments(result?.documents)
-        }).catch((e) => {
-            console.log('e', e)
-        })
+            .then(({ result }: any) => {
+                setDocuments(result?.documents)
+            }).catch((e) => {
+                console.log('e', e)
+            })
     }
 
     useEffect(() => {
@@ -113,7 +115,7 @@ const Collection: NextPage = () => {
 
     const dispatchSummarization = (documentID: string, collectionID: string, summarization_status: string) => {
         var reprocess;
-        
+
         if (summarization_status == 'ERROR') {
             reprocess = true;
         } else {
@@ -121,33 +123,43 @@ const Collection: NextPage = () => {
         }
 
         backendClient.fetchSummarization(documentID, reprocess, summarization_status, router, collectionID)
-        .then((result: IntSummarization) => {
-            var myTimeout;
-            if(summarization_status == 'READY') {
-                setSummarizationResult(result.summarization.values);
-                toggleSummarizationModal();
-            } else {
-                if(result.status == 'IN PROGRESS') {
-                    myTimeout = setTimeout(() => {
-                        dispatchSummarization(documentID, collectionID, 'IN PROGRESS');
-                    }, 5000);
-                } else if(result.status == "ERROR") {
-                    clearTimeout(myTimeout);
-                    getCollectionDetails(collectionID);
-                } else if(result.status == "READY") {
-                    clearTimeout(myTimeout);
+            .then((result: IntSummarization) => {
+                var myTimeout;
+                if (summarization_status == 'READY') {
                     setSummarizationResult(result.summarization.values);
-                    getCollectionDetails(collectionID);
+                    toggleSummarizationModal();
                 } else {
-                    clearTimeout(myTimeout);
+                    if (result.status == 'IN PROGRESS') {
+                        myTimeout = setTimeout(() => {
+                            dispatchSummarization(documentID, collectionID, 'IN PROGRESS');
+                        }, 5000);
+                    } else if (result.status == "ERROR") {
+                        clearTimeout(myTimeout);
+                        getCollectionDetails(collectionID);
+                    } else if (result.status == "READY") {
+                        clearTimeout(myTimeout);
+                        setSummarizationResult(result.summarization.values);
+                        getCollectionDetails(collectionID);
+                    } else {
+                        clearTimeout(myTimeout);
+                    }
                 }
-            }
-            
-        }).catch((e) => {
-            console.log('ERROR', e);
-        })
+
+            }).catch((e) => {
+                console.log('ERROR', e);
+            })
     }
-    const filesToShow = filteredDocuments && filteredDocuments.length > 0 && filteredDocuments;
+    const filesToShow = filteredDocuments && filteredDocuments.length > 0
+        ? orderActive
+            ? [...filteredDocuments].sort((a, b) => {
+                const nameA = a.filename.toLowerCase();
+                const nameB = b.filename.toLowerCase();
+                return orderAsc
+                    ? nameA.localeCompare(nameB)
+                    : nameB.localeCompare(nameA);
+            })
+            : filteredDocuments
+        : null;
     return (
         <>
             <div className={`${(isMobile || isTablet || session.embed) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
@@ -188,26 +200,26 @@ const Collection: NextPage = () => {
                             focus-visible:outline-indigo-600`}>
                             Go to conversation
                         </button>
-                        
-                            <button
-                                onClick={() => {
-                                    dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
-                                    router
-                                        .push({
-                                            pathname: `/`,
-                                            query: session,
-                                        })
-                                        .catch(() => console.log("error navigating to conversation"))
-                                }}
-                                className={`
+
+                        <button
+                            onClick={() => {
+                                dispatchVisionAI({ type: 'SET_GO_TO_UPLOAD', payload: { goToUpload: true } })
+                                router
+                                    .push({
+                                        pathname: `/`,
+                                        query: session,
+                                    })
+                                    .catch(() => console.log("error navigating to conversation"))
+                            }}
+                            className={`
                                 block 
                                 rounded-sm 
                                 bg-primary-ex 
                                 ${(isMobile || isTablet) ? (
-                                        "px-2 py-2 text-xs"
-                                    ) : (
-                                        "px-3.5 py-2.5 text-sm"
-                                    )}
+                                    "px-2 py-2 text-xs"
+                                ) : (
+                                    "px-3.5 py-2.5 text-sm"
+                                )}
                                 text-center 
                                 text-white 
                                 shadow-md 
@@ -216,9 +228,31 @@ const Collection: NextPage = () => {
                                 focus-visible:outline-2 
                                 focus-visible:outline-offset-2 
                                 focus-visible:outline-indigo-600`}>
-                                Go to upload
-                            </button>
-                        
+                            Go to upload
+                        </button>
+
+                        <button
+                        onClick={() => setOrderActive(false)}
+                        className={`
+                            block 
+                            rounded-sm 
+                            bg-primary-ex 
+                            ${(isMobile || isTablet) ? (
+                                "px-2 py-2 text-xs"
+                            ) : (
+                                "px-3.5 py-2.5 text-sm"
+                            )}
+                            text-center 
+                            text-white 
+                            shadow-md 
+                            hover:bg-primary-ex 
+                            focus-visible:outline 
+                            focus-visible:outline-2 
+                            focus-visible:outline-offset-2 
+                            focus-visible:outline-indigo-600`}>
+                        Reset order
+                        </button>
+
                     </div>
                 </div>
                 <div className={`${(!isMobile || !isTablet) && 'getTableHeight'} flex flex-col mt-3 my-6 relative shadow-md w-full bg-slate-50 rounded-md grow-1`}>
@@ -227,7 +261,13 @@ const Collection: NextPage = () => {
                             <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                                 <thead>
                                     <tr>
-                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Name</th>
+                                        <th onClick={() => {
+                                                setOrderActive(true); // attiva ordinamento
+                                                setOrderAsc(prev => !prev); // inverte A-Z / Z-A
+                                            }}
+                                            className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4 cursor-pointer">
+                                            Name {orderActive ? (orderAsc ? '▼' : '▲') : ''}
+                                        </th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Download</th>

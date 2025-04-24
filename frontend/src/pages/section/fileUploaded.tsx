@@ -31,6 +31,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
                     updateStatusFile();
                 }, TIMER);
             } else {
+                dispatchVisionAI({ type: 'SET_COLLECTION_START_STOP_LIST', payload: { startStop: false } });
                 dispatchVisionAI({ type: 'UPDATE_STATUS_FILE', payload: { uuid: result.uuid, status: result.status } });
             }
           }).catch((e) => {
@@ -40,6 +41,7 @@ const FileUploaded: NextPage<FileUploadInt> = ({ file, statusUpload }: FileUploa
 
     useEffect(() => {
         if(statusUpload == 'uploaded') {
+            dispatchVisionAI({ type: 'SET_COLLECTION_START_STOP_LIST', payload: { startStop: true } });
             updateStatusFile(); 
         }
     },[statusUpload])
