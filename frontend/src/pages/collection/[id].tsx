@@ -38,6 +38,7 @@ const Collection: NextPage = () => {
     const [limit, setLimit] = useState(50);
     const [documents, setDocuments] = useState<[] | null>(null);
     const [tableHeight, setTableHeight] = useState(0);
+    const [order, setOrder] = useState(true);
     const { isMobile } = useIsMobile();
     const { isTablet } = useIsTablet();
     const { isOpen: isSummarizationModalOpen, toggleModal: toggleSummarizationModal } = useModal();
@@ -147,7 +148,15 @@ const Collection: NextPage = () => {
             console.log('ERROR', e);
         })
     }
-    const filesToShow = filteredDocuments && filteredDocuments.length > 0 && filteredDocuments;
+    const filesToShow = filteredDocuments && filteredDocuments.length > 0
+    ? [...filteredDocuments].sort((a, b) => {
+        const nameA = a.filename.toLowerCase();
+        const nameB = b.filename.toLowerCase();
+        return order
+          ? nameA.localeCompare(nameB) // A-Z
+          : nameB.localeCompare(nameA); // Z-A
+      })
+    : null;
     return (
         <>
             <div className={`${(isMobile || isTablet || session.embed) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
@@ -227,7 +236,7 @@ const Collection: NextPage = () => {
                             <table className="relative border-collapse overflow-auto table-auto w-full text-sm shadow-sm rounded-md">
                                 <thead>
                                     <tr>
-                                        <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Name</th>
+                                        <th onClick={()=> setOrder(!order)} className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Name {order ? '▼' : '▲'}</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Download</th>
