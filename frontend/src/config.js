@@ -17,7 +17,9 @@ export async function getUrlParams() {
         ocr: urlParams.get('ocr') || '1',
         embed: urlParams.get('embed') === 'true',
         embedConvId: urlParams.get('embedConvId') || embedConvId,
-        engine: urlParams.get('engine') || ''
+        engine: urlParams.get('engine') || '',
+        agentId: urlParams.get('agentId') || '',
+        agentUrl: urlParams.get('agentUrl') || '',
     };
 }
 
@@ -44,4 +46,6 @@ export let session = {
     embed: false,
     embedConvId: '',
     engine: '',
+    agentId: '',
+    agentUrl: '',
 };

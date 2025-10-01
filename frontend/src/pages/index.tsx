@@ -82,7 +82,7 @@ const LandingPage: NextPage = () => {
 
 
   return (
-    <div className={`${(isMobile || isTablet) ? 'w-full' : 'w-4/5'} flex flex-row`}>
+    <div className={`${(isMobile || isTablet || session.embed ) ? 'w-full' : 'w-4/5'} flex flex-row`}>
       <div className="mt-3 mx-6 w-2/3 flex flex-col">
         {isLoadingConversation && (
           <ProgressBar />

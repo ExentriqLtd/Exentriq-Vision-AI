@@ -35,6 +35,7 @@ const Collection: NextPage = () => {
     const { setPdfFocusState } = usePdfFocus();
     const { arrayCollections, isPdfViewerOpen } = stateVisionAI;
     const selectedCollection = arrayCollections?.filter((collection: any) => collection?.uuid == id)[0];
+    const [collectionName, setCollectionName] = useState('');
     const [limit, setLimit] = useState(50);
     const [documents, setDocuments] = useState<[] | null>(null);
     const [tableHeight, setTableHeight] = useState(0);
@@ -76,9 +77,10 @@ const Collection: NextPage = () => {
     const getCollectionDetails = (collectionID: string) => {
         backendClient.getCollectionDetails(collectionID)
             .then(({ result }: any) => {
-                setDocuments(result?.documents)
+                setDocuments(result?.documents);
+                setCollectionName(result?.name);
             }).catch((e) => {
-                console.log('e', e)
+                console.log('e', e);
             })
     }
 
@@ -90,7 +92,7 @@ const Collection: NextPage = () => {
     }, [id]);
 
     const handleWaypointEnter = () => {
-        setLimit(limit + 50)
+        setLimit(limit + 50);
     };
     const handleCitationClick = (documentId: string) => {
         dispatchVisionAI({ type: 'SET_PDF_VIEWER', payload: { isPdfViewerOpen: !isPdfViewerOpen } });
@@ -164,7 +166,7 @@ const Collection: NextPage = () => {
         <>
             <div className={`${(isMobile || isTablet || session.embed) ? 'w-full px-2' : 'w-4/5 mx-6'} flex flex-col`}>
                 <div className={`${(!isMobile || !isTablet || session.embed) && 'flex flex-row'} items-center justify-between`}>
-                    <Header subtitle={`${!session.embed ? selectedCollection?.name : ''}`} paragraph={false} />
+                    <Header subtitle={`${!session.embed ? selectedCollection?.name : collectionName}`} paragraph={false} />
                     <div className={`${(isMobile || isTablet || session.embed) && 'mt-4 mb-2'} flex flex-row items-center gap-3`}>
                         <input
                             type="text"
@@ -172,34 +174,37 @@ const Collection: NextPage = () => {
                             className="border-b p-2 border-0"
                             onChange={e => setQuery(e.target.value)}
                         />
-                        <button
-                            onClick={() => {
-                                router
-                                    .push({
-                                        pathname: `/conversation/${id}`,
-                                        query: session,
-                                    })
-                                    .catch(() => console.log("error navigating to conversation"));
-                            }}
-                            className={`
-                            block 
-                            rounded-sm 
-                            bg-primary-ex 
-                            ${(isMobile || isTablet) ? (
-                                    "px-2 py-2 text-xs"
-                                ) : (
-                                    "px-3.5 py-2.5 text-sm"
-                                )}
-                            text-center 
-                            text-white 
-                            shadow-md 
-                            hover:bg-primary-ex 
-                            focus-visible:outline 
-                            focus-visible:outline-2 
-                            focus-visible:outline-offset-2 
-                            focus-visible:outline-indigo-600`}>
-                            Go to conversation
-                        </button>
+                        {!session.agentId && (
+                            <button
+                                onClick={() => {
+                                    router
+                                        .push({
+                                            pathname: `/conversation/${id}`,
+                                            query: session,
+                                        })
+                                        .catch(() => console.log("error navigating to conversation"));
+                                }}
+                                className={`
+                                block 
+                                rounded-sm 
+                                bg-primary-ex 
+                                ${(isMobile || isTablet) ? (
+                                        "px-2 py-2 text-xs"
+                                    ) : (
+                                        "px-3.5 py-2.5 text-sm"
+                                    )}
+                                text-center 
+                                text-white 
+                                shadow-md 
+                                hover:bg-primary-ex 
+                                focus-visible:outline 
+                                focus-visible:outline-2 
+                                focus-visible:outline-offset-2 
+                                focus-visible:outline-indigo-600`}>
+                                Go to conversation
+                            </button>
+                        )}
+                        
 
                         <button
                             onClick={() => {
@@ -266,7 +271,7 @@ const Collection: NextPage = () => {
                                                 setOrderAsc(prev => !prev); // inverte A-Z / Z-A
                                             }}
                                             className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4 cursor-pointer">
-                                            Name {orderActive ? (orderAsc ? '▼' : '▲') : ''}
+                                            Name {orderActive ? (orderAsc ? '▼' : '▲') : '▲/▼'}
                                         </th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Date</th>
                                         <th className="sticky top-0 bg-gray-200 border-b font-medium py-3 text-gray-500 text-left p-4">Status</th>
